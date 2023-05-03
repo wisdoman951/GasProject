@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33027.164
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gas Company", "Gas Company\Gas Company.csproj", "{C2ECCDBC-2368-405D-9632-5815C2F6B55E}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup Gas Company", "..\Setup Gas Company\Setup Gas Company.vdproj", "{84139C10-0F4E-4F97-8235-29613A772CC3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C2ECCDBC-2368-405D-9632-5815C2F6B55E}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{C2ECCDBC-2368-405D-9632-5815C2F6B55E}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{C2ECCDBC-2368-405D-9632-5815C2F6B55E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2ECCDBC-2368-405D-9632-5815C2F6B55E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84139C10-0F4E-4F97-8235-29613A772CC3}.Debug|Any CPU.ActiveCfg = Debug
+		{84139C10-0F4E-4F97-8235-29613A772CC3}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D690807A-0CD7-420D-97BC-340C0E666C92}
+	EndGlobalSection
+EndGlobal
