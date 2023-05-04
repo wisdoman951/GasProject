@@ -24,8 +24,9 @@ namespace Gas_Company
         {
 
         }
+        
 
-        private void button15_Click(object sender, EventArgs e)
+        private void CSearchButton_Click(object sender, EventArgs e)
         {
             string searchTerm = textBox1.Text;
 
@@ -61,7 +62,7 @@ namespace Gas_Company
             }
         }
 
-        private void delete_Click(object sender, EventArgs e)
+        private void CDeleteButton_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
@@ -93,7 +94,7 @@ namespace Gas_Company
             }
         }
 
-        private void button14_Click(object sender, EventArgs e)
+        private void CUpdateButton_Click(object sender, EventArgs e)
         {
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
@@ -109,7 +110,7 @@ namespace Gas_Company
             }
         }
 
-        private void add_Click(object sender, EventArgs e)
+        private void CAddButton_Click(object sender, EventArgs e)
         {
             string connStr = "server=localhost;user=root;password=mysqlyu229;database=new_test;";
             using (MySqlConnection conn = new MySqlConnection(connStr))
@@ -130,9 +131,6 @@ namespace Gas_Company
                 cmd.Parameters.AddWithValue("@Coustomer_Address", address.Text);
                 //cmd.Parameters.AddWithValue("@Coustomer_FamilyMember_ID", family.Text);
                 //cmd.Parameters.AddWithValue("@Company_ID", company.Text);
-
-
-
                 if (cmd.ExecuteNonQuery() == 1)
                 {
                     MessageBox.Show("登錄成功！");

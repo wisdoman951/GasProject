@@ -29,7 +29,7 @@ namespace Gas_Company
             InitializeComponent();
         }
 
-        // Real-time time clock
+        //// Real-time time clock
         private void Form2_Load(object sender, EventArgs e)
         {
             timer1.Start();
@@ -44,7 +44,7 @@ namespace Gas_Company
             timer1.Start();
         }
 
-        // Simple form display format defination
+        //// Simple form display format initiation
         private Form activeForm = null;
         private void openChildForm(Form childForm)
         {
@@ -60,6 +60,8 @@ namespace Gas_Company
             childForm.BringToFront();
             childForm.Show();
         }
+
+        //// Data paint on panel
         private void panel2_Paint(object sender, PaintEventArgs e)
         {
             string query = "SELECT * FROM `new_order`";
@@ -70,8 +72,13 @@ namespace Gas_Company
                 {
                     DataTable table = new DataTable();
                     adapter.Fill(table);
-
                     dataGridView1.DataSource = table;
+
+                    // You can check each column's name here
+                    foreach (DataColumn column in table.Columns)
+                    {
+                        Console.WriteLine(column.ColumnName);
+                    }
                 }
             }
         }
@@ -106,18 +113,37 @@ namespace Gas_Company
             openChildForm(new Worker());
         }
 
-        // 插入資料
 
+        //// Auto-fill when certain row is selected.
+        ////* 需求需確認: 要哪些資料? *////
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow selectedRow = dataGridView1.Rows[e.RowIndex];
+
+                // Access the data in the selected row and autofill other fields in the form
+                string orderId = selectedRow.Cells["Order_ID"].Value.ToString();
+                string customerName = selectedRow.Cells["Customer_ID"].Value.ToString();
+                // Retrieve other fields as needed
+
+                // Autofill the other fields(Textbox) in the form
+                Order_ID.Text = orderId;
+                Customer_ID.Text = customerName;
+            }
+        }
+
+        //// 插入資料
         private void InsertButton_Click(object sender, EventArgs e)
         {
 
         }
 
-        // 刪除資料視窗
+        ////刪除資料視窗
         // dataGridView1: data table side.
         private void delete_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.SelectedRows.Count > 0) // If mouse selected one row.
+            if (dataGridView1.SelectedRows.Count == 1) // If mouse selected one row.
             {
                 DialogResult result = MessageBox.Show("确定删除此行資料？", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes) // If user confirm delete
@@ -168,7 +194,6 @@ namespace Gas_Company
                         {
                             DataTable table = new DataTable();
                             adapter.Fill(table);
-
                             if (table.Rows.Count == 0)
                             {
                                 MessageBox.Show("未找到結果。請重試。", "搜索失敗", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -195,6 +220,6 @@ namespace Gas_Company
 
         }
 
-
+        
     }
 }
