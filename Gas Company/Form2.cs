@@ -72,6 +72,7 @@ namespace Gas_Company
                     adapter.Fill(table);
 
                     dataGridView1.DataSource = table;
+
                 }
             }
         }
