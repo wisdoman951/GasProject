@@ -112,7 +112,7 @@ namespace Gas_Company
 
         private void CAddButton_Click(object sender, EventArgs e)
         {
-            string connStr = "server=localhost;user=root;password=mysqlyu229;database=new_test;";
+            string connStr = "server=localhost;user=root;password=89010607;database=new_test;";
             using (MySqlConnection conn = new MySqlConnection(connStr))
             {
                 conn.Open();
@@ -120,15 +120,15 @@ namespace Gas_Company
                 string insertQuery = "INSERT INTO coustomer (Coustomer_ID,Coustomer_Name,Coustomer_Sex,Coustomer_Phone,Coustomer_HouseTel,Coustomer_Email,Coustomer_City,Coustomer_District,Coustomer_Address,Coustomer_FamilyMember_ID,Company_ID,Registered_at) VALUES (@Coustomer_ID,@Coustomer_Name,@Coustomer_Sex,@Coustomer_Phone,@Coustomer_HouseTel,@Coustomer_Email,@Coustomer_City,@Coustomer_District,@Coustomer_Address,@Coustomer_FamilyMember_ID,Company_ID,NOW())";
 
                 MySqlCommand cmd = new MySqlCommand(insertQuery, conn);
-                cmd.Parameters.AddWithValue("@Coustomer_ID", Uname.Text);
-                cmd.Parameters.AddWithValue("@Coustomer_Name", sex.Text);
+                cmd.Parameters.AddWithValue("@Coustomer_ID", CustomerName.Text);
+                cmd.Parameters.AddWithValue("@Coustomer_Name", CustomerSex.Text);
                 //cmd.Parameters.AddWithValue("@Coustomer_Sex", sex.Text);
-                cmd.Parameters.AddWithValue("@Coustomer_Phone", phone.Text);
-                cmd.Parameters.AddWithValue("@Coustomer_HouseTel", tel.Text);
-                cmd.Parameters.AddWithValue("@Coustomer_Email", email.Text);
-                cmd.Parameters.AddWithValue("@Coustomer_City", city.Text);
-                cmd.Parameters.AddWithValue("@Coustomer_District", district.Text);
-                cmd.Parameters.AddWithValue("@Coustomer_Address", address.Text);
+                cmd.Parameters.AddWithValue("@Coustomer_Phone", CustomerPhone.Text);
+                cmd.Parameters.AddWithValue("@Coustomer_HouseTel", CustomerNumber.Text);
+                cmd.Parameters.AddWithValue("@Coustomer_Email", CustomerEmail.Text);
+                cmd.Parameters.AddWithValue("@Coustomer_City", CustomerCity.Text);
+                cmd.Parameters.AddWithValue("@Coustomer_District", CustomerDistrict.Text);
+                cmd.Parameters.AddWithValue("@Coustomer_Address", CustomerAddress.Text);
                 //cmd.Parameters.AddWithValue("@Coustomer_FamilyMember_ID", family.Text);
                 //cmd.Parameters.AddWithValue("@Company_ID", company.Text);
                 if (cmd.ExecuteNonQuery() == 1)

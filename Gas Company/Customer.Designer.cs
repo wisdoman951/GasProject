@@ -30,19 +30,19 @@ namespace Gas_Company
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.address = new System.Windows.Forms.TextBox();
-            this.district = new System.Windows.Forms.TextBox();
-            this.city = new System.Windows.Forms.TextBox();
+            this.CustomerAddress = new System.Windows.Forms.TextBox();
+            this.CustomerDistrict = new System.Windows.Forms.TextBox();
+            this.CustomerCity = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.email = new System.Windows.Forms.TextBox();
+            this.CustomerEmail = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.tel = new System.Windows.Forms.TextBox();
+            this.CustomerNumber = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.phone = new System.Windows.Forms.TextBox();
+            this.CustomerPhone = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.sex = new System.Windows.Forms.TextBox();
+            this.CustomerSex = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.Uname = new System.Windows.Forms.TextBox();
+            this.CustomerName = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -57,19 +57,19 @@ namespace Gas_Company
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.address);
-            this.groupBox1.Controls.Add(this.district);
-            this.groupBox1.Controls.Add(this.city);
+            this.groupBox1.Controls.Add(this.CustomerAddress);
+            this.groupBox1.Controls.Add(this.CustomerDistrict);
+            this.groupBox1.Controls.Add(this.CustomerCity);
             this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.email);
+            this.groupBox1.Controls.Add(this.CustomerEmail);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.tel);
+            this.groupBox1.Controls.Add(this.CustomerNumber);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.phone);
+            this.groupBox1.Controls.Add(this.CustomerPhone);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.sex);
+            this.groupBox1.Controls.Add(this.CustomerSex);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.Uname);
+            this.groupBox1.Controls.Add(this.CustomerName);
             this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(375, 54);
@@ -79,35 +79,35 @@ namespace Gas_Company
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "客戶資料";
             // 
-            // address
+            // CustomerAddress
             // 
-            this.address.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.address.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.address.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.address.Location = new System.Drawing.Point(281, 207);
-            this.address.Name = "address";
-            this.address.Size = new System.Drawing.Size(276, 24);
-            this.address.TabIndex = 74;
+            this.CustomerAddress.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.CustomerAddress.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.CustomerAddress.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CustomerAddress.Location = new System.Drawing.Point(281, 207);
+            this.CustomerAddress.Name = "CustomerAddress";
+            this.CustomerAddress.Size = new System.Drawing.Size(276, 24);
+            this.CustomerAddress.TabIndex = 74;
             // 
-            // district
+            // CustomerDistrict
             // 
-            this.district.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.district.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.district.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.district.Location = new System.Drawing.Point(205, 207);
-            this.district.Name = "district";
-            this.district.Size = new System.Drawing.Size(70, 24);
-            this.district.TabIndex = 73;
+            this.CustomerDistrict.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.CustomerDistrict.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.CustomerDistrict.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CustomerDistrict.Location = new System.Drawing.Point(205, 207);
+            this.CustomerDistrict.Name = "CustomerDistrict";
+            this.CustomerDistrict.Size = new System.Drawing.Size(70, 24);
+            this.CustomerDistrict.TabIndex = 73;
             // 
-            // city
+            // CustomerCity
             // 
-            this.city.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.city.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.city.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.city.Location = new System.Drawing.Point(129, 207);
-            this.city.Name = "city";
-            this.city.Size = new System.Drawing.Size(70, 24);
-            this.city.TabIndex = 72;
+            this.CustomerCity.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.CustomerCity.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.CustomerCity.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CustomerCity.Location = new System.Drawing.Point(129, 207);
+            this.CustomerCity.Name = "CustomerCity";
+            this.CustomerCity.Size = new System.Drawing.Size(70, 24);
+            this.CustomerCity.TabIndex = 72;
             // 
             // label8
             // 
@@ -120,15 +120,15 @@ namespace Gas_Company
             this.label8.TabIndex = 71;
             this.label8.Text = "通訊地址";
             // 
-            // email
+            // CustomerEmail
             // 
-            this.email.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.email.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.email.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.email.Location = new System.Drawing.Point(129, 157);
-            this.email.Name = "email";
-            this.email.Size = new System.Drawing.Size(428, 24);
-            this.email.TabIndex = 70;
+            this.CustomerEmail.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.CustomerEmail.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.CustomerEmail.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CustomerEmail.Location = new System.Drawing.Point(129, 157);
+            this.CustomerEmail.Name = "CustomerEmail";
+            this.CustomerEmail.Size = new System.Drawing.Size(428, 24);
+            this.CustomerEmail.TabIndex = 70;
             // 
             // label4
             // 
@@ -141,15 +141,15 @@ namespace Gas_Company
             this.label4.TabIndex = 69;
             this.label4.Text = "電子信箱";
             // 
-            // tel
+            // CustomerNumber
             // 
-            this.tel.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.tel.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tel.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tel.Location = new System.Drawing.Point(412, 106);
-            this.tel.Name = "tel";
-            this.tel.Size = new System.Drawing.Size(145, 24);
-            this.tel.TabIndex = 68;
+            this.CustomerNumber.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.CustomerNumber.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.CustomerNumber.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CustomerNumber.Location = new System.Drawing.Point(412, 106);
+            this.CustomerNumber.Name = "CustomerNumber";
+            this.CustomerNumber.Size = new System.Drawing.Size(145, 24);
+            this.CustomerNumber.TabIndex = 68;
             // 
             // label3
             // 
@@ -162,15 +162,15 @@ namespace Gas_Company
             this.label3.TabIndex = 67;
             this.label3.Text = "電話號碼";
             // 
-            // phone
+            // CustomerPhone
             // 
-            this.phone.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.phone.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.phone.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.phone.Location = new System.Drawing.Point(129, 106);
-            this.phone.Name = "phone";
-            this.phone.Size = new System.Drawing.Size(145, 24);
-            this.phone.TabIndex = 66;
+            this.CustomerPhone.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.CustomerPhone.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.CustomerPhone.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CustomerPhone.Location = new System.Drawing.Point(129, 106);
+            this.CustomerPhone.Name = "CustomerPhone";
+            this.CustomerPhone.Size = new System.Drawing.Size(145, 24);
+            this.CustomerPhone.TabIndex = 66;
             // 
             // label2
             // 
@@ -183,15 +183,15 @@ namespace Gas_Company
             this.label2.TabIndex = 65;
             this.label2.Text = "手機號碼";
             // 
-            // sex
+            // CustomerSex
             // 
-            this.sex.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.sex.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.sex.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.sex.Location = new System.Drawing.Point(412, 58);
-            this.sex.Name = "sex";
-            this.sex.Size = new System.Drawing.Size(145, 24);
-            this.sex.TabIndex = 64;
+            this.CustomerSex.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.CustomerSex.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.CustomerSex.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CustomerSex.Location = new System.Drawing.Point(412, 58);
+            this.CustomerSex.Name = "CustomerSex";
+            this.CustomerSex.Size = new System.Drawing.Size(145, 24);
+            this.CustomerSex.TabIndex = 64;
             // 
             // label1
             // 
@@ -204,16 +204,16 @@ namespace Gas_Company
             this.label1.TabIndex = 63;
             this.label1.Text = "性別";
             // 
-            // Uname
+            // CustomerName
             // 
-            this.Uname.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.Uname.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.Uname.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Uname.Location = new System.Drawing.Point(129, 58);
-            this.Uname.Name = "Uname";
-            this.Uname.ReadOnly = true;
-            this.Uname.Size = new System.Drawing.Size(145, 24);
-            this.Uname.TabIndex = 62;
+            this.CustomerName.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.CustomerName.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.CustomerName.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CustomerName.Location = new System.Drawing.Point(129, 58);
+            this.CustomerName.Name = "CustomerName";
+            this.CustomerName.ReadOnly = true;
+            this.CustomerName.Size = new System.Drawing.Size(145, 24);
+            this.CustomerName.TabIndex = 62;
             // 
             // label12
             // 
@@ -360,19 +360,19 @@ namespace Gas_Company
         private System.Windows.Forms.Button delete;
         private System.Windows.Forms.Button edit;
         private System.Windows.Forms.Button add;
-        private System.Windows.Forms.TextBox address;
-        private System.Windows.Forms.TextBox district;
-        private System.Windows.Forms.TextBox city;
+        private System.Windows.Forms.TextBox CustomerAddress;
+        private System.Windows.Forms.TextBox CustomerDistrict;
+        private System.Windows.Forms.TextBox CustomerCity;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox email;
+        private System.Windows.Forms.TextBox CustomerEmail;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox tel;
+        private System.Windows.Forms.TextBox CustomerNumber;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox phone;
+        private System.Windows.Forms.TextBox CustomerPhone;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox sex;
+        private System.Windows.Forms.TextBox CustomerSex;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox Uname;
+        private System.Windows.Forms.TextBox CustomerName;
         private System.Windows.Forms.Label label12;
     }
 }
