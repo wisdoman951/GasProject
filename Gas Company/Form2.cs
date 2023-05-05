@@ -79,7 +79,7 @@ namespace Gas_Company
                     {
                         Console.WriteLine(column.ColumnName);
                     }
-                    // 哈囉
+
                 }
             }
         }
