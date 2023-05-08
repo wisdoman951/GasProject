@@ -14,6 +14,8 @@ using Mysqlx.Session;
 using MySqlX.XDevAPI;
 using Org.BouncyCastle.Crypto.IO;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.Configuration;
+
 namespace Gas_Company
 {
     public partial class Form2 : Form
@@ -22,7 +24,7 @@ namespace Gas_Company
         //Database: The name of the database to connect to..
         //Uid: The username used to authenticate the connection.
         //Pwd: The password associated with the provided username.
-        private readonly string connectionString = "Server=localhost;Database=new_test;Uid=root;Pwd=89010607";
+        private readonly string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
 
         public Form2()
         {
@@ -126,11 +128,20 @@ namespace Gas_Company
                 // Access the data in the selected row and autofill other fields in the form
                 string orderId = selectedRow.Cells["Order_ID"].Value.ToString();
                 string customerName = selectedRow.Cells["Customer_ID"].Value.ToString();
+                string customerPhone = selectedRow.Cells["Customer_Phone"].Value.ToString();
+                string deliveryTime = selectedRow.Cells["Delivery_Time"].Value.ToString();
+                string deliveryAddress = selectedRow.Cells["Delivery_Address"].Value.ToString();
+
+
                 // Retrieve other fields as needed
 
                 // Autofill the other fields(Textbox) in the form
                 Order_ID.Text = orderId;
                 Customer_ID.Text = customerName;
+                Customer_Phone.Text = customerPhone;
+                Delivery_Time.Text = deliveryTime;
+                Delivery_Address.Text = deliveryAddress;
+
             }
         }
 

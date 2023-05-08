@@ -8,12 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using System.Configuration;
 
 namespace Gas_Company
 {
     public partial class Form3 : Form
     {
-        private readonly string connectionString = "Server=localhost;Database=new_test;Uid=root;Pwd=mysqlyu229";
+        private readonly string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
 
         public Form3()
         {

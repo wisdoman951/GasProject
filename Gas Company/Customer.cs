@@ -8,12 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using System.Configuration;
 
 namespace Gas_Company
 {
     public partial class Customer : Form
     {
-        private readonly string connectionString = "Server=localhost;Database=new_test;Uid=root;Pwd=89010607";
+        private readonly string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
 
         public Customer()
         {
@@ -52,11 +53,24 @@ namespace Gas_Company
                 // Access the data in the selected row and autofill other fields in the form
                 string customerName = selectedRow.Cells["Coustomer_Name"].Value.ToString();
                 string customerSex = selectedRow.Cells["Coustomer_Sex"].Value.ToString();
+                string customerPhone = selectedRow.Cells["Coustomer_Phone"].Value.ToString();
+                string customerNumber = selectedRow.Cells["Coustomer_HouseTel"].Value.ToString();
+                string customerEmail = selectedRow.Cells["Coustomer_Email"].Value.ToString();
+                string customerCity = selectedRow.Cells["Coustomer_City"].Value.ToString();
+                string customerDistrict = selectedRow.Cells["Coustomer_District"].Value.ToString();
+                string customerAddress = selectedRow.Cells["Coustomer_Address"].Value.ToString();
+
                 // Retrieve other fields as needed
-           
+
                 // Autofill the other fields(Textbox) in the form
                 CustomerName.Text = customerName;
                 CustomerSex.Text = customerSex;
+                CustomerPhone.Text = customerPhone;
+                CustomerNumber.Text = customerNumber;
+                CustomerEmail.Text = customerEmail;
+                CustomerCity.Text = customerCity;
+                CustomerDistrict.Text = customerDistrict;
+                CustomerAddress.Text = customerAddress;
             }
         }
 
@@ -146,16 +160,18 @@ namespace Gas_Company
 
         private void CAddButton_Click(object sender, EventArgs e)
         {
-            string connStr = "server=localhost;user=root;password=89010607;database=new_test;";
+            string connStr = ConfigurationManager.AppSettings["ConnectionString"];
             using (MySqlConnection conn = new MySqlConnection(connStr))
             {
                 conn.Open();
 
-                string insertQuery = "INSERT INTO coustomer (Coustomer_ID,Coustomer_Name,Coustomer_Sex,Coustomer_Phone,Coustomer_HouseTel,Coustomer_Email,Coustomer_City,Coustomer_District,Coustomer_Address,Coustomer_FamilyMember_ID,Company_ID,Registered_at) " +
-                    "VALUES (@Coustomer_ID,@Coustomer_Name,@Coustomer_Sex,@Coustomer_Phone,@Coustomer_HouseTel,@Coustomer_Email,@Coustomer_City,@Coustomer_District,@Coustomer_Address,@Coustomer_FamilyMember_ID,Company_ID,NOW())";
+                //string insertQuery = "INSERT INTO coustomer (Coustomer_ID,Coustomer_Name,Coustomer_Sex,Coustomer_Phone,Coustomer_HouseTel,Coustomer_Email,Coustomer_City,Coustomer_District,Coustomer_Address,Coustomer_FamilyMember_ID,Company_ID,Registered_at) " +
+                //    "VALUES (@Coustomer_ID,@Coustomer_Name,@Coustomer_Sex,@Coustomer_Phone,@Coustomer_HouseTel,@Coustomer_Email,@Coustomer_City,@Coustomer_District,@Coustomer_Address,@Coustomer_FamilyMember_ID,Company_ID,NOW())";
+                string insertQuery = "INSERT INTO coustomer Coustomer_Name,Coustomer_Sex,Coustomer_Phone,Coustomer_HouseTel,Coustomer_Email,Coustomer_City,Coustomer_District,Coustomer_Address,Coustomer_FamilyMember_ID,Company_ID,Registered_at) " +
+                    "VALUES (@Coustomer_Name,@Coustomer_Sex,@Coustomer_Phone,@Coustomer_HouseTel,@Coustomer_Email,@Coustomer_City,@Coustomer_District,@Coustomer_Address,@Coustomer_FamilyMember_ID,Company_ID,NOW())";
 
                 MySqlCommand cmd = new MySqlCommand(insertQuery, conn);
-                cmd.Parameters.AddWithValue("@Coustomer_ID", CustomerName.Text);
+                //cmd.Parameters.AddWithValue("@Coustomer_ID", CustomerName.Text);
                 cmd.Parameters.AddWithValue("@Coustomer_Name", CustomerName.Text);
                 cmd.Parameters.AddWithValue("@Coustomer_Sex", CustomerSex.Text);
                 cmd.Parameters.AddWithValue("@Coustomer_Phone", CustomerPhone.Text);

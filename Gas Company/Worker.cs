@@ -8,11 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using System.Configuration;
 
 namespace Gas_Company
 {
     public partial class Worker : Form
     {
+        private readonly string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
+
         public Worker()
         {
             InitializeComponent();
@@ -22,19 +25,19 @@ namespace Gas_Company
         //// Insert Employee
         private void EmployeeAddButton_Click(object sender, EventArgs e)
         {
-            string connStr = "server=localhost;user=root;password=89010607;database=new_test;";
-            using (MySqlConnection conn = new MySqlConnection(connStr))
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 conn.Open();
 
                 string insertQuery = "INSERT INTO worker " +
-                    "(Coustomer_ID,Coustomer_Name,Coustomer_Sex,Coustomer_Phone,Coustomer_HouseTel,Coustomer_Email,Coustomer_City,Coustomer_District,Coustomer_Address,Coustomer_FamilyMember_ID,Company_ID,Registered_at) " +
-                    "VALUES (@Coustomer_ID,@Coustomer_Name,@Coustomer_Sex,@Coustomer_Phone,@Coustomer_HouseTel,@Coustomer_Email,@Coustomer_City,@Coustomer_District,@Coustomer_Address,@Coustomer_FamilyMember_ID,Company_ID,NOW())";
+                    "(WORKER_Id, WORKER_Name, WORKER_PhoneNum, WORKER_HouseTelpNo, WORKER_Email, WORKER_City ,WORKER_Address, Registered_at) " +
+                    "VALUES (@WORKER_Id, @WORKER_Name, @WORKER_PhoneNum, @WORKER_HouseTelpNo, @WORKER_Email, @WORKER_City, @WORKER_Address, NOW())";
 
                 MySqlCommand cmd = new MySqlCommand(insertQuery, conn);
                 cmd.Parameters.AddWithValue("@Worker_ID", WorkerID.Text);
-                cmd.Parameters.AddWithValue("@Worker_Phone", WorkerPhone.Text);
-                cmd.Parameters.AddWithValue("@Worker_HouseTel", WorkerTele.Text);
+                cmd.Parameters.AddWithValue("@Worker_Name", WorkerName.Text);
+                cmd.Parameters.AddWithValue("@Worker_PhoneNum", WorkerPhone.Text);
+                cmd.Parameters.AddWithValue("@Worker_HouseTelpNo", WorkerTele.Text);
                 cmd.Parameters.AddWithValue("@Worker_Email", WorkerEmail.Text);
                 cmd.Parameters.AddWithValue("@Worker_City", WorkerCity.Text);
                 cmd.Parameters.AddWithValue("@Worker_District", WorkerDistrict.Text);

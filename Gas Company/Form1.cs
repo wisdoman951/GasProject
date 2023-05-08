@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -13,7 +14,8 @@ namespace Gas_Company
 {
     public partial class Form1 : Form
     {
-        private readonly string connectionString = "Server=localhost;Database=new_test;Uid=root;Pwd=89010607";
+        //private readonly string connectionString = "Server=localhost;Database=new_test;Uid=root;Pwd=88888888";
+        private readonly string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
 
 
         public Form1()
@@ -40,6 +42,9 @@ namespace Gas_Company
             
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
+                Console.WriteLine("POWJETRPOIAJW4MTGWP039846MUP9B8W3P6498NBW3P94TNPB9384UTB");
+
+                Console.WriteLine(connectionString);
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = conn;
