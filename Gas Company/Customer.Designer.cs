@@ -44,7 +44,7 @@ namespace Gas_Company
             this.label1 = new System.Windows.Forms.Label();
             this.CustomerName = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.CustomerField = new System.Windows.Forms.DataGridView();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button14 = new System.Windows.Forms.Button();
             this.CSearchButton = new System.Windows.Forms.Button();
@@ -52,7 +52,7 @@ namespace Gas_Company
             this.edit = new System.Windows.Forms.Button();
             this.add = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CustomerField)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -211,9 +211,9 @@ namespace Gas_Company
             this.CustomerName.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CustomerName.Location = new System.Drawing.Point(129, 58);
             this.CustomerName.Name = "CustomerName";
-            this.CustomerName.ReadOnly = true;
             this.CustomerName.Size = new System.Drawing.Size(145, 24);
             this.CustomerName.TabIndex = 62;
+            this.CustomerName.TextChanged += new System.EventHandler(this.CustomerName_TextChanged);
             // 
             // label12
             // 
@@ -226,16 +226,18 @@ namespace Gas_Company
             this.label12.TabIndex = 61;
             this.label12.Text = "客戶名稱";
             // 
-            // dataGridView1
+            // CustomerField
             // 
-            this.dataGridView1.BackgroundColor = System.Drawing.Color.WhiteSmoke;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 111);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(346, 489);
-            this.dataGridView1.TabIndex = 1;
+            this.CustomerField.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            this.CustomerField.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.CustomerField.Location = new System.Drawing.Point(12, 111);
+            this.CustomerField.Name = "CustomerField";
+            this.CustomerField.RowHeadersWidth = 51;
+            this.CustomerField.RowTemplate.Height = 24;
+            this.CustomerField.Size = new System.Drawing.Size(346, 489);
+            this.CustomerField.TabIndex = 1;
+            this.CustomerField.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CustomerField_CellClick);
+            this.CustomerField.Paint += new System.Windows.Forms.PaintEventHandler(this.dataGridView1_Paint);
             // 
             // textBox1
             // 
@@ -333,7 +335,7 @@ namespace Gas_Company
             this.Controls.Add(this.button14);
             this.Controls.Add(this.CSearchButton);
             this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.CustomerField);
             this.Controls.Add(this.groupBox1);
             this.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -344,7 +346,7 @@ namespace Gas_Company
             this.Load += new System.EventHandler(this.customer_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CustomerField)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -353,7 +355,7 @@ namespace Gas_Company
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView CustomerField;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button14;
         private System.Windows.Forms.Button CSearchButton;

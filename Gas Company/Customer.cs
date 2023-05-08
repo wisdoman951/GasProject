@@ -22,9 +22,43 @@ namespace Gas_Company
 
         private void customer_Load(object sender, EventArgs e)
         {
+            string query = "SELECT * FROM `coustomer`";
 
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection))
+                {
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+                    CustomerField.DataSource = table;
+
+                    // You can check each column's name here
+                    foreach (DataColumn column in table.Columns)
+                    {
+                        Console.WriteLine(column.ColumnName);
+                    }
+
+                }
+            }
         }
-        
+
+
+        private void CustomerField_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow selectedRow = CustomerField.Rows[e.RowIndex];
+
+                // Access the data in the selected row and autofill other fields in the form
+                string customerName = selectedRow.Cells["Coustomer_Name"].Value.ToString();
+                string customerSex = selectedRow.Cells["Coustomer_Sex"].Value.ToString();
+                // Retrieve other fields as needed
+           
+                // Autofill the other fields(Textbox) in the form
+                CustomerName.Text = customerName;
+                CustomerSex.Text = customerSex;
+            }
+        }
 
         private void CSearchButton_Click(object sender, EventArgs e)
         {
@@ -54,7 +88,7 @@ namespace Gas_Company
                             }
                             else
                             {
-                                dataGridView1.DataSource = table;
+                                CustomerField.DataSource = table;
                             }
                         }
                     }
@@ -64,12 +98,12 @@ namespace Gas_Company
 
         private void CDeleteButton_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.SelectedRows.Count > 0)
+            if (CustomerField.SelectedRows.Count > 0)
             {
                 DialogResult result = MessageBox.Show("确定删除此行資料？", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    string id = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
+                    string id = CustomerField.SelectedRows[0].Cells[0].Value.ToString();
                     string query = "DELETE FROM `coustomer` WHERE `ID` = @ID";
                     using (MySqlConnection connection = new MySqlConnection(connectionString))
                     {
@@ -81,7 +115,7 @@ namespace Gas_Company
                             connection.Close();
                             if (rowsAffected > 0)
                             {
-                                dataGridView1.Rows.RemoveAt(dataGridView1.SelectedRows[0].Index);
+                                CustomerField.Rows.RemoveAt(CustomerField.SelectedRows[0].Index);
                                 MessageBox.Show("删除成功", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
                         }
@@ -105,7 +139,7 @@ namespace Gas_Company
                 DataTable dt = new DataTable();
 
                 da.Fill(dt);
-                dataGridView1.DataSource = dt;
+                CustomerField.DataSource = dt;
                 conn.Close();
             }
         }
@@ -117,12 +151,13 @@ namespace Gas_Company
             {
                 conn.Open();
 
-                string insertQuery = "INSERT INTO coustomer (Coustomer_ID,Coustomer_Name,Coustomer_Sex,Coustomer_Phone,Coustomer_HouseTel,Coustomer_Email,Coustomer_City,Coustomer_District,Coustomer_Address,Coustomer_FamilyMember_ID,Company_ID,Registered_at) VALUES (@Coustomer_ID,@Coustomer_Name,@Coustomer_Sex,@Coustomer_Phone,@Coustomer_HouseTel,@Coustomer_Email,@Coustomer_City,@Coustomer_District,@Coustomer_Address,@Coustomer_FamilyMember_ID,Company_ID,NOW())";
+                string insertQuery = "INSERT INTO coustomer (Coustomer_ID,Coustomer_Name,Coustomer_Sex,Coustomer_Phone,Coustomer_HouseTel,Coustomer_Email,Coustomer_City,Coustomer_District,Coustomer_Address,Coustomer_FamilyMember_ID,Company_ID,Registered_at) " +
+                    "VALUES (@Coustomer_ID,@Coustomer_Name,@Coustomer_Sex,@Coustomer_Phone,@Coustomer_HouseTel,@Coustomer_Email,@Coustomer_City,@Coustomer_District,@Coustomer_Address,@Coustomer_FamilyMember_ID,Company_ID,NOW())";
 
                 MySqlCommand cmd = new MySqlCommand(insertQuery, conn);
                 cmd.Parameters.AddWithValue("@Coustomer_ID", CustomerName.Text);
-                cmd.Parameters.AddWithValue("@Coustomer_Name", CustomerSex.Text);
-                //cmd.Parameters.AddWithValue("@Coustomer_Sex", sex.Text);
+                cmd.Parameters.AddWithValue("@Coustomer_Name", CustomerName.Text);
+                cmd.Parameters.AddWithValue("@Coustomer_Sex", CustomerSex.Text);
                 cmd.Parameters.AddWithValue("@Coustomer_Phone", CustomerPhone.Text);
                 cmd.Parameters.AddWithValue("@Coustomer_HouseTel", CustomerNumber.Text);
                 cmd.Parameters.AddWithValue("@Coustomer_Email", CustomerEmail.Text);
@@ -142,5 +177,17 @@ namespace Gas_Company
                 }
             }
         }
+
+        private void dataGridView1_Paint(object sender, PaintEventArgs e)
+        {
+            
+        }
+
+        private void CustomerName_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 }
