@@ -12,7 +12,7 @@ using System.Configuration;
 namespace Gas_Company
 {
     public partial class GasTankManage : Form
-    {
+    {   // connect to gas table
         public GasTankManage()
         {
             InitializeComponent();

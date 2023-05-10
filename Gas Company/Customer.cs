@@ -160,7 +160,7 @@ namespace Gas_Company
 
         private void CAddButton_Click(object sender, EventArgs e)
         {
-            string connStr = ConfigurationManager.AppSettings["ConnectionString"];
+            /*string connStr = ConfigurationManager.AppSettings["ConnectionString"];
             using (MySqlConnection conn = new MySqlConnection(connStr))
             {
                 conn.Open();
@@ -191,7 +191,7 @@ namespace Gas_Company
                 {
                     MessageBox.Show("登錄失敗！");
                 }
-            }
+            }*/
         }
 
         private void dataGridView1_Paint(object sender, PaintEventArgs e)
