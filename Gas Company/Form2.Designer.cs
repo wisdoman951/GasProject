@@ -46,28 +46,28 @@ namespace Gas_Company
             this.edit = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.RemainGas = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.DeliveryMan = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.Gas_Amoung = new System.Windows.Forms.TextBox();
+            this.GasAmoung = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.Gas_Quantity = new System.Windows.Forms.TextBox();
+            this.GasQuantity = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.Gas_Type = new System.Windows.Forms.TextBox();
+            this.GasType = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.Gas_Size = new System.Windows.Forms.TextBox();
+            this.GasWeight = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.Delivery_Address = new System.Windows.Forms.TextBox();
+            this.DeliveryAddress = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.Customer_Phone = new System.Windows.Forms.TextBox();
+            this.CustomerPhone = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.Customer_ID = new System.Windows.Forms.TextBox();
+            this.CustomerName = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.Delivery_Time = new System.Windows.Forms.TextBox();
+            this.DeliveryTime = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.Order_ID = new System.Windows.Forms.TextBox();
+            this.OrderID = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.Order_CustomerDataButton = new System.Windows.Forms.Button();
             this.Order_ConfirmButton = new System.Windows.Forms.Button();
@@ -277,28 +277,28 @@ namespace Gas_Company
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label13);
-            this.groupBox1.Controls.Add(this.textBox3);
+            this.groupBox1.Controls.Add(this.RemainGas);
             this.groupBox1.Controls.Add(this.label14);
             this.groupBox1.Controls.Add(this.DeliveryMan);
             this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.Gas_Amoung);
+            this.groupBox1.Controls.Add(this.GasAmoung);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.Gas_Quantity);
+            this.groupBox1.Controls.Add(this.GasQuantity);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.Gas_Type);
+            this.groupBox1.Controls.Add(this.GasType);
             this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.Gas_Size);
+            this.groupBox1.Controls.Add(this.GasWeight);
             this.groupBox1.Controls.Add(this.label10);
-            this.groupBox1.Controls.Add(this.Delivery_Address);
+            this.groupBox1.Controls.Add(this.DeliveryAddress);
             this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.Customer_Phone);
+            this.groupBox1.Controls.Add(this.CustomerPhone);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.Customer_ID);
+            this.groupBox1.Controls.Add(this.CustomerName);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.Delivery_Time);
+            this.groupBox1.Controls.Add(this.DeliveryTime);
             this.groupBox1.Controls.Add(this.label11);
-            this.groupBox1.Controls.Add(this.Order_ID);
+            this.groupBox1.Controls.Add(this.OrderID);
             this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Controls.Add(this.Order_CustomerDataButton);
             this.groupBox1.Controls.Add(this.Order_ConfirmButton);
@@ -319,15 +319,15 @@ namespace Gas_Company
             this.label13.TabIndex = 87;
             this.label13.Text = "kg";
             // 
-            // textBox3
+            // RemainGas
             // 
-            this.textBox3.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox3.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox3.Location = new System.Drawing.Point(832, 77);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(60, 20);
-            this.textBox3.TabIndex = 86;
+            this.RemainGas.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.RemainGas.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.RemainGas.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RemainGas.Location = new System.Drawing.Point(832, 77);
+            this.RemainGas.Name = "RemainGas";
+            this.RemainGas.Size = new System.Drawing.Size(60, 20);
+            this.RemainGas.TabIndex = 86;
             // 
             // label14
             // 
@@ -348,6 +348,7 @@ namespace Gas_Company
             this.DeliveryMan.Name = "DeliveryMan";
             this.DeliveryMan.Size = new System.Drawing.Size(98, 27);
             this.DeliveryMan.TabIndex = 84;
+            this.DeliveryMan.Click += new System.EventHandler(this.DeliveryMan_Click);
             // 
             // label9
             // 
@@ -360,15 +361,15 @@ namespace Gas_Company
             this.label9.TabIndex = 83;
             this.label9.Text = "送貨員";
             // 
-            // Gas_Amoung
+            // GasAmoung
             // 
-            this.Gas_Amoung.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.Gas_Amoung.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.Gas_Amoung.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Gas_Amoung.Location = new System.Drawing.Point(832, 116);
-            this.Gas_Amoung.Name = "Gas_Amoung";
-            this.Gas_Amoung.Size = new System.Drawing.Size(98, 20);
-            this.Gas_Amoung.TabIndex = 82;
+            this.GasAmoung.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.GasAmoung.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.GasAmoung.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GasAmoung.Location = new System.Drawing.Point(832, 116);
+            this.GasAmoung.Name = "GasAmoung";
+            this.GasAmoung.Size = new System.Drawing.Size(98, 20);
+            this.GasAmoung.TabIndex = 82;
             // 
             // label2
             // 
@@ -381,15 +382,15 @@ namespace Gas_Company
             this.label2.TabIndex = 81;
             this.label2.Text = "金額";
             // 
-            // Gas_Quantity
+            // GasQuantity
             // 
-            this.Gas_Quantity.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.Gas_Quantity.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.Gas_Quantity.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Gas_Quantity.Location = new System.Drawing.Point(611, 117);
-            this.Gas_Quantity.Name = "Gas_Quantity";
-            this.Gas_Quantity.Size = new System.Drawing.Size(60, 20);
-            this.Gas_Quantity.TabIndex = 80;
+            this.GasQuantity.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.GasQuantity.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.GasQuantity.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GasQuantity.Location = new System.Drawing.Point(611, 117);
+            this.GasQuantity.Name = "GasQuantity";
+            this.GasQuantity.Size = new System.Drawing.Size(60, 20);
+            this.GasQuantity.TabIndex = 80;
             // 
             // label1
             // 
@@ -411,15 +412,15 @@ namespace Gas_Company
             this.label4.TabIndex = 77;
             this.label4.Text = "kg";
             // 
-            // Gas_Type
+            // GasType
             // 
-            this.Gas_Type.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.Gas_Type.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.Gas_Type.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Gas_Type.Location = new System.Drawing.Point(611, 35);
-            this.Gas_Type.Name = "Gas_Type";
-            this.Gas_Type.Size = new System.Drawing.Size(100, 20);
-            this.Gas_Type.TabIndex = 76;
+            this.GasType.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.GasType.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.GasType.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GasType.Location = new System.Drawing.Point(611, 35);
+            this.GasType.Name = "GasType";
+            this.GasType.Size = new System.Drawing.Size(100, 20);
+            this.GasType.TabIndex = 76;
             // 
             // label7
             // 
@@ -432,15 +433,15 @@ namespace Gas_Company
             this.label7.TabIndex = 75;
             this.label7.Text = "桶類型";
             // 
-            // Gas_Size
+            // GasWeight
             // 
-            this.Gas_Size.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.Gas_Size.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.Gas_Size.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Gas_Size.Location = new System.Drawing.Point(611, 77);
-            this.Gas_Size.Name = "Gas_Size";
-            this.Gas_Size.Size = new System.Drawing.Size(60, 20);
-            this.Gas_Size.TabIndex = 74;
+            this.GasWeight.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.GasWeight.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.GasWeight.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GasWeight.Location = new System.Drawing.Point(611, 77);
+            this.GasWeight.Name = "GasWeight";
+            this.GasWeight.Size = new System.Drawing.Size(60, 20);
+            this.GasWeight.TabIndex = 74;
             // 
             // label10
             // 
@@ -453,15 +454,15 @@ namespace Gas_Company
             this.label10.TabIndex = 73;
             this.label10.Text = "規格";
             // 
-            // Delivery_Address
+            // DeliveryAddress
             // 
-            this.Delivery_Address.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.Delivery_Address.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.Delivery_Address.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Delivery_Address.Location = new System.Drawing.Point(104, 119);
-            this.Delivery_Address.Name = "Delivery_Address";
-            this.Delivery_Address.Size = new System.Drawing.Size(412, 20);
-            this.Delivery_Address.TabIndex = 46;
+            this.DeliveryAddress.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.DeliveryAddress.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.DeliveryAddress.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DeliveryAddress.Location = new System.Drawing.Point(104, 119);
+            this.DeliveryAddress.Name = "DeliveryAddress";
+            this.DeliveryAddress.Size = new System.Drawing.Size(412, 20);
+            this.DeliveryAddress.TabIndex = 46;
             // 
             // label8
             // 
@@ -474,15 +475,15 @@ namespace Gas_Company
             this.label8.TabIndex = 45;
             this.label8.Text = "送貨地址";
             // 
-            // Customer_Phone
+            // CustomerPhone
             // 
-            this.Customer_Phone.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.Customer_Phone.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.Customer_Phone.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Customer_Phone.Location = new System.Drawing.Point(104, 77);
-            this.Customer_Phone.Name = "Customer_Phone";
-            this.Customer_Phone.Size = new System.Drawing.Size(145, 20);
-            this.Customer_Phone.TabIndex = 42;
+            this.CustomerPhone.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.CustomerPhone.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.CustomerPhone.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CustomerPhone.Location = new System.Drawing.Point(104, 77);
+            this.CustomerPhone.Name = "CustomerPhone";
+            this.CustomerPhone.Size = new System.Drawing.Size(145, 20);
+            this.CustomerPhone.TabIndex = 42;
             // 
             // label5
             // 
@@ -495,15 +496,15 @@ namespace Gas_Company
             this.label5.TabIndex = 41;
             this.label5.Text = "電話號碼";
             // 
-            // Customer_ID
+            // CustomerName
             // 
-            this.Customer_ID.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.Customer_ID.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.Customer_ID.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Customer_ID.Location = new System.Drawing.Point(371, 74);
-            this.Customer_ID.Name = "Customer_ID";
-            this.Customer_ID.Size = new System.Drawing.Size(145, 20);
-            this.Customer_ID.TabIndex = 40;
+            this.CustomerName.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.CustomerName.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.CustomerName.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CustomerName.Location = new System.Drawing.Point(371, 74);
+            this.CustomerName.Name = "CustomerName";
+            this.CustomerName.Size = new System.Drawing.Size(145, 20);
+            this.CustomerName.TabIndex = 40;
             // 
             // label6
             // 
@@ -516,15 +517,15 @@ namespace Gas_Company
             this.label6.TabIndex = 39;
             this.label6.Text = "訂購人";
             // 
-            // Delivery_Time
+            // DeliveryTime
             // 
-            this.Delivery_Time.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.Delivery_Time.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.Delivery_Time.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Delivery_Time.Location = new System.Drawing.Point(371, 34);
-            this.Delivery_Time.Name = "Delivery_Time";
-            this.Delivery_Time.Size = new System.Drawing.Size(145, 20);
-            this.Delivery_Time.TabIndex = 34;
+            this.DeliveryTime.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.DeliveryTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.DeliveryTime.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DeliveryTime.Location = new System.Drawing.Point(371, 34);
+            this.DeliveryTime.Name = "DeliveryTime";
+            this.DeliveryTime.Size = new System.Drawing.Size(145, 20);
+            this.DeliveryTime.TabIndex = 34;
             // 
             // label11
             // 
@@ -537,15 +538,15 @@ namespace Gas_Company
             this.label11.TabIndex = 33;
             this.label11.Text = "送貨時間";
             // 
-            // Order_ID
+            // OrderID
             // 
-            this.Order_ID.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.Order_ID.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.Order_ID.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Order_ID.Location = new System.Drawing.Point(104, 35);
-            this.Order_ID.Name = "Order_ID";
-            this.Order_ID.Size = new System.Drawing.Size(145, 20);
-            this.Order_ID.TabIndex = 32;
+            this.OrderID.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.OrderID.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.OrderID.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OrderID.Location = new System.Drawing.Point(104, 35);
+            this.OrderID.Name = "OrderID";
+            this.OrderID.Size = new System.Drawing.Size(145, 20);
+            this.OrderID.TabIndex = 32;
             // 
             // label12
             // 
@@ -728,19 +729,19 @@ namespace Gas_Company
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox Gas_Type;
+        private System.Windows.Forms.TextBox GasType;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox Gas_Size;
+        private System.Windows.Forms.TextBox GasWeight;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox Delivery_Address;
+        private System.Windows.Forms.TextBox DeliveryAddress;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox Customer_Phone;
+        private System.Windows.Forms.TextBox CustomerPhone;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox Customer_ID;
+        private System.Windows.Forms.TextBox CustomerName;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox Delivery_Time;
+        private System.Windows.Forms.TextBox DeliveryTime;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox Order_ID;
+        private System.Windows.Forms.TextBox OrderID;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button Order_CustomerDataButton;
         private System.Windows.Forms.Button Order_ConfirmButton;
@@ -765,13 +766,13 @@ namespace Gas_Company
         private System.Windows.Forms.Button delete;
         private System.Windows.Forms.Button edit;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox RemainGas;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ComboBox DeliveryMan;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox Gas_Amoung;
+        private System.Windows.Forms.TextBox GasAmoung;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox Gas_Quantity;
+        private System.Windows.Forms.TextBox GasQuantity;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button add;
     }

@@ -42,13 +42,10 @@ namespace Gas_Company
             
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                Console.WriteLine("POWJETRPOIAJW4MTGWP039846MUP9B8W3P6498NBW3P94TNPB9384UTB");
-
-                Console.WriteLine(connectionString);
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = conn;
-                cmd.CommandText = @"SELECT Employee_ID FROM employee_account WHERE Email = @Email AND Password = @Password;";
+                cmd.CommandText = @"SELECT Manager_ID FROM manager_account WHERE Email = @Email AND Password = @Password;";
                 cmd.Parameters.AddWithValue("@Email", email);
                 cmd.Parameters.AddWithValue("@Password", password);
                 object result = cmd.ExecuteScalar();

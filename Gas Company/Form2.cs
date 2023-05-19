@@ -15,6 +15,8 @@ using MySqlX.XDevAPI;
 using Org.BouncyCastle.Crypto.IO;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Configuration;
+using Mysqlx.Crud;
+using static Google.Protobuf.Reflection.FieldOptions.Types;
 
 namespace Gas_Company
 {
@@ -66,8 +68,8 @@ namespace Gas_Company
         //// Data paint on panel
         private void panel2_Paint(object sender, PaintEventArgs e)
         {
-            string query = "SELECT * FROM `new_order`";
-
+            // Here is to see the orders
+            string query = "SELECT o.ORDER_Id, c.CUSTOMER_PhoneNo, o.DELIVERY_Address, o.DELIVERY_Time, c.CUSTOMER_Name, od.Order_type, od.Order_weight, o.Gas_Quantity, o.COMPANY_Id FROM `gas_order` o JOIN`customer` c ON o.CUSTOMER_Id = c.CUSTOMER_Id JOIN `gas_order_detail` od ON o.ORDER_Id = od.Order_ID;";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection))
@@ -77,13 +79,16 @@ namespace Gas_Company
                     dataGridView1.DataSource = table;
 
                     // You can check each column's name here
-                    foreach (DataColumn column in table.Columns)
+                    /*foreach (DataColumn column in table.Columns)
                     {
                         Console.WriteLine(column.ColumnName);
-                    }
+                    }*/
 
                 }
             }
+            // Here is to load in the available workers
+
+
         }
 
         // Open 主頁面
@@ -127,21 +132,23 @@ namespace Gas_Company
 
                 // Access the data in the selected row and autofill other fields in the form
                 string orderId = selectedRow.Cells["Order_ID"].Value.ToString();
-                string customerName = selectedRow.Cells["Customer_ID"].Value.ToString();
-                string customerPhone = selectedRow.Cells["Customer_Phone"].Value.ToString();
+                string customerName = selectedRow.Cells["Customer_Name"].Value.ToString();
+                string customerPhone = selectedRow.Cells["Customer_PhoneNo"].Value.ToString();
                 string deliveryTime = selectedRow.Cells["Delivery_Time"].Value.ToString();
                 string deliveryAddress = selectedRow.Cells["Delivery_Address"].Value.ToString();
-
-
-                // Retrieve other fields as needed
+                string orderWeight = selectedRow.Cells["Order_weight"].Value.ToString();
+                string orderType = selectedRow.Cells["Order_type"].Value.ToString();
+                string orderQuantity = selectedRow.Cells["Gas_Quantity"].Value.ToString();
 
                 // Autofill the other fields(Textbox) in the form
-                Order_ID.Text = orderId;
-                Customer_ID.Text = customerName;
-                Customer_Phone.Text = customerPhone;
-                Delivery_Time.Text = deliveryTime;
-                Delivery_Address.Text = deliveryAddress;
-
+                OrderID.Text = orderId;
+                CustomerName.Text = customerName;
+                CustomerPhone.Text = customerPhone;
+                DeliveryTime.Text = deliveryTime;
+                DeliveryAddress.Text = deliveryAddress;
+                GasType.Text = orderType;
+                GasWeight.Text = orderWeight;
+                GasQuantity.Text = orderQuantity;
             }
         }
 
@@ -161,7 +168,7 @@ namespace Gas_Company
                 if (result == DialogResult.Yes) // If user confirm delete
                 {
                     string id = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
-                    string query = "DELETE FROM `new_order` WHERE `Order_ID` = @Order_ID";
+                    string query = "DELETE FROM `gas_order` WHERE `Order_ID` = @Order_ID";
                     using (MySqlConnection connection = new MySqlConnection(connectionString))
                     {
                         using (MySqlCommand command = new MySqlCommand(query, connection))
@@ -191,7 +198,7 @@ namespace Gas_Company
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                string query = "SELECT * FROM `new_order` WHERE Order_ID LIKE @Order_ID OR Customer_ID LIKE @Customer_ID OR Customer_Phone LIKE Customer_Phone OR Delivery_Address LIKE Delivery_Address";
+                string query = "SELECT * FROM `gas_order` WHERE Order_ID LIKE @Order_ID OR Customer_ID LIKE @Customer_ID OR Customer_Phone LIKE Customer_Phone OR Delivery_Address LIKE Delivery_Address";
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     using (MySqlCommand command = new MySqlCommand(query, connection))
@@ -232,6 +239,32 @@ namespace Gas_Company
 
         }
 
-        
+        private void DeliveryMan_Click(object sender, EventArgs e)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "SELECT WORKER_Id, WORKER_Name FROM worker";
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        // Clear existing items in the ComboBox
+                        DeliveryMan.Items.Clear();
+
+                        // Loop through the result set and add worker names to the ComboBox
+                        while (reader.Read())
+                        {
+                            string workerName = reader.GetString("WORKER_Name");
+
+                            // Add worker name to the ComboBox
+                            DeliveryMan.Items.Add(workerName);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
