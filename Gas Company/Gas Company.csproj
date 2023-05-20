@@ -115,6 +115,12 @@
     <Compile Include="Form3.Designer.cs">
       <DependentUpon>Form3.cs</DependentUpon>
     </Compile>
+    <Compile Include="HistoryOrder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HistoryOrder.Designer.cs">
+      <DependentUpon>HistoryOrder.cs</DependentUpon>
+    </Compile>
     <Compile Include="GasTankManage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,6 +158,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GasTankManage.resx">
       <DependentUpon>GasTankManage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HistoryOrder.resx">
+      <DependentUpon>HistoryOrder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

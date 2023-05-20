@@ -226,12 +226,56 @@ namespace Gas_Company
                 }
             }
         }
-        // Open ??
+        // 顯示客戶資料
+        public class CustomerData
+        {
+            public string CustomerId { get; set; }            
+            public string CustomerName { get; set; }
+            public string CustomerPhone { get; set; }
+            public string CustomerSex { get; set; }
+            public string FamilyMemberId { get; set; }
+            public string CustomerEmail { get; set; }
+        }
         private void button17_Click(object sender, EventArgs e)
         {
-            CustomerInformation mainForm = new CustomerInformation();
-            mainForm.Show();
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
 
+                string query = @"SELECT *
+                                FROM customer
+                                WHERE CUSTOMER_Id = (
+                                    SELECT CUSTOMER_Id
+                                    FROM gas_order_history
+                                    WHERE ORDER_Id = @order_id
+                                )
+                                ";
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@order_id", OrderID.Text);
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        List<CustomerData> customerDataList = new List<CustomerData>();
+                        while (reader.Read())
+                        {
+                            CustomerData customerData = new CustomerData
+                            {
+                                CustomerId = reader.GetString("CUSTOMER_Id"),
+                                CustomerName = reader.GetString("CUSTOMER_Name"),
+                                CustomerPhone = reader.GetString("CUSTOMER_PhoneNo"),
+                                CustomerSex = reader.GetString("CUSTOMER_Sex"),
+                                FamilyMemberId = reader.GetString("CUSTOMER_FamilyMemberId"),
+                                CustomerEmail = reader.GetString("CUSTOMER_Email")
+                            };
+                            customerDataList.Add(customerData);
+                        }
+                        CustomerInformation customerInformation = new CustomerInformation();
+                        customerInformation.Show();
+                        customerInformation.SetData(customerDataList);
+                    }
+                }
+            }
         }
 
         private void print_Click(object sender, EventArgs e)
@@ -262,6 +306,48 @@ namespace Gas_Company
                             // Add worker name to the ComboBox
                             DeliveryMan.Items.Add(workerName);
                         }
+                    }
+                }
+            }
+        }
+        // 歷史訂單
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = @"SELECT *
+                                FROM gas_order_history
+                                WHERE CUSTOMER_Id = (
+                                    SELECT CUSTOMER_Id
+                                    FROM gas_order_history
+                                    WHERE ORDER_Id = @order_id
+                                )
+                                ORDER BY DELIVERY_Time DESC;
+                                ";
+
+                DataGridViewRow selectedRow = dataGridView1.Rows[e.RowIndex];
+                string order_id = selectedRow.Cells["Order_Id"].Value.ToString();
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@order_id", order_id);
+
+                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
+                    {
+                        DataTable historyOrders = new DataTable();
+                        adapter.Fill(historyOrders);
+
+                        // Create an instance of the HistoryOrder form
+                        HistoryOrder historyOrderForm = new HistoryOrder();
+
+                        // Pass the historyOrders DataTable to the form
+                        historyOrderForm.SetData(historyOrders);
+
+                        // Display the form
+                        historyOrderForm.ShowDialog();
+
                     }
                 }
             }
