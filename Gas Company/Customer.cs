@@ -32,7 +32,46 @@ namespace Gas_Company
                     DataTable table = new DataTable();
                     adapter.Fill(table);
                     CustomerField.DataSource = table;
+                    string[] columnOrder = {
+                                            "CUSTOMER_Id",
+                                            "CUSTOMER_Name",
+                                            "CUSTOMER_Address",
+                                            "CUSTOMER_PhoneNo",
+                                            "CUSTOMER_Sex",
+                                            "CUSTOMER_Postal_Code",
+                                            "CUSTOMER_HouseTelpNo",
+                                            "CUSTOMER_Password",
+                                            "CUSTOMER_Email",
+                                            "CUSTOMER_FamilyMemberId",
+                                            "COMPANY_Id",
+                                            "COMPANY_HistoryID",
+                                            "CUSTOMER_Notes",
+                                            "CUSTOMER_Registration_Time"
+                                        };
 
+                    // Loop through the columns and set their display index
+                    foreach (string columnName in columnOrder)
+                    {
+                        if (CustomerField.Columns.Contains(columnName))
+                        {
+                            CustomerField.Columns[columnName].DisplayIndex = Array.IndexOf(columnOrder, columnName);
+                        }
+                    }
+                    // Columns rename
+                    CustomerField.Columns["CUSTOMER_Id"].HeaderText = "客戶編號";
+                    CustomerField.Columns["CUSTOMER_Name"].HeaderText = "客戶姓名";
+                    CustomerField.Columns["CUSTOMER_Sex"].HeaderText = "客戶性別";
+                    CustomerField.Columns["CUSTOMER_PhoneNo"].HeaderText = "客戶電話";
+                    CustomerField.Columns["CUSTOMER_Postal_Code"].HeaderText = "客戶郵遞區號";
+                    CustomerField.Columns["CUSTOMER_Address"].HeaderText = "客戶地址";
+                    CustomerField.Columns["CUSTOMER_HouseTelpNo"].HeaderText = "客戶家用電話";
+                    CustomerField.Columns["CUSTOMER_Password"].HeaderText = "客戶密碼";
+                    CustomerField.Columns["CUSTOMER_Email"].HeaderText = "客戶電子郵件";
+                    CustomerField.Columns["CUSTOMER_FamilyMemberId"].HeaderText = "客戶關係家人";
+                    CustomerField.Columns["COMPANY_Id"].HeaderText = "客戶瓦斯行";
+                    CustomerField.Columns["COMPANY_HistoryID"].HeaderText = "客戶歷史瓦斯行";
+                    CustomerField.Columns["CUSTOMER_Notes"].HeaderText = "客戶備註";
+                    CustomerField.Columns["CUSTOMER_Registration_Time"].HeaderText = "客戶註冊時間";
                     // You can check each column's name here
                     foreach (DataColumn column in table.Columns)
                     {
@@ -53,14 +92,13 @@ namespace Gas_Company
                 // Access the data in the selected row and autofill other fields in the form
                 string customerName = selectedRow.Cells["Customer_Name"].Value.ToString();
                 string customerSex = selectedRow.Cells["Customer_Sex"].Value.ToString();
-                string customerPhone = selectedRow.Cells["Customer_Phone"].Value.ToString();
-                string customerNumber = selectedRow.Cells["Customer_HouseTel"].Value.ToString();
+                string customerPhone = selectedRow.Cells["Customer_PhoneNo"].Value.ToString();
+                string customerNumber = selectedRow.Cells["Customer_HouseTelpNo"].Value.ToString();
                 string customerEmail = selectedRow.Cells["Customer_Email"].Value.ToString();
-                string customerCity = selectedRow.Cells["Customer_City"].Value.ToString();
-                string customerDistrict = selectedRow.Cells["Customer_District"].Value.ToString();
+                //string customerCity = selectedRow.Cells["Customer_City"].Value.ToString();
+                //string customerDistrict = selectedRow.Cells["Customer_District"].Value.ToString();
                 string customerAddress = selectedRow.Cells["Customer_Address"].Value.ToString();
-
-                // Retrieve other fields as needed
+                string customerNote = selectedRow.Cells["Customer_Notes"].Value.ToString();
 
                 // Autofill the other fields(Textbox) in the form
                 CustomerName.Text = customerName;
@@ -68,9 +106,10 @@ namespace Gas_Company
                 CustomerPhone.Text = customerPhone;
                 CustomerNumber.Text = customerNumber;
                 CustomerEmail.Text = customerEmail;
-                CustomerCity.Text = customerCity;
-                CustomerDistrict.Text = customerDistrict;
+                //CustomerCity.Text = customerCity;
+                //CustomerDistrict.Text = customerDistrict;
                 CustomerAddress.Text = customerAddress;
+                CustomerNote.Text = customerNote;
             }
         }
 
@@ -165,32 +204,35 @@ namespace Gas_Company
             {
                 conn.Open();
 
-                //string insertQuery = "INSERT INTO coustomer (Coustomer_ID,Coustomer_Name,Coustomer_Sex,Coustomer_Phone,Coustomer_HouseTel,Coustomer_Email,Coustomer_City,Coustomer_District,Coustomer_Address,Coustomer_FamilyMember_ID,Company_ID,Registered_at) " +
-                //    "VALUES (@Coustomer_ID,@Coustomer_Name,@Coustomer_Sex,@Coustomer_Phone,@Coustomer_HouseTel,@Coustomer_Email,@Coustomer_City,@Coustomer_District,@Coustomer_Address,@Coustomer_FamilyMember_ID,Company_ID,NOW())";
-                string insertQuery = "INSERT INTO coustomer Coustomer_Name,Coustomer_Sex,Coustomer_Phone,Coustomer_HouseTel,Coustomer_Email,Coustomer_City,Coustomer_District,Coustomer_Address,Coustomer_FamilyMember_ID,Company_ID,Registered_at) " +
-                    "VALUES (@Coustomer_Name,@Coustomer_Sex,@Coustomer_Phone,@Coustomer_HouseTel,@Coustomer_Email,@Coustomer_City,@Coustomer_District,@Coustomer_Address,@Coustomer_FamilyMember_ID,Company_ID,NOW())";
+                //string insertQuery = "INSERT INTO customer (CCUSTOMER_Id, CUSTOMER_Name, CUSTOMER_Sex, CUSTOMER_PhoneNo, CUSTOMER_HouseTelpNo, CUSTOMER_Email, CUSTOMER_City, CUSTOMER_District, CUSTOMER_Address, CUSTOMER_FamilyMemberId, COMPANY_Id, CUSTOMER_Registration_Time) " +
+                //    "VALUES (LAST_INSERT_ID(), @CUSTOMER_Name, @CUSTOMER_Sex, @CUSTOMER_PhoneNo, @CUSTOMER_HouseTelpNo, @CUSTOMER_Email, @CUSTOMER_City, @CUSTOMER_District, @CUSTOMER_Address, @CUSTOMER_FamilyMemberId, @COMPANY_Id, NOW())";
+                string insertQuery = "INSERT INTO customer (CUSTOMER_Id, CUSTOMER_Name, CUSTOMER_Sex, CUSTOMER_PhoneNo, CUSTOMER_Email, CUSTOMER_Address, CUSTOMER_Registration_Time) " +
+                    "VALUES (LAST_INSERT_ID(), @CUSTOMER_Name, @CUSTOMER_Sex, @CUSTOMER_PhoneNo, @CUSTOMER_Email, @CUSTOMER_Address, NOW())";
 
-                MySqlCommand cmd = new MySqlCommand(insertQuery, conn);
-                //cmd.Parameters.AddWithValue("@Coustomer_ID", CustomerName.Text);
-                cmd.Parameters.AddWithValue("@Coustomer_Name", CustomerName.Text);
-                cmd.Parameters.AddWithValue("@Coustomer_Sex", CustomerSex.Text);
-                cmd.Parameters.AddWithValue("@Coustomer_Phone", CustomerPhone.Text);
-                cmd.Parameters.AddWithValue("@Coustomer_HouseTel", CustomerNumber.Text);
-                cmd.Parameters.AddWithValue("@Coustomer_Email", CustomerEmail.Text);
-                cmd.Parameters.AddWithValue("@Coustomer_City", CustomerCity.Text);
-                cmd.Parameters.AddWithValue("@Coustomer_District", CustomerDistrict.Text);
-                cmd.Parameters.AddWithValue("@Coustomer_Address", CustomerAddress.Text);
-                //cmd.Parameters.AddWithValue("@Coustomer_FamilyMember_ID", family.Text);
-                //cmd.Parameters.AddWithValue("@Company_ID", company.Text);
-                if (cmd.ExecuteNonQuery() == 1)
+                using (MySqlCommand cmd = new MySqlCommand(insertQuery, conn))
                 {
-                    MessageBox.Show("登錄成功！");
-                    this.Close();
+
+                    cmd.Parameters.AddWithValue("@CUSTOMER_Name", CustomerName.Text);
+                    cmd.Parameters.AddWithValue("@CUSTOMER_Sex", CustomerSex.Text);
+                    cmd.Parameters.AddWithValue("@CUSTOMER_PhoneNo", CustomerPhone.Text);
+                    cmd.Parameters.AddWithValue("@CUSTOMER_HouseTelpNo", CustomerNumber.Text);
+                    cmd.Parameters.AddWithValue("@CUSTOMER_Email", CustomerEmail.Text);
+                    cmd.Parameters.AddWithValue("@CUSTOMER_Address", CustomerAddress.Text);
+                    //cmd.Parameters.AddWithValue("@CUSTOMER_FamilyMemberId", family.Text);
+                    //cmd.Parameters.AddWithValue("@COMPANY_Id", company.Text);
+
+                    if (cmd.ExecuteNonQuery() == 1)
+                    {
+                        MessageBox.Show("登錄成功！");
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("登錄失敗！");
+                    }
                 }
-                else
-                {
-                    MessageBox.Show("登錄失敗！");
-                }
+
+                
             }
         }
 
@@ -204,6 +246,44 @@ namespace Gas_Company
 
         }
 
-        
+        private void HistoryOrderButton_Click(object sender, EventArgs e)
+        {
+            string customerPhone = CustomerPhone.Text;
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = @"SELECT *
+                                FROM gas_order_history
+                                WHERE DELIVERY_Phone = (
+                                    SELECT DELIVERY_Phone
+                                    FROM gas_order_history
+                                    WHERE DELIVERY_Phone = @customerPhone
+                                )
+                                ORDER BY DELIVERY_Time DESC;
+                                ";
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@customerPhone", customerPhone);
+
+                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
+                    {
+                        DataTable historyOrders = new DataTable();
+                        adapter.Fill(historyOrders);
+
+                        // Create an instance of the HistoryOrder form
+                        HistoryOrder historyOrderForm = new HistoryOrder();
+
+                        // Pass the historyOrders DataTable to the form
+                        historyOrderForm.SetData(historyOrders);
+
+                        // Display the form
+                        historyOrderForm.ShowDialog();
+
+                    }
+                }
+            }
+        }
     }
 }

@@ -215,37 +215,6 @@ namespace Gas_Company
 
         private void SearchButton_Click(object sender, EventArgs e)
         {
-            /*string searchTerm = txt.Text;
-
-            if (!string.IsNullOrEmpty(searchTerm))
-            {
-                string query = "SELECT * FROM `gas_order` WHERE Order_ID LIKE @Order_ID OR Customer_ID LIKE @Customer_ID OR Customer_Phone LIKE Customer_Phone OR Delivery_Address LIKE Delivery_Address";
-                using (MySqlConnection connection = new MySqlConnection(connectionString))
-                {
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Order_ID", "%" + searchTerm + "%");
-                        command.Parameters.AddWithValue("@Customer_ID", "%" + searchTerm + "%");
-                        command.Parameters.AddWithValue("@Customer_Phone", "%" + searchTerm + "%");
-                        command.Parameters.AddWithValue("@Delivery_Address", "%" + searchTerm + "%");
-
-
-                        using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
-                        {
-                            DataTable table = new DataTable();
-                            adapter.Fill(table);
-                            if (table.Rows.Count == 0)
-                            {
-                                MessageBox.Show("未找到結果。請重試。", "搜索失敗", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            }
-                            else
-                            {
-                                dataGridView1.DataSource = table;
-                            }
-                        }
-                    }
-                }
-            }*/
             string searchTerm = txt.Text.Trim();
 
             if (!string.IsNullOrEmpty(searchTerm))
