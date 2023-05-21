@@ -85,6 +85,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Component1.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Component1.Designer.cs">
+      <DependentUpon>Component1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Customer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -114,6 +120,12 @@
     </Compile>
     <Compile Include="Form3.Designer.cs">
       <DependentUpon>Form3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form4.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form4.Designer.cs">
+      <DependentUpon>Form4.cs</DependentUpon>
     </Compile>
     <Compile Include="HistoryOrder.cs">
       <SubType>Form</SubType>
@@ -198,6 +210,8 @@
   <ItemGroup>
     <Content Include="a4kjp-li91w-001.ico" />
     <Content Include="config.xml" />
+    <None Include="Resources\52448421.png" />
+    <None Include="Resources\5244842.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

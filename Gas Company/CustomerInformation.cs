@@ -41,5 +41,16 @@ namespace Gas_Company
             }
 
         }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+                this.Close();  // Close the form
+            
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

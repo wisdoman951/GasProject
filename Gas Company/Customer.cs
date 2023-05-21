@@ -23,7 +23,7 @@ namespace Gas_Company
 
         private void customer_Load(object sender, EventArgs e)
         {
-            string query = "SELECT * FROM `coustomer`";
+            string query = "SELECT * FROM `customer`";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -51,14 +51,14 @@ namespace Gas_Company
                 DataGridViewRow selectedRow = CustomerField.Rows[e.RowIndex];
 
                 // Access the data in the selected row and autofill other fields in the form
-                string customerName = selectedRow.Cells["Coustomer_Name"].Value.ToString();
-                string customerSex = selectedRow.Cells["Coustomer_Sex"].Value.ToString();
-                string customerPhone = selectedRow.Cells["Coustomer_Phone"].Value.ToString();
-                string customerNumber = selectedRow.Cells["Coustomer_HouseTel"].Value.ToString();
-                string customerEmail = selectedRow.Cells["Coustomer_Email"].Value.ToString();
-                string customerCity = selectedRow.Cells["Coustomer_City"].Value.ToString();
-                string customerDistrict = selectedRow.Cells["Coustomer_District"].Value.ToString();
-                string customerAddress = selectedRow.Cells["Coustomer_Address"].Value.ToString();
+                string customerName = selectedRow.Cells["Customer_Name"].Value.ToString();
+                string customerSex = selectedRow.Cells["Customer_Sex"].Value.ToString();
+                string customerPhone = selectedRow.Cells["Customer_Phone"].Value.ToString();
+                string customerNumber = selectedRow.Cells["Customer_HouseTel"].Value.ToString();
+                string customerEmail = selectedRow.Cells["Customer_Email"].Value.ToString();
+                string customerCity = selectedRow.Cells["Customer_City"].Value.ToString();
+                string customerDistrict = selectedRow.Cells["Customer_District"].Value.ToString();
+                string customerAddress = selectedRow.Cells["Customer_Address"].Value.ToString();
 
                 // Retrieve other fields as needed
 
@@ -80,16 +80,16 @@ namespace Gas_Company
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                string query = "SELECT * FROM `coustomer` WHERE Coustomer_ID LIKE @Coustomer_ID OR Coustomer_Name LIKE @Coustomer_Name OR Coustomer_Phone LIKE @Coustomer_Phone OR Coustomer_City LIKE @Coustomer_City";
+                string query = "SELECT * FROM `customer` WHERE Customer_ID LIKE @Customer_ID OR Customer_Name LIKE @Customer_Name OR Customer_Phone LIKE @Customer_Phone OR Customer_City LIKE @Customer_City";
 
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Coustomer_ID", "%" + searchTerm + "%");
-                        command.Parameters.AddWithValue("@Coustomer_Name", "%" + searchTerm + "%");
-                        command.Parameters.AddWithValue("@Coustomer_Phone", "%" + searchTerm + "%");
-                        command.Parameters.AddWithValue("@Coustomer_City", "%" + searchTerm + "%");
+                        command.Parameters.AddWithValue("@Customer_ID", "%" + searchTerm + "%");
+                        command.Parameters.AddWithValue("@Customer_Name", "%" + searchTerm + "%");
+                        command.Parameters.AddWithValue("@Customer_Phone", "%" + searchTerm + "%");
+                        command.Parameters.AddWithValue("@Customer_City", "%" + searchTerm + "%");
 
                         using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
                         {
@@ -117,13 +117,13 @@ namespace Gas_Company
                 DialogResult result = MessageBox.Show("确定删除此行資料？", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    string id = CustomerField.SelectedRows[0].Cells[0].Value.ToString();
-                    string query = "DELETE FROM `coustomer` WHERE `ID` = @ID";
+                    string customerId = CustomerField.SelectedRows[0].Cells[0].Value.ToString();
+                    string query = "DELETE FROM `customer` WHERE `customer_Id` = @customerId";
                     using (MySqlConnection connection = new MySqlConnection(connectionString))
                     {
                         using (MySqlCommand command = new MySqlCommand(query, connection))
                         {
-                            command.Parameters.AddWithValue("@ID", id);
+                            command.Parameters.AddWithValue("@customerId", customerId);
                             connection.Open();
                             int rowsAffected = command.ExecuteNonQuery();
                             connection.Close();
@@ -148,7 +148,7 @@ namespace Gas_Company
             {
                 conn.Open();
 
-                MySqlCommand cmd = new MySqlCommand("SELECT * FROM coustomer", conn);
+                MySqlCommand cmd = new MySqlCommand("SELECT * FROM customer", conn);
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
 
@@ -160,7 +160,7 @@ namespace Gas_Company
 
         private void CAddButton_Click(object sender, EventArgs e)
         {
-            /*string connStr = ConfigurationManager.AppSettings["ConnectionString"];
+            string connStr = ConfigurationManager.AppSettings["ConnectionString"];
             using (MySqlConnection conn = new MySqlConnection(connStr))
             {
                 conn.Open();
@@ -191,7 +191,7 @@ namespace Gas_Company
                 {
                     MessageBox.Show("登錄失敗！");
                 }
-            }*/
+            }
         }
 
         private void dataGridView1_Paint(object sender, PaintEventArgs e)

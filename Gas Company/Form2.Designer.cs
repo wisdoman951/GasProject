@@ -43,8 +43,9 @@ namespace Gas_Company
             this.button1 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.delete = new System.Windows.Forms.Button();
-            this.edit = new System.Windows.Forms.Button();
+            this.EditButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.AutoFillButton = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.RemainGas = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
@@ -69,13 +70,13 @@ namespace Gas_Company
             this.label11 = new System.Windows.Forms.Label();
             this.OrderID = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.Order_CustomerInformationButton = new System.Windows.Forms.Button();
-            this.Order_ConfirmButton = new System.Windows.Forms.Button();
-            this.add = new System.Windows.Forms.Button();
+            this.CustomerInformationButton = new System.Windows.Forms.Button();
+            this.ConfirmButton = new System.Windows.Forms.Button();
+            this.AddButton = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.button14 = new System.Windows.Forms.Button();
-            this.button15 = new System.Windows.Forms.Button();
+            this.RefreshButton = new System.Windows.Forms.Button();
+            this.SearchButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.txt = new System.Windows.Forms.TextBox();
             this.print = new System.Windows.Forms.Button();
@@ -234,9 +235,9 @@ namespace Gas_Company
             // 
             this.panel2.BackColor = System.Drawing.Color.LightSteelBlue;
             this.panel2.Controls.Add(this.delete);
-            this.panel2.Controls.Add(this.edit);
+            this.panel2.Controls.Add(this.EditButton);
             this.panel2.Controls.Add(this.groupBox1);
-            this.panel2.Controls.Add(this.add);
+            this.panel2.Controls.Add(this.AddButton);
             this.panel2.Controls.Add(this.dataGridView1);
             this.panel2.Controls.Add(this.panel5);
             this.panel2.Controls.Add(this.print);
@@ -261,22 +262,23 @@ namespace Gas_Company
             this.delete.UseVisualStyleBackColor = false;
             this.delete.Click += new System.EventHandler(this.delete_Click);
             // 
-            // edit
+            // EditButton
             // 
-            this.edit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(144)))), ((int)(((byte)(255)))));
-            this.edit.FlatAppearance.BorderSize = 0;
-            this.edit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.edit.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.edit.ForeColor = System.Drawing.Color.White;
-            this.edit.Location = new System.Drawing.Point(756, 622);
-            this.edit.Name = "edit";
-            this.edit.Size = new System.Drawing.Size(83, 26);
-            this.edit.TabIndex = 89;
-            this.edit.Text = "編輯";
-            this.edit.UseVisualStyleBackColor = false;
+            this.EditButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(144)))), ((int)(((byte)(255)))));
+            this.EditButton.FlatAppearance.BorderSize = 0;
+            this.EditButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EditButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EditButton.ForeColor = System.Drawing.Color.White;
+            this.EditButton.Location = new System.Drawing.Point(756, 622);
+            this.EditButton.Name = "EditButton";
+            this.EditButton.Size = new System.Drawing.Size(83, 26);
+            this.EditButton.TabIndex = 89;
+            this.EditButton.Text = "編輯";
+            this.EditButton.UseVisualStyleBackColor = false;
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.AutoFillButton);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.RemainGas);
             this.groupBox1.Controls.Add(this.label14);
@@ -301,8 +303,8 @@ namespace Gas_Company
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.OrderID);
             this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.Order_CustomerInformationButton);
-            this.groupBox1.Controls.Add(this.Order_ConfirmButton);
+            this.groupBox1.Controls.Add(this.CustomerInformationButton);
+            this.groupBox1.Controls.Add(this.ConfirmButton);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(29, 409);
             this.groupBox1.Name = "groupBox1";
@@ -310,6 +312,19 @@ namespace Gas_Company
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "詳細訂單資訊";
+            // 
+            // AutoFillButton
+            // 
+            this.AutoFillButton.BackColor = System.Drawing.Color.LightBlue;
+            this.AutoFillButton.ForeColor = System.Drawing.Color.Cyan;
+            this.AutoFillButton.Image = global::Gas_Company.Properties.Resources._52448421;
+            this.AutoFillButton.Location = new System.Drawing.Point(255, 77);
+            this.AutoFillButton.Name = "AutoFillButton";
+            this.AutoFillButton.Size = new System.Drawing.Size(21, 21);
+            this.AutoFillButton.TabIndex = 88;
+            this.AutoFillButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.AutoFillButton.UseVisualStyleBackColor = false;
+            this.AutoFillButton.Click += new System.EventHandler(this.AutoFillButton_Click);
             // 
             // label13
             // 
@@ -560,48 +575,49 @@ namespace Gas_Company
             this.label12.TabIndex = 31;
             this.label12.Text = "訂單編號";
             // 
-            // Order_CustomerInformationButton
+            // CustomerInformationButton
             // 
-            this.Order_CustomerInformationButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(144)))), ((int)(((byte)(255)))));
-            this.Order_CustomerInformationButton.FlatAppearance.BorderSize = 0;
-            this.Order_CustomerInformationButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Order_CustomerInformationButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Order_CustomerInformationButton.ForeColor = System.Drawing.Color.White;
-            this.Order_CustomerInformationButton.Location = new System.Drawing.Point(902, 165);
-            this.Order_CustomerInformationButton.Name = "Order_CustomerInformationButton";
-            this.Order_CustomerInformationButton.Size = new System.Drawing.Size(83, 26);
-            this.Order_CustomerInformationButton.TabIndex = 7;
-            this.Order_CustomerInformationButton.Text = "客戶資料";
-            this.Order_CustomerInformationButton.UseVisualStyleBackColor = false;
-            this.Order_CustomerInformationButton.Click += new System.EventHandler(this.button17_Click);
+            this.CustomerInformationButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(144)))), ((int)(((byte)(255)))));
+            this.CustomerInformationButton.FlatAppearance.BorderSize = 0;
+            this.CustomerInformationButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CustomerInformationButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CustomerInformationButton.ForeColor = System.Drawing.Color.White;
+            this.CustomerInformationButton.Location = new System.Drawing.Point(902, 165);
+            this.CustomerInformationButton.Name = "CustomerInformationButton";
+            this.CustomerInformationButton.Size = new System.Drawing.Size(83, 26);
+            this.CustomerInformationButton.TabIndex = 7;
+            this.CustomerInformationButton.Text = "客戶資料";
+            this.CustomerInformationButton.UseVisualStyleBackColor = false;
+            this.CustomerInformationButton.Click += new System.EventHandler(this.CustomerInformation_Click);
             // 
-            // Order_ConfirmButton
+            // ConfirmButton
             // 
-            this.Order_ConfirmButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(144)))), ((int)(((byte)(255)))));
-            this.Order_ConfirmButton.FlatAppearance.BorderSize = 0;
-            this.Order_ConfirmButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Order_ConfirmButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Order_ConfirmButton.ForeColor = System.Drawing.Color.White;
-            this.Order_ConfirmButton.Location = new System.Drawing.Point(813, 165);
-            this.Order_ConfirmButton.Name = "Order_ConfirmButton";
-            this.Order_ConfirmButton.Size = new System.Drawing.Size(83, 26);
-            this.Order_ConfirmButton.TabIndex = 6;
-            this.Order_ConfirmButton.Text = "確認";
-            this.Order_ConfirmButton.UseVisualStyleBackColor = false;
+            this.ConfirmButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(144)))), ((int)(((byte)(255)))));
+            this.ConfirmButton.FlatAppearance.BorderSize = 0;
+            this.ConfirmButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ConfirmButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ConfirmButton.ForeColor = System.Drawing.Color.White;
+            this.ConfirmButton.Location = new System.Drawing.Point(813, 165);
+            this.ConfirmButton.Name = "ConfirmButton";
+            this.ConfirmButton.Size = new System.Drawing.Size(83, 26);
+            this.ConfirmButton.TabIndex = 6;
+            this.ConfirmButton.Text = "確認";
+            this.ConfirmButton.UseVisualStyleBackColor = false;
             // 
-            // add
+            // AddButton
             // 
-            this.add.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(144)))), ((int)(((byte)(255)))));
-            this.add.FlatAppearance.BorderSize = 0;
-            this.add.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.add.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.add.ForeColor = System.Drawing.Color.White;
-            this.add.Location = new System.Drawing.Point(667, 622);
-            this.add.Name = "add";
-            this.add.Size = new System.Drawing.Size(83, 26);
-            this.add.TabIndex = 88;
-            this.add.Text = "新增";
-            this.add.UseVisualStyleBackColor = false;
+            this.AddButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(144)))), ((int)(((byte)(255)))));
+            this.AddButton.FlatAppearance.BorderSize = 0;
+            this.AddButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AddButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddButton.ForeColor = System.Drawing.Color.White;
+            this.AddButton.Location = new System.Drawing.Point(667, 622);
+            this.AddButton.Name = "AddButton";
+            this.AddButton.Size = new System.Drawing.Size(83, 26);
+            this.AddButton.TabIndex = 88;
+            this.AddButton.Text = "新增";
+            this.AddButton.UseVisualStyleBackColor = false;
+            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
             // 
             // dataGridView1
             // 
@@ -622,8 +638,8 @@ namespace Gas_Company
             // 
             // panel5
             // 
-            this.panel5.Controls.Add(this.button14);
-            this.panel5.Controls.Add(this.button15);
+            this.panel5.Controls.Add(this.RefreshButton);
+            this.panel5.Controls.Add(this.SearchButton);
             this.panel5.Controls.Add(this.label3);
             this.panel5.Controls.Add(this.txt);
             this.panel5.Location = new System.Drawing.Point(12, 6);
@@ -631,34 +647,35 @@ namespace Gas_Company
             this.panel5.Size = new System.Drawing.Size(751, 44);
             this.panel5.TabIndex = 10;
             // 
-            // button14
+            // RefreshButton
             // 
-            this.button14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(144)))), ((int)(((byte)(255)))));
-            this.button14.FlatAppearance.BorderSize = 0;
-            this.button14.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button14.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button14.ForeColor = System.Drawing.Color.White;
-            this.button14.Location = new System.Drawing.Point(648, 10);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(83, 26);
-            this.button14.TabIndex = 6;
-            this.button14.Text = "更新";
-            this.button14.UseVisualStyleBackColor = false;
+            this.RefreshButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(144)))), ((int)(((byte)(255)))));
+            this.RefreshButton.FlatAppearance.BorderSize = 0;
+            this.RefreshButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.RefreshButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RefreshButton.ForeColor = System.Drawing.Color.White;
+            this.RefreshButton.Location = new System.Drawing.Point(648, 10);
+            this.RefreshButton.Name = "RefreshButton";
+            this.RefreshButton.Size = new System.Drawing.Size(83, 26);
+            this.RefreshButton.TabIndex = 6;
+            this.RefreshButton.Text = "更新";
+            this.RefreshButton.UseVisualStyleBackColor = false;
+            this.RefreshButton.Click += new System.EventHandler(this.RefreshButton_Click);
             // 
-            // button15
+            // SearchButton
             // 
-            this.button15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(144)))), ((int)(((byte)(255)))));
-            this.button15.FlatAppearance.BorderSize = 0;
-            this.button15.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button15.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button15.ForeColor = System.Drawing.Color.White;
-            this.button15.Location = new System.Drawing.Point(550, 10);
-            this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(83, 26);
-            this.button15.TabIndex = 5;
-            this.button15.Text = "搜尋";
-            this.button15.UseVisualStyleBackColor = false;
-            this.button15.Click += new System.EventHandler(this.button15_Click);
+            this.SearchButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(144)))), ((int)(((byte)(255)))));
+            this.SearchButton.FlatAppearance.BorderSize = 0;
+            this.SearchButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SearchButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SearchButton.ForeColor = System.Drawing.Color.White;
+            this.SearchButton.Location = new System.Drawing.Point(550, 10);
+            this.SearchButton.Name = "SearchButton";
+            this.SearchButton.Size = new System.Drawing.Size(83, 26);
+            this.SearchButton.TabIndex = 5;
+            this.SearchButton.Text = "搜尋";
+            this.SearchButton.UseVisualStyleBackColor = false;
+            this.SearchButton.Click += new System.EventHandler(this.SearchButton_Click);
             // 
             // label3
             // 
@@ -746,12 +763,12 @@ namespace Gas_Company
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox OrderID;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Button Order_CustomerInformationButton;
-        private System.Windows.Forms.Button Order_ConfirmButton;
+        private System.Windows.Forms.Button CustomerInformationButton;
+        private System.Windows.Forms.Button ConfirmButton;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Button button14;
-        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.Button RefreshButton;
+        private System.Windows.Forms.Button SearchButton;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txt;
         private System.Windows.Forms.Button button7;
@@ -767,7 +784,7 @@ namespace Gas_Company
         private System.Windows.Forms.Button print;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button delete;
-        private System.Windows.Forms.Button edit;
+        private System.Windows.Forms.Button EditButton;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox RemainGas;
         private System.Windows.Forms.Label label14;
@@ -777,6 +794,7 @@ namespace Gas_Company
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox GasQuantity;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button add;
+        private System.Windows.Forms.Button AddButton;
+        private System.Windows.Forms.Button AutoFillButton;
     }
 }

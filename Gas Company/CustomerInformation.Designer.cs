@@ -61,6 +61,7 @@ namespace Gas_Company
             this.button15.TabIndex = 49;
             this.button15.Text = "確認";
             this.button15.UseVisualStyleBackColor = false;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
             // 
             // CustomerBuyer
             // 
@@ -225,11 +226,12 @@ namespace Gas_Company
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label3.Location = new System.Drawing.Point(72, 29);
+            this.label3.Location = new System.Drawing.Point(40, 30);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(42, 22);
+            this.label3.Size = new System.Drawing.Size(74, 22);
             this.label3.TabIndex = 31;
-            this.label3.Text = "編號";
+            this.label3.Text = "客戶編號";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // CustomerInformation
             // 

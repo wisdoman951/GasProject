@@ -63,6 +63,26 @@ namespace Gas_Company.Properties {
         /// <summary>
         ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
         /// </summary>
+        internal static System.Drawing.Bitmap _5244842 {
+            get {
+                object obj = ResourceManager.GetObject("5244842", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        /// </summary>
+        internal static System.Drawing.Bitmap _52448421 {
+            get {
+                object obj = ResourceManager.GetObject("52448421", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        /// </summary>
         internal static System.Drawing.Bitmap DEYU {
             get {
                 object obj = ResourceManager.GetObject("DEYU", resourceCulture);
