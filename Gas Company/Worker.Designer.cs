@@ -53,6 +53,8 @@ namespace Gas_Company
             this.label1 = new System.Windows.Forms.Label();
             this.WorkerID = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.PermissionValue = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -150,6 +152,8 @@ namespace Gas_Company
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.PermissionValue);
+            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.WorkerNote);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.WorkerAddress);
@@ -179,7 +183,7 @@ namespace Gas_Company
             this.WorkerNote.BackColor = System.Drawing.Color.WhiteSmoke;
             this.WorkerNote.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.WorkerNote.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WorkerNote.Location = new System.Drawing.Point(125, 252);
+            this.WorkerNote.Location = new System.Drawing.Point(125, 290);
             this.WorkerNote.Name = "WorkerNote";
             this.WorkerNote.Size = new System.Drawing.Size(428, 24);
             this.WorkerNote.TabIndex = 56;
@@ -189,7 +193,7 @@ namespace Gas_Company
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label5.Location = new System.Drawing.Point(77, 251);
+            this.label5.Location = new System.Drawing.Point(77, 289);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(52, 27);
             this.label5.TabIndex = 55;
@@ -341,6 +345,28 @@ namespace Gas_Company
             this.label12.TabIndex = 33;
             this.label12.Text = "員工編號";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label6.Location = new System.Drawing.Point(46, 245);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(92, 27);
+            this.label6.TabIndex = 57;
+            this.label6.Text = "員工權限";
+            // 
+            // PermissionValue
+            // 
+            this.PermissionValue.FormattingEnabled = true;
+            this.PermissionValue.Items.AddRange(new object[] {
+            "開通",
+            "限制"});
+            this.PermissionValue.Location = new System.Drawing.Point(125, 243);
+            this.PermissionValue.Name = "PermissionValue";
+            this.PermissionValue.Size = new System.Drawing.Size(136, 34);
+            this.PermissionValue.TabIndex = 58;
+            // 
             // Worker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -361,6 +387,7 @@ namespace Gas_Company
             this.Name = "Worker";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "worker";
+            this.Load += new System.EventHandler(this.Worker_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -395,5 +422,7 @@ namespace Gas_Company
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox WorkerID;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ComboBox PermissionValue;
+        private System.Windows.Forms.Label label6;
     }
 }
