@@ -152,6 +152,66 @@ namespace Gas_Company
             dataView.RowFilter = ""; // Clear any existing filter
         }
 
-        
+        private void GasDelete_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                DialogResult result = MessageBox.Show("确定删除此行資料？", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    string gasId = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
+                    string query = "DELETE FROM `customer` WHERE `GAS_Id` = @GAS_Id";
+                    using (MySqlConnection connection = new MySqlConnection(connectionString))
+                    {
+                        using (MySqlCommand command = new MySqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@GAS_Id", gasId);
+                            connection.Open();
+                            int rowsAffected = command.ExecuteNonQuery();
+                            connection.Close();
+                            if (rowsAffected > 0)
+                            {
+                                dataGridView1.Rows.RemoveAt(dataGridView1.SelectedRows[0].Index);
+                                MessageBox.Show("删除成功", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("請選擇要刪除的資料行", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void GasAdd_Click(object sender, EventArgs e)
+        {
+            /*using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+
+                string insertQuery = "INSERT INTO gas " +
+                                     "(GAS_Id, GAS_Company_Id, GAS_Weight_Full, , GAS_Type, GAS_Price, GAS_Volume, GAS_Examine_Day, GAS_Produce_Day, GAS_Supplier, Gas_Registration_Time, last_worker_id) " +
+                                     "VALUES (LAST_INSERT_ID(), @GAS_Company_Id, @GAS_Weight_Full, @GAS_Weight_Empty, @GAS_Price, @GAS_Volume, @GAS_Examine_Day, GAS_Produce_Day, GAS_Supplier, NOW())";
+
+                MySqlCommand cmd = new MySqlCommand(insertQuery, conn);
+                cmd.Parameters.AddWithValue("@WORKER_Name", WorkerName.Text);
+                cmd.Parameters.AddWithValue("@WORKER_PhoneNum", WorkerPhone.Text);
+                cmd.Parameters.AddWithValue("@WORKER_HouseTelpNo", WorkerTele.Text);
+                cmd.Parameters.AddWithValue("@WORKER_Email", WorkerEmail.Text);
+                cmd.Parameters.AddWithValue("@WORKER_Address", WorkerAddress.Text);
+                cmd.Parameters.AddWithValue("@Permission", PermissionValue.Text);
+
+                if (cmd.ExecuteNonQuery() == 1)
+                {
+                    MessageBox.Show("登錄成功！");
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("登錄失敗！");
+                }
+            }*/
+        }
     }
 }

@@ -72,6 +72,7 @@ namespace Gas_Company
             this.WorkerDelete.TabIndex = 101;
             this.WorkerDelete.Text = "刪除";
             this.WorkerDelete.UseVisualStyleBackColor = false;
+            this.WorkerDelete.Click += new System.EventHandler(this.WorkerDelete_Click);
             // 
             // WorkerEditButton
             // 
@@ -149,6 +150,7 @@ namespace Gas_Company
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.Size = new System.Drawing.Size(346, 489);
             this.dataGridView1.TabIndex = 95;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
             // groupBox1
             // 

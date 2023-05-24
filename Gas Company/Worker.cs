@@ -20,8 +20,57 @@ namespace Gas_Company
         {
             InitializeComponent();
         }
+        private void Worker_Load(object sender, EventArgs e)
+        {
+            string query = "SELECT * FROM `worker`";
 
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection))
+                {
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+                    dataGridView1.DataSource = table;
+                    // Columns rename
+                    dataGridView1.Columns["WORKER_Id"].HeaderText = "員工編號";
+                    dataGridView1.Columns["WORKER_Name"].HeaderText = "員工姓名";
+                    dataGridView1.Columns["WORKER_Sex"].HeaderText = "員工性別";
+                    dataGridView1.Columns["WORKER_PhoneNum"].HeaderText = "員工電話";
+                    dataGridView1.Columns["WORKER_HouseTelpNo"].HeaderText = "員工家用電話";
+                    dataGridView1.Columns["WORKER_Address"].HeaderText = "員工地址";
+                    dataGridView1.Columns["WORKER_Password"].HeaderText = "員工密碼";
+                    dataGridView1.Columns["WORKER_Email"].HeaderText = "員工電子郵件";
+                    dataGridView1.Columns["Permission"].HeaderText = "員工權限";
+                    dataGridView1.Columns["WORKER_Company_Id"].HeaderText = "員工所屬公司";
+                }
+            }
+        }
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow selectedRow = dataGridView1.Rows[e.RowIndex];
 
+                // Access the data in the selected row and autofill other fields in the form
+                string workerId = selectedRow.Cells["WORKER_Id"].Value.ToString();
+                string workerName = selectedRow.Cells["WORKER_Name"].Value.ToString();
+                string workerSex = selectedRow.Cells["WORKER_Sex"].Value.ToString();
+                string workerPhoneNo = selectedRow.Cells["WORKER_PhoneNum"].Value.ToString();
+                string workerTelpNo = selectedRow.Cells["WORKER_HouseTelpNo"].Value.ToString();
+                string workerEmail = selectedRow.Cells["WORKER_Email"].Value.ToString();
+                string workerAddress = selectedRow.Cells["WORKER_Address"].Value.ToString();
+                string workerPermission = selectedRow.Cells["Permission"].Value.ToString();
+
+                // Autofill the other fields(Textbox) in the form
+                WorkerID.Text = workerId;
+                WorkerName.Text = workerName;
+                WorkerPhone.Text = workerPhoneNo;
+                WorkerTele.Text = workerTelpNo;
+                WorkerEmail.Text = workerEmail;
+                WorkerAddress.Text = workerAddress;
+                PermissionValue.Text = workerPermission;
+            }
+        }
         //// Insert Employee
         private void EmployeeAddButton_Click(object sender, EventArgs e)
         {
@@ -53,18 +102,35 @@ namespace Gas_Company
             }
         }
 
-        private void Worker_Load(object sender, EventArgs e)
+        private void WorkerDelete_Click(object sender, EventArgs e)
         {
-            string query = "SELECT * FROM `worker`";
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            if (dataGridView1.SelectedRows.Count > 0)
             {
-                using (MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection))
+                DialogResult result = MessageBox.Show("确定删除此行資料？", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
                 {
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-                    dataGridView1.DataSource = table;
+                    string workerId = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
+                    string query = "DELETE FROM `worker` WHERE `WORKER_Id` = @WORKER_Id";
+                    using (MySqlConnection connection = new MySqlConnection(connectionString))
+                    {
+                        using (MySqlCommand command = new MySqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@WORKER_Id", workerId);
+                            connection.Open();
+                            int rowsAffected = command.ExecuteNonQuery();
+                            connection.Close();
+                            if (rowsAffected > 0)
+                            {
+                                dataGridView1.Rows.RemoveAt(dataGridView1.SelectedRows[0].Index);
+                                MessageBox.Show("删除成功", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                        }
+                    }
                 }
+            }
+            else
+            {
+                MessageBox.Show("請選擇要刪除的資料行", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     }

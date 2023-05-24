@@ -51,9 +51,9 @@ namespace Gas_Company
             this.GasId = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.delete = new System.Windows.Forms.Button();
+            this.GasDelete = new System.Windows.Forms.Button();
             this.edit = new System.Windows.Forms.Button();
-            this.add = new System.Windows.Forms.Button();
+            this.GasAdd = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -304,19 +304,20 @@ namespace Gas_Company
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting_1);
             // 
-            // delete
+            // GasDelete
             // 
-            this.delete.BackColor = System.Drawing.Color.IndianRed;
-            this.delete.FlatAppearance.BorderSize = 0;
-            this.delete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.delete.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.delete.ForeColor = System.Drawing.Color.White;
-            this.delete.Location = new System.Drawing.Point(215, 231);
-            this.delete.Name = "delete";
-            this.delete.Size = new System.Drawing.Size(83, 26);
-            this.delete.TabIndex = 93;
-            this.delete.Text = "刪除";
-            this.delete.UseVisualStyleBackColor = false;
+            this.GasDelete.BackColor = System.Drawing.Color.IndianRed;
+            this.GasDelete.FlatAppearance.BorderSize = 0;
+            this.GasDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GasDelete.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GasDelete.ForeColor = System.Drawing.Color.White;
+            this.GasDelete.Location = new System.Drawing.Point(215, 231);
+            this.GasDelete.Name = "GasDelete";
+            this.GasDelete.Size = new System.Drawing.Size(83, 26);
+            this.GasDelete.TabIndex = 93;
+            this.GasDelete.Text = "刪除";
+            this.GasDelete.UseVisualStyleBackColor = false;
+            this.GasDelete.Click += new System.EventHandler(this.GasDelete_Click);
             // 
             // edit
             // 
@@ -332,19 +333,20 @@ namespace Gas_Company
             this.edit.Text = "編輯";
             this.edit.UseVisualStyleBackColor = false;
             // 
-            // add
+            // GasAdd
             // 
-            this.add.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(144)))), ((int)(((byte)(255)))));
-            this.add.FlatAppearance.BorderSize = 0;
-            this.add.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.add.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.add.ForeColor = System.Drawing.Color.White;
-            this.add.Location = new System.Drawing.Point(37, 231);
-            this.add.Name = "add";
-            this.add.Size = new System.Drawing.Size(83, 26);
-            this.add.TabIndex = 91;
-            this.add.Text = "新增";
-            this.add.UseVisualStyleBackColor = false;
+            this.GasAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(144)))), ((int)(((byte)(255)))));
+            this.GasAdd.FlatAppearance.BorderSize = 0;
+            this.GasAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GasAdd.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GasAdd.ForeColor = System.Drawing.Color.White;
+            this.GasAdd.Location = new System.Drawing.Point(37, 231);
+            this.GasAdd.Name = "GasAdd";
+            this.GasAdd.Size = new System.Drawing.Size(83, 26);
+            this.GasAdd.TabIndex = 91;
+            this.GasAdd.Text = "新增";
+            this.GasAdd.UseVisualStyleBackColor = false;
+            this.GasAdd.Click += new System.EventHandler(this.GasAdd_Click);
             // 
             // GasTankManage
             // 
@@ -352,9 +354,9 @@ namespace Gas_Company
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
             this.ClientSize = new System.Drawing.Size(1054, 660);
-            this.Controls.Add(this.delete);
+            this.Controls.Add(this.GasDelete);
             this.Controls.Add(this.edit);
-            this.Controls.Add(this.add);
+            this.Controls.Add(this.GasAdd);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -375,9 +377,9 @@ namespace Gas_Company
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Button delete;
+        private System.Windows.Forms.Button GasDelete;
         private System.Windows.Forms.Button edit;
-        private System.Windows.Forms.Button add;
+        private System.Windows.Forms.Button GasAdd;
         private System.Windows.Forms.DateTimePicker GasExamineDay;
         private System.Windows.Forms.DateTimePicker GasProduceDay;
         private System.Windows.Forms.TextBox Note;

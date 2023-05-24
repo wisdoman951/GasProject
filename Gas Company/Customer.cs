@@ -32,6 +32,7 @@ namespace Gas_Company
                     DataTable table = new DataTable();
                     adapter.Fill(table);
                     CustomerField.DataSource = table;
+                    // Change the original column order
                     string[] columnOrder = {
                                             "CUSTOMER_Id",
                                             "CUSTOMER_Name",
@@ -72,11 +73,6 @@ namespace Gas_Company
                     CustomerField.Columns["COMPANY_HistoryID"].HeaderText = "客戶歷史瓦斯行";
                     CustomerField.Columns["CUSTOMER_Notes"].HeaderText = "客戶備註";
                     CustomerField.Columns["CUSTOMER_Registration_Time"].HeaderText = "客戶註冊時間";
-                    // You can check each column's name here
-                    foreach (DataColumn column in table.Columns)
-                    {
-                        Console.WriteLine(column.ColumnName);
-                    }
 
                 }
             }
