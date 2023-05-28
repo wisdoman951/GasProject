@@ -37,6 +37,8 @@ namespace Gas_Company
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.PermissionValue = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.WorkerNote = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.WorkerAddress = new System.Windows.Forms.TextBox();
@@ -53,8 +55,6 @@ namespace Gas_Company
             this.label1 = new System.Windows.Forms.Label();
             this.WorkerID = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.PermissionValue = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -137,7 +137,7 @@ namespace Gas_Company
             this.textBox1.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.Location = new System.Drawing.Point(12, 69);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(194, 24);
+            this.textBox1.Size = new System.Drawing.Size(194, 20);
             this.textBox1.TabIndex = 96;
             // 
             // dataGridView1
@@ -180,6 +180,29 @@ namespace Gas_Company
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "員工資料";
             // 
+            // PermissionValue
+            // 
+            this.PermissionValue.FormattingEnabled = true;
+            this.PermissionValue.Items.AddRange(new object[] {
+            "1",
+            "0"});
+            this.PermissionValue.Location = new System.Drawing.Point(125, 243);
+            this.PermissionValue.Name = "PermissionValue";
+            this.PermissionValue.Size = new System.Drawing.Size(136, 27);
+            this.PermissionValue.TabIndex = 58;
+            this.PermissionValue.SelectedIndexChanged += new System.EventHandler(this.PermissionValue_SelectedIndexChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label6.Location = new System.Drawing.Point(46, 245);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(74, 22);
+            this.label6.TabIndex = 57;
+            this.label6.Text = "員工權限";
+            // 
             // WorkerNote
             // 
             this.WorkerNote.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -187,7 +210,7 @@ namespace Gas_Company
             this.WorkerNote.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WorkerNote.Location = new System.Drawing.Point(125, 290);
             this.WorkerNote.Name = "WorkerNote";
-            this.WorkerNote.Size = new System.Drawing.Size(428, 24);
+            this.WorkerNote.Size = new System.Drawing.Size(428, 20);
             this.WorkerNote.TabIndex = 56;
             // 
             // label5
@@ -197,7 +220,7 @@ namespace Gas_Company
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label5.Location = new System.Drawing.Point(77, 289);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(52, 27);
+            this.label5.Size = new System.Drawing.Size(42, 22);
             this.label5.TabIndex = 55;
             this.label5.Text = "備註";
             // 
@@ -208,7 +231,7 @@ namespace Gas_Company
             this.WorkerAddress.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WorkerAddress.Location = new System.Drawing.Point(277, 205);
             this.WorkerAddress.Name = "WorkerAddress";
-            this.WorkerAddress.Size = new System.Drawing.Size(276, 24);
+            this.WorkerAddress.Size = new System.Drawing.Size(276, 20);
             this.WorkerAddress.TabIndex = 54;
             // 
             // WorkerDistrict
@@ -218,7 +241,7 @@ namespace Gas_Company
             this.WorkerDistrict.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WorkerDistrict.Location = new System.Drawing.Point(201, 205);
             this.WorkerDistrict.Name = "WorkerDistrict";
-            this.WorkerDistrict.Size = new System.Drawing.Size(70, 24);
+            this.WorkerDistrict.Size = new System.Drawing.Size(70, 20);
             this.WorkerDistrict.TabIndex = 53;
             // 
             // WorkerCity
@@ -228,7 +251,7 @@ namespace Gas_Company
             this.WorkerCity.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WorkerCity.Location = new System.Drawing.Point(125, 205);
             this.WorkerCity.Name = "WorkerCity";
-            this.WorkerCity.Size = new System.Drawing.Size(70, 24);
+            this.WorkerCity.Size = new System.Drawing.Size(70, 20);
             this.WorkerCity.TabIndex = 52;
             // 
             // label8
@@ -238,7 +261,7 @@ namespace Gas_Company
             this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label8.Location = new System.Drawing.Point(45, 204);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(92, 27);
+            this.label8.Size = new System.Drawing.Size(74, 22);
             this.label8.TabIndex = 51;
             this.label8.Text = "通訊地址";
             // 
@@ -249,7 +272,7 @@ namespace Gas_Company
             this.WorkerEmail.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WorkerEmail.Location = new System.Drawing.Point(125, 156);
             this.WorkerEmail.Name = "WorkerEmail";
-            this.WorkerEmail.Size = new System.Drawing.Size(428, 24);
+            this.WorkerEmail.Size = new System.Drawing.Size(428, 20);
             this.WorkerEmail.TabIndex = 42;
             // 
             // label4
@@ -259,7 +282,7 @@ namespace Gas_Company
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label4.Location = new System.Drawing.Point(45, 155);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(92, 27);
+            this.label4.Size = new System.Drawing.Size(74, 22);
             this.label4.TabIndex = 41;
             this.label4.Text = "電子信箱";
             // 
@@ -270,7 +293,7 @@ namespace Gas_Company
             this.WorkerTele.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WorkerTele.Location = new System.Drawing.Point(408, 105);
             this.WorkerTele.Name = "WorkerTele";
-            this.WorkerTele.Size = new System.Drawing.Size(145, 24);
+            this.WorkerTele.Size = new System.Drawing.Size(145, 20);
             this.WorkerTele.TabIndex = 40;
             // 
             // label3
@@ -280,7 +303,7 @@ namespace Gas_Company
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label3.Location = new System.Drawing.Point(328, 104);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(92, 27);
+            this.label3.Size = new System.Drawing.Size(74, 22);
             this.label3.TabIndex = 39;
             this.label3.Text = "電話號碼";
             // 
@@ -291,7 +314,7 @@ namespace Gas_Company
             this.WorkerPhone.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WorkerPhone.Location = new System.Drawing.Point(125, 105);
             this.WorkerPhone.Name = "WorkerPhone";
-            this.WorkerPhone.Size = new System.Drawing.Size(145, 24);
+            this.WorkerPhone.Size = new System.Drawing.Size(145, 20);
             this.WorkerPhone.TabIndex = 38;
             // 
             // label2
@@ -301,7 +324,7 @@ namespace Gas_Company
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label2.Location = new System.Drawing.Point(45, 104);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(92, 27);
+            this.label2.Size = new System.Drawing.Size(74, 22);
             this.label2.TabIndex = 37;
             this.label2.Text = "手機號碼";
             // 
@@ -312,7 +335,7 @@ namespace Gas_Company
             this.WorkerName.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WorkerName.Location = new System.Drawing.Point(408, 57);
             this.WorkerName.Name = "WorkerName";
-            this.WorkerName.Size = new System.Drawing.Size(145, 24);
+            this.WorkerName.Size = new System.Drawing.Size(145, 20);
             this.WorkerName.TabIndex = 36;
             // 
             // label1
@@ -322,7 +345,7 @@ namespace Gas_Company
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label1.Location = new System.Drawing.Point(328, 56);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 27);
+            this.label1.Size = new System.Drawing.Size(74, 22);
             this.label1.TabIndex = 35;
             this.label1.Text = "員工名稱";
             // 
@@ -333,7 +356,7 @@ namespace Gas_Company
             this.WorkerID.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WorkerID.Location = new System.Drawing.Point(125, 57);
             this.WorkerID.Name = "WorkerID";
-            this.WorkerID.Size = new System.Drawing.Size(145, 24);
+            this.WorkerID.Size = new System.Drawing.Size(145, 20);
             this.WorkerID.TabIndex = 34;
             // 
             // label12
@@ -343,35 +366,13 @@ namespace Gas_Company
             this.label12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label12.Location = new System.Drawing.Point(45, 56);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(92, 27);
+            this.label12.Size = new System.Drawing.Size(74, 22);
             this.label12.TabIndex = 33;
             this.label12.Text = "員工編號";
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label6.Location = new System.Drawing.Point(46, 245);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(92, 27);
-            this.label6.TabIndex = 57;
-            this.label6.Text = "員工權限";
-            // 
-            // PermissionValue
-            // 
-            this.PermissionValue.FormattingEnabled = true;
-            this.PermissionValue.Items.AddRange(new object[] {
-            "開通",
-            "限制"});
-            this.PermissionValue.Location = new System.Drawing.Point(125, 243);
-            this.PermissionValue.Name = "PermissionValue";
-            this.PermissionValue.Size = new System.Drawing.Size(136, 34);
-            this.PermissionValue.TabIndex = 58;
-            // 
             // Worker
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
             this.ClientSize = new System.Drawing.Size(1054, 660);

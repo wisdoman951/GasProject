@@ -148,9 +148,9 @@ namespace Gas_Company
             sortedValues.Sort();
             comboBox1.Items.Clear();
             comboBox1.Items.AddRange(sortedValues.ToArray());
-            
-            dataView.RowFilter = ""; // Clear any existing filter
         }
+        
+
 
         private void GasDelete_Click(object sender, EventArgs e)
         {

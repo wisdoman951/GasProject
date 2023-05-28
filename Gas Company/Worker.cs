@@ -14,7 +14,8 @@ namespace Gas_Company
 {
     public partial class Worker : Form
     {
-        private readonly string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
+        private readonly string connectionString = ConfigurationManager.AppSettings["ConnectionString"]; 
+        private int originalPermission;
 
         public Worker()
         {
@@ -49,6 +50,8 @@ namespace Gas_Company
         {
             if (e.RowIndex >= 0)
             {
+                PermissionValue.SelectedIndexChanged -= PermissionValue_SelectedIndexChanged;
+
                 DataGridViewRow selectedRow = dataGridView1.Rows[e.RowIndex];
 
                 // Access the data in the selected row and autofill other fields in the form
@@ -69,6 +72,10 @@ namespace Gas_Company
                 WorkerEmail.Text = workerEmail;
                 WorkerAddress.Text = workerAddress;
                 PermissionValue.Text = workerPermission;
+
+                originalPermission = Convert.ToInt32(workerPermission);
+                PermissionValue.SelectedIndexChanged += PermissionValue_SelectedIndexChanged;
+
             }
         }
         //// Insert Employee
@@ -132,6 +139,49 @@ namespace Gas_Company
             {
                 MessageBox.Show("請選擇要刪除的資料行", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private void PermissionValue_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Get the selected value from the combobox
+            int selectedPermission = Convert.ToInt32(PermissionValue.SelectedItem);
+
+            if (selectedPermission != originalPermission)
+            {
+                // Display a confirmation message box
+                DialogResult result = MessageBox.Show("Are you sure you want to change the authorization?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    // Update the permission in the database
+                    UpdatePermission(selectedPermission);
+                }
+                else
+                {
+                    // Reset the combobox selection to the original value
+                    PermissionValue.SelectedItem = originalPermission;
+                }
+            }
+        }
+        private void UpdatePermission(int permission)
+        {
+            // Assuming you have the worker ID stored in a variable named "workerId"
+
+            // Update the permission in the database
+            string updateQuery = "UPDATE worker SET Permission = @Permission WHERE WORKER_Id = @WorkerId";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                using (MySqlCommand cmd = new MySqlCommand(updateQuery, connection))
+                {
+                    cmd.Parameters.AddWithValue("@Permission", permission);
+                    cmd.Parameters.AddWithValue("@WorkerId", WorkerID.Text);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            MessageBox.Show("Authorization updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
