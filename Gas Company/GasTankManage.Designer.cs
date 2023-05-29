@@ -54,6 +54,7 @@ namespace Gas_Company
             this.GasDelete = new System.Windows.Forms.Button();
             this.edit = new System.Windows.Forms.Button();
             this.GasAdd = new System.Windows.Forms.Button();
+            this.ResetFilterButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -61,6 +62,7 @@ namespace Gas_Company
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.ResetFilterButton);
             this.panel1.Controls.Add(this.comboBox1);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.GasExamineDay);
@@ -113,6 +115,7 @@ namespace Gas_Company
             this.GasExamineDay.Name = "GasExamineDay";
             this.GasExamineDay.Size = new System.Drawing.Size(153, 31);
             this.GasExamineDay.TabIndex = 54;
+            this.GasExamineDay.ValueChanged += new System.EventHandler(this.GasExamineDay_ValueChanged);
             // 
             // GasProduceDay
             // 
@@ -164,7 +167,7 @@ namespace Gas_Company
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(172, 27);
             this.label7.TabIndex = 47;
-            this.label7.Text = "出場耐壓試驗日期";
+            this.label7.Text = "出廠耐壓試驗日期";
             // 
             // Supplier
             // 
@@ -348,6 +351,15 @@ namespace Gas_Company
             this.GasAdd.UseVisualStyleBackColor = false;
             this.GasAdd.Click += new System.EventHandler(this.GasAdd_Click);
             // 
+            // ResetFilterButton
+            // 
+            this.ResetFilterButton.Location = new System.Drawing.Point(626, 106);
+            this.ResetFilterButton.Name = "ResetFilterButton";
+            this.ResetFilterButton.Size = new System.Drawing.Size(24, 23);
+            this.ResetFilterButton.TabIndex = 57;
+            this.ResetFilterButton.UseVisualStyleBackColor = true;
+            this.ResetFilterButton.Click += new System.EventHandler(this.ResetFilterButton_Click);
+            // 
             // GasTankManage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -400,5 +412,6 @@ namespace Gas_Company
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Button ResetFilterButton;
     }
 }

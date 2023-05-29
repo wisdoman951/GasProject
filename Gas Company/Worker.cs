@@ -149,7 +149,7 @@ namespace Gas_Company
             if (selectedPermission != originalPermission)
             {
                 // Display a confirmation message box
-                DialogResult result = MessageBox.Show("Are you sure you want to change the authorization?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult result = MessageBox.Show("確認變更帳號權限?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
                 {
@@ -181,7 +181,7 @@ namespace Gas_Company
                 }
             }
 
-            MessageBox.Show("Authorization updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("權限變更成功", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

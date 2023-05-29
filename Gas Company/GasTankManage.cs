@@ -16,6 +16,7 @@ namespace Gas_Company
     public partial class GasTankManage : Form
     {   // connect to gas table
         private readonly string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
+        private DataView dataView;
 
         public GasTankManage()
         {
@@ -25,7 +26,7 @@ namespace Gas_Company
 
         }
         // 篩出所有桶重
-        private DataView dataView; // Declare a class-level variable to store the DataView
+        //private DataView dataView; // Declare a class-level variable to store the DataView
 
         private void GasTankManage_Load(object sender, EventArgs e)
         {
@@ -212,6 +213,22 @@ namespace Gas_Company
                     MessageBox.Show("登錄失敗！");
                 }
             }*/
+        }
+
+        private void GasExamineDay_ValueChanged(object sender, EventArgs e)
+        {
+            // Get the selected date from the DateTimePicker
+            DateTime selectedDate = GasExamineDay.Value.Date;
+
+            // Filter the DataGridView based on the selected date
+            dataView.RowFilter = $"GAS_Examine_Day < '{selectedDate.ToShortDateString()}'";
+        }
+
+        private void ResetFilterButton_Click(object sender, EventArgs e)
+        {
+            // Clear the filter and show all data
+            dataView.RowFilter = "";
+            GasExamineDay.Value = DateTime.Today; // Reset the DateTimePicker value to today's date
         }
     }
 }
