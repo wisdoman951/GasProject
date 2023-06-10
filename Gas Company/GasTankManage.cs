@@ -22,8 +22,6 @@ namespace Gas_Company
         {
             InitializeComponent();
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged; // Assign the event handler
-
-
         }
         // 篩出所有桶重
         //private DataView dataView; // Declare a class-level variable to store the DataView

@@ -30,6 +30,7 @@ namespace Gas_Company
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.ResetFilterButton = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.GasExamineDay = new System.Windows.Forms.DateTimePicker();
@@ -54,7 +55,6 @@ namespace Gas_Company
             this.GasDelete = new System.Windows.Forms.Button();
             this.edit = new System.Windows.Forms.Button();
             this.GasAdd = new System.Windows.Forms.Button();
-            this.ResetFilterButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -87,6 +87,15 @@ namespace Gas_Company
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(978, 209);
             this.panel1.TabIndex = 0;
+            // 
+            // ResetFilterButton
+            // 
+            this.ResetFilterButton.Location = new System.Drawing.Point(626, 106);
+            this.ResetFilterButton.Name = "ResetFilterButton";
+            this.ResetFilterButton.Size = new System.Drawing.Size(24, 23);
+            this.ResetFilterButton.TabIndex = 57;
+            this.ResetFilterButton.UseVisualStyleBackColor = true;
+            this.ResetFilterButton.Click += new System.EventHandler(this.ResetFilterButton_Click);
             // 
             // comboBox1
             // 
@@ -350,15 +359,6 @@ namespace Gas_Company
             this.GasAdd.Text = "新增";
             this.GasAdd.UseVisualStyleBackColor = false;
             this.GasAdd.Click += new System.EventHandler(this.GasAdd_Click);
-            // 
-            // ResetFilterButton
-            // 
-            this.ResetFilterButton.Location = new System.Drawing.Point(626, 106);
-            this.ResetFilterButton.Name = "ResetFilterButton";
-            this.ResetFilterButton.Size = new System.Drawing.Size(24, 23);
-            this.ResetFilterButton.TabIndex = 57;
-            this.ResetFilterButton.UseVisualStyleBackColor = true;
-            this.ResetFilterButton.Click += new System.EventHandler(this.ResetFilterButton_Click);
             // 
             // GasTankManage
             // 

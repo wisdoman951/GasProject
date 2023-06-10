@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Gas_Company</RootNamespace>
     <AssemblyName>Gas Company</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -115,11 +115,11 @@
     <Compile Include="Form3.Designer.cs">
       <DependentUpon>Form3.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form4.cs">
+    <Compile Include="ResidualChangeWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form4.Designer.cs">
-      <DependentUpon>Form4.cs</DependentUpon>
+    <Compile Include="ResidualChangeWindow.Designer.cs">
+      <DependentUpon>ResidualChangeWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="HistoryOrder.cs">
       <SubType>Form</SubType>
@@ -178,6 +178,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ResidualChangeWindow.resx">
+      <DependentUpon>ResidualChangeWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ResidualGas.resx">
       <DependentUpon>ResidualGas.cs</DependentUpon>
     </EmbeddedResource>

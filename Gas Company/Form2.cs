@@ -118,7 +118,7 @@ namespace Gas_Company
         // Open 殘氣累積視窗
         private void ResidualGasPage_Click(object sender, EventArgs e)
         {
-            //openChildForm(new ResidualGas());
+            openChildForm(new residual_gas());
         }
 
         // Open 瓦斯桶管理視窗
