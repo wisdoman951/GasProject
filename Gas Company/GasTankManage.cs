@@ -88,7 +88,7 @@ namespace Gas_Company
         }
         private void dataGridView1_CellFormatting_1(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (dataGridView1.Columns[e.ColumnIndex].Name == "GAS_Examine_Day") // Replace "GAS_Examine_Day" with the actual name of the column
+            if (dataGridView1.Columns[e.ColumnIndex].Name == "GAS_Examine_Day") 
             {
                 if (e.RowIndex >= 0 && e.RowIndex < dataGridView1.Rows.Count - 1)
                 {
@@ -102,12 +102,12 @@ namespace Gas_Company
                     if (daysDifference <= 0)
                     {
                         // Date has passed, set row background color to red
-                        dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Red;
+                        dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.IndianRed;
                     }
                     else if (daysDifference <= 30)
                     {
                         // Within 30 days, set row background color to yellow
-                        dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Yellow;
+                        dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Khaki;
                     }
                     else
                     {
@@ -159,7 +159,7 @@ namespace Gas_Company
                 if (result == DialogResult.Yes)
                 {
                     string gasId = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
-                    string query = "DELETE FROM `customer` WHERE `GAS_Id` = @GAS_Id";
+                    string query = "DELETE FROM `gas` WHERE `GAS_Id` = @GAS_Id";
                     using (MySqlConnection connection = new MySqlConnection(connectionString))
                     {
                         using (MySqlCommand command = new MySqlCommand(query, connection))
@@ -215,18 +215,40 @@ namespace Gas_Company
 
         private void GasExamineDay_ValueChanged(object sender, EventArgs e)
         {
-            // Get the selected date from the DateTimePicker
+            /*// Get the selected date from the DateTimePicker
             DateTime selectedDate = GasExamineDay.Value.Date;
 
             // Filter the DataGridView based on the selected date
-            dataView.RowFilter = $"GAS_Examine_Day < '{selectedDate.ToShortDateString()}'";
+            dataView.RowFilter = $"GAS_Examine_Day < '{selectedDate.ToShortDateString()}'";*/
         }
 
         private void ResetFilterButton_Click(object sender, EventArgs e)
         {
             // Clear the filter and show all data
-            dataView.RowFilter = "";
-            GasExamineDay.Value = DateTime.Today; // Reset the DateTimePicker value to today's date
+            //dataView.RowFilter = "";
+            //GasExamineDay.Value = DateTime.Today; // Reset the DateTimePicker value to today's date
+
+            DateTime selectedDate = GasExamineDay.Value.Date;
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.Cells["GAS_Examine_Day"].Value is DateTime examineDate)
+                {
+                    if (examineDate < selectedDate)
+                    {
+                        row.Visible = true; // Show the row
+                    }
+                    else
+                    {
+                        row.Visible = false; // Hide the row
+                    }
+                }
+            }
+        }
+
+        private void RefreshButton_Click(object sender, EventArgs e)
+        {
+            GasTankManage_Load(sender, e);
         }
     }
 }

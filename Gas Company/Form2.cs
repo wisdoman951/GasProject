@@ -71,7 +71,11 @@ namespace Gas_Company
         private void panel2_Paint(object sender, PaintEventArgs e)
         {
             // Here is to see the orders
-            string query = "SELECT o.ORDER_Id, c.CUSTOMER_PhoneNo, o.DELIVERY_Address, o.DELIVERY_Time, c.CUSTOMER_Name, od.Order_type, od.Order_weight, o.Gas_Quantity, o.COMPANY_Id FROM `gas_order` o JOIN`customer` c ON o.CUSTOMER_Id = c.CUSTOMER_Id JOIN `gas_order_detail` od ON o.ORDER_Id = od.Order_ID;";
+            string query = "SELECT o.ORDER_Id, c.CUSTOMER_PhoneNo, o.DELIVERY_Address, o.DELIVERY_Time, c.CUSTOMER_Name, od.Order_type, od.Order_weight, o.Gas_Quantity, o.COMPANY_Id, ca.Gas_Volume " +
+                           "FROM `gas_order` o " +
+                           "JOIN `customer` c ON o.CUSTOMER_Id = c.CUSTOMER_Id " +
+                           "JOIN `gas_order_detail` od ON o.ORDER_Id = od.Order_ID " +
+                           "JOIN `customer_accumulation` ca ON o.CUSTOMER_Id = ca.Customer_Id";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection))
@@ -90,6 +94,7 @@ namespace Gas_Company
                     dataGridView1.Columns["Order_weight"].HeaderText = "瓦斯規格";
                     dataGridView1.Columns["Gas_Quantity"].HeaderText = "數量";
                     dataGridView1.Columns["COMPANY_Id"].HeaderText = "選擇瓦斯行";
+                    dataGridView1.Columns["Gas_Volume"].HeaderText = "顧客累積殘氣量";
                     // You can check each column's name here
                     /*foreach (DataColumn column in table.Columns)
                     {
@@ -151,6 +156,7 @@ namespace Gas_Company
                 string orderWeight = selectedRow.Cells["Order_weight"].Value.ToString();
                 string orderType = selectedRow.Cells["Order_type"].Value.ToString();
                 string orderQuantity = selectedRow.Cells["Gas_Quantity"].Value.ToString();
+                string gasVolume = selectedRow.Cells["Gas_Volume"].Value.ToString();
 
                 // Autofill the other fields(Textbox) in the form
                 OrderID.Text = orderId;
@@ -161,6 +167,7 @@ namespace Gas_Company
                 GasType.Text = orderType;
                 GasWeight.Text = orderWeight;
                 GasQuantity.Text = orderQuantity;
+                GasVolume.Text = gasVolume;
             }
         }
 
@@ -285,10 +292,6 @@ namespace Gas_Company
             }
         }
 
-        private void print_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void DeliveryMan_Click(object sender, EventArgs e)
         {
@@ -370,12 +373,15 @@ namespace Gas_Company
             {
                 connection.Open();
 
-                string query = @"SELECT g.CUSTOMER_Id, g.DELIVERY_Time, g.DELIVERY_Address, g.DELIVERY_Phone, g.Gas_Quantity, g.Order_Time, g.Gas_Detail_Id, g.Order_Quantity, g.Order_type, g.Order_weight, g.Exchange, g.Completion_Date, c.CUSTOMER_Name
-                        FROM gas_order_history g
-                        JOIN customer c ON g.CUSTOMER_Id = c.CUSTOMER_Id
-                        WHERE g.DELIVERY_Phone LIKE CONCAT('%', @searchTerm, '%')
-                        ORDER BY g.DELIVERY_Time DESC
-                        LIMIT 1";
+                // 在 gas_order_history裡面的電話是 string, 要改成 varchar(50)才能用 
+                string query = @"SELECT g.CUSTOMER_Id, g.DELIVERY_Time, g.DELIVERY_Address, g.DELIVERY_Phone, g.Gas_Quantity, g.Order_Time, g.Gas_Detail_Id, g.Order_Quantity, g.Order_type, g.Order_weight, g.Exchange, g.Completion_Date, c.CUSTOMER_Name, ca.Gas_Volume
+                                FROM gas_order_history g
+                                JOIN customer c ON g.CUSTOMER_Id = c.CUSTOMER_Id
+                                JOIN customer_accumulation ca ON g.CUSTOMER_Id = ca.CUSTOMER_Id
+                                WHERE g.DELIVERY_Phone LIKE CONCAT('%', @searchTerm, '%')
+                                ORDER BY g.DELIVERY_Time DESC
+                                LIMIT 1
+                                ";
 
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
@@ -397,6 +403,7 @@ namespace Gas_Company
                             string gasType = row["Order_type"].ToString();
                             string gasWeight = row["Order_weight"].ToString();
                             string gasQuantity = row["Order_Quantity"].ToString();
+                            string gasVolume = row["Gas_Volume"].ToString();
 
                             OrderID.Text = "";
                             CustomerName.Text = customerName;
@@ -406,6 +413,7 @@ namespace Gas_Company
                             GasType.Text = gasType;
                             GasWeight.Text = gasWeight;
                             GasQuantity.Text = gasQuantity;
+                            GasVolume.Text = gasVolume;
 
 
                         }
@@ -427,10 +435,10 @@ namespace Gas_Company
 
                 // Step 1: Fetch relevant data from gas_order_history
                 string fetchQuery = @"SELECT *
-                          FROM gas_order_history
-                          WHERE DELIVERY_Phone = @searchTerm
-                          ORDER BY DELIVERY_Time DESC
-                          LIMIT 1";
+                              FROM gas_order_history
+                              WHERE DELIVERY_Phone = @searchTerm
+                              ORDER BY DELIVERY_Time DESC
+                              LIMIT 1";
 
                 using (MySqlCommand fetchCommand = new MySqlCommand(fetchQuery, connection))
                 {
@@ -439,28 +447,33 @@ namespace Gas_Company
                     {
                         if (reader.Read())
                         {
+
+                            
                             // Step 2: Extract data from the reader
                             int customerId = reader.GetInt32("CUSTOMER_Id");
                             int companyId = reader.GetInt32("COMPANY_Id");
-                            //string deliveryTime = DateTime.Now.ToLongTimeString();
                             string deliveryCondition = reader.GetString("DELIVERY_Condition");
                             string deliveryAddress = reader.GetString("DELIVERY_Address");
                             string deliveryPhone = reader.GetString("DELIVERY_Phone");
-                            int gasQuantity = reader.GetInt32("Gas_Quantity");
-                            //string orderTime = DateTime.Now.ToLongTimeString();
-                            //string expectTime = DateTime.Now.ToLongTimeString();
-                            int deliveryMethod = 1;
-                            int orderQuantity = reader.GetInt32("Order_Quantity");
-                            string orderType = reader.GetString("Order_type");
-                            int orderWeight = reader.GetInt32("Order_weight");
+
+                            //下面桶資訊先不要從歷史資訊抓然後插入，顧客可能想改
+                            //int gasQuantity = reader.GetInt32("Gas_Quantity");
+                            string gasQuantity = GasQuantity.Text;
+                            //int orderQuantity = reader.GetInt32("Order_Quantity");
+                            string orderQuantity = GasQuantity.Text;
+                            //string orderType = reader.GetString("Order_type");
+                            string orderType = GasType.Text;                        
+                            //int orderWeight = reader.GetInt32("Order_weight");
+                            string orderWeight = GasWeight.Text;
+
                             string exchange = reader.GetString("Exchange");
                             reader.Close();
+
                             // Step 3: Construct and execute the insert statements
                             string insertOrderQuery = @"INSERT INTO gas_order
-                                            (CUSTOMER_Id, COMPANY_Id, DELIVERY_Time, DELIVERY_Condition, Exchange,DELIVERY_Address, DELIVERY_Phone, Gas_Quantity, Order_Time, Expect_Time, Delivery_Method)
-                                            VALUES
-                                            (@customerId, @companyId, NOW(), @deliveryCondition, @exchange, @deliveryAddress, @deliveryPhone, @gasQuantity, NOW(), NOW(), @deliveryMethod);
-                                            SELECT LAST_INSERT_ID();";
+                                                (CUSTOMER_Id, COMPANY_Id, DELIVERY_Time, DELIVERY_Condition, Exchange, DELIVERY_Address, DELIVERY_Phone, Gas_Quantity, Order_Time, Expect_Time, Delivery_Method)
+                                                VALUES
+                                                (@customerId, @companyId, NOW(), @deliveryCondition, @exchange, @deliveryAddress, @deliveryPhone, @gasQuantity, NOW(), NOW(), @deliveryMethod)";
 
                             using (MySqlCommand insertOrderCommand = new MySqlCommand(insertOrderQuery, connection))
                             {
@@ -472,28 +485,43 @@ namespace Gas_Company
                                 insertOrderCommand.Parameters.AddWithValue("@deliveryPhone", deliveryPhone);
                                 insertOrderCommand.Parameters.AddWithValue("@gasQuantity", gasQuantity);
                                 insertOrderCommand.Parameters.AddWithValue("@exchange", exchange);
-                                insertOrderCommand.Parameters.AddWithValue("@deliveryMethod", deliveryMethod);
+                                insertOrderCommand.Parameters.AddWithValue("@deliveryMethod", 1); // Assuming deliveryMethod is always 1
 
-                                int orderId = Convert.ToInt32(insertOrderCommand.ExecuteScalar());
+                                // Execute the insert statement for gas_order
+                                int rowsAffected = insertOrderCommand.ExecuteNonQuery();
 
-                                // Step 4: Construct and execute the insert statement for gas_order_detail
-                                string insertOrderDetailQuery = @"INSERT INTO gas_order_detail
-                                                      (Order_ID, Order_Quantity, Order_type, Order_weight, exchange)
-                                                      VALUES
-                                                      (@orderId, @orderQuantity, @orderType, @orderWeight, @exchange)";
-
-                                using (MySqlCommand insertOrderDetailCommand = new MySqlCommand(insertOrderDetailQuery, connection))
+                                if (rowsAffected > 0)
                                 {
-                                    
-                                    // Bind parameters for the insert statement
-                                    insertOrderDetailCommand.Parameters.AddWithValue("@orderId", orderId);
-                                    insertOrderDetailCommand.Parameters.AddWithValue("@orderQuantity", orderQuantity);
-                                    insertOrderDetailCommand.Parameters.AddWithValue("@orderType", orderType);
-                                    insertOrderDetailCommand.Parameters.AddWithValue("@orderWeight", orderWeight);
-                                    insertOrderDetailCommand.Parameters.AddWithValue("@exchange", exchange);
+                                    // The row was successfully inserted
+                                    MessageBox.Show("成功加入訂單", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                                    // Execute the insert statement for gas_order_detail
-                                    insertOrderDetailCommand.ExecuteNonQuery();
+                                    // Get the generated ORDER_Id value
+                                    long orderId = insertOrderCommand.LastInsertedId;
+
+                                    // Use the orderId variable to insert into gas_order_detail table
+                                    string insertOrderDetailQuery = @"INSERT INTO gas_order_detail
+                                                              (Order_ID, Order_Quantity, Order_type, Order_weight, exchange)
+                                                              VALUES
+                                                              (@orderId, @orderQuantity, @orderType, @orderWeight, @exchange)";
+
+                                    using (MySqlCommand insertOrderDetailCommand = new MySqlCommand(insertOrderDetailQuery, connection))
+                                    {
+                                        // Bind parameters for the insert statement
+                                        insertOrderDetailCommand.Parameters.AddWithValue("@orderId", orderId);
+                                        insertOrderDetailCommand.Parameters.AddWithValue("@orderQuantity", orderQuantity);
+                                        insertOrderDetailCommand.Parameters.AddWithValue("@orderType", orderType);
+                                        insertOrderDetailCommand.Parameters.AddWithValue("@orderWeight", orderWeight);
+                                        insertOrderDetailCommand.Parameters.AddWithValue("@exchange", exchange);
+
+                                        // Execute the insert statement for gas_order_detail
+                                        insertOrderDetailCommand.ExecuteNonQuery();
+                                    }
+                                    RefreshButton_Click(sender, e);
+                                }
+                                else
+                                {
+                                    // Handle case when the row insertion failed
+                                    MessageBox.Show("訂單新增失敗", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
                             }
                         }
@@ -504,8 +532,9 @@ namespace Gas_Company
                     }
                 }
             }
-
         }
+
+
 
         private void RefreshButton_Click(object sender, EventArgs e)
         {

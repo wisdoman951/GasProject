@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
 using MySql.Data.MySqlClient;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Gas_Company
 {
@@ -24,7 +25,7 @@ namespace Gas_Company
 
         private void residual_gas_Load(object sender, EventArgs e)
         {
-            string query = "SELECT ca.Accum_Id, c.Customer_Id, c.Customer_Address, c.Customer_Name, ca.Gas_Volume, ca.Customer_Id, ca.Company_Id,  c.Customer_PhoneNo FROM customer_accumulation ca JOIN customer c ON ca.Customer_Id = c.Customer_Id; ";
+            string query = "SELECT ca.Accum_Id, c.Customer_Id, c.Customer_Address, c.Customer_Name, ca.Gas_Volume, ca.Company_Id, c.Customer_PhoneNo FROM customer_accumulation ca JOIN customer c ON ca.Customer_Id = c.Customer_Id; ";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -36,8 +37,11 @@ namespace Gas_Company
 
                     // Columns rename
                     dataGridView1.Columns["Accum_Id"].HeaderText = "累積編號";
+                    dataGridView1.Columns["Customer_Id"].HeaderText = "顧客編號";
                     dataGridView1.Columns["Customer_Name"].HeaderText = "顧客姓名";
+                    dataGridView1.Columns["Customer_Address"].HeaderText = "顧客地址";
                     dataGridView1.Columns["Customer_PhoneNo"].HeaderText = "顧客電話";
+                    dataGridView1.Columns["Company_Id"].HeaderText = "瓦斯行編號";
                     dataGridView1.Columns["Gas_Volume"].HeaderText = "殘氣量";
                 }
             }
@@ -89,16 +93,40 @@ namespace Gas_Company
 
         private void RefreshButton_Click(object sender, EventArgs e)
         {
-            //刷新dataGridView顯示的資料表
-            string query = "SELECT ca.Accum_Id, c.Customer_Id, c.Customer_Address, c.Customer_Name, ca.Gas_Volume, ca.Customer_Id, ca.Company_Id,  c.Customer_PhoneNo FROM customer_accumulation ca JOIN customer c ON ca.Customer_Id = c.Customer_Id; ";
+            residual_gas_Load(sender, e);
+        }
 
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+        private void SearchButton_Click(object sender, EventArgs e)
+        {
+            string searchTerm = CustomerPhone.Text;
+
+            if (!string.IsNullOrEmpty(searchTerm))
             {
-                using (MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection))
-                {
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
+                string query = "SELECT * FROM `customer` WHERE Customer_ID LIKE @Customer_ID OR Customer_Name LIKE @Customer_Name OR Customer_PhoneNo LIKE @Customer_PhoneNo";
 
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Customer_ID", "%" + searchTerm + "%");
+                        command.Parameters.AddWithValue("@Customer_Name", "%" + searchTerm + "%");
+                        command.Parameters.AddWithValue("@Customer_PhoneNo", "%" + searchTerm + "%");
+
+                        using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
+                        {
+                            DataTable table = new DataTable();
+                            adapter.Fill(table);
+
+                            if (table.Rows.Count == 0)
+                            {
+                                MessageBox.Show("未找到結果。請重試。", "搜索失敗", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                            else
+                            {
+                                dataGridView1.DataSource = table;
+                            }
+                        }
+                    }
                 }
             }
         }

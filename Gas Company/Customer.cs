@@ -86,6 +86,8 @@ namespace Gas_Company
                 DataGridViewRow selectedRow = CustomerField.Rows[e.RowIndex];
 
                 // Access the data in the selected row and autofill other fields in the form
+
+                string customerId = selectedRow.Cells["Customer_Id"].Value.ToString();
                 string customerName = selectedRow.Cells["Customer_Name"].Value.ToString();
                 string customerSex = selectedRow.Cells["Customer_Sex"].Value.ToString();
                 string customerPhone = selectedRow.Cells["Customer_PhoneNo"].Value.ToString();
@@ -97,6 +99,7 @@ namespace Gas_Company
                 string customerNote = selectedRow.Cells["Customer_Notes"].Value.ToString();
 
                 // Autofill the other fields(Textbox) in the form
+                CustomerID.Text = customerId;
                 CustomerName.Text = customerName;
                 CustomerSex.Text = customerSex;
                 CustomerPhone.Text = customerPhone;
@@ -115,7 +118,7 @@ namespace Gas_Company
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                string query = "SELECT * FROM `customer` WHERE Customer_ID LIKE @Customer_ID OR Customer_Name LIKE @Customer_Name OR Customer_Phone LIKE @Customer_Phone OR Customer_City LIKE @Customer_City";
+                string query = "SELECT * FROM `customer` WHERE Customer_ID LIKE @Customer_ID OR Customer_Name LIKE @Customer_Name OR Customer_PhoneNo LIKE @Customer_PhoneNo";
 
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
@@ -123,8 +126,7 @@ namespace Gas_Company
                     {
                         command.Parameters.AddWithValue("@Customer_ID", "%" + searchTerm + "%");
                         command.Parameters.AddWithValue("@Customer_Name", "%" + searchTerm + "%");
-                        command.Parameters.AddWithValue("@Customer_Phone", "%" + searchTerm + "%");
-                        command.Parameters.AddWithValue("@Customer_City", "%" + searchTerm + "%");
+                        command.Parameters.AddWithValue("@Customer_PhoneNo", "%" + searchTerm + "%");
 
                         using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
                         {
@@ -244,24 +246,24 @@ namespace Gas_Company
 
         private void HistoryOrderButton_Click(object sender, EventArgs e)
         {
-            string customerPhone = CustomerPhone.Text;
+            string customerId = CustomerID.Text;
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
 
                 string query = @"SELECT *
                                 FROM gas_order_history
-                                WHERE DELIVERY_Phone = (
-                                    SELECT DELIVERY_Phone
+                                WHERE CUSTOMER_Id IN (
+                                    SELECT CUSTOMER_Id
                                     FROM gas_order_history
-                                    WHERE DELIVERY_Phone = @customerPhone
+                                    WHERE CUSTOMER_Id = @customerId
                                 )
                                 ORDER BY DELIVERY_Time DESC;
                                 ";
 
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@customerPhone", customerPhone);
+                    command.Parameters.AddWithValue("@customerId", customerId);
 
                     using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
                     {
