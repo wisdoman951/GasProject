@@ -249,6 +249,17 @@ namespace Gas_Company
         private void RefreshButton_Click(object sender, EventArgs e)
         {
             GasTankManage_Load(sender, e);
+
+            // Autofill the other fields(Textbox) in the form
+            GasId.Text = "";
+            GasWeightFull.Text = "";
+            GasWeightEmpty.Text = "";
+            GasType.Text = "";
+            GasProduceDay.Text = "";
+            GasExamineDay.Text = "";
+            Supplier.Text = "";
+            Note.Text = "";
+            comboBox1.Text = "";
         }
     }
 }

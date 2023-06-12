@@ -560,6 +560,16 @@ namespace Gas_Company
                     dataGridView1.Columns["COMPANY_Id"].HeaderText = "選擇瓦斯行";
                 }
             }
+
+            OrderID.Text = "";
+            CustomerName.Text = "";
+            CustomerPhone.Text = "";
+            DeliveryTime.Text = "";
+            DeliveryAddress.Text = "";
+            GasType.Text = "";
+            GasWeight.Text = "";
+            GasQuantity.Text = "";
+            GasVolume.Text = "";
         }
     }
 }

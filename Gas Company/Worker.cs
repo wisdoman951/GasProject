@@ -86,8 +86,8 @@ namespace Gas_Company
                 conn.Open();
 
                 string insertQuery = "INSERT INTO worker " +
-                                     "(WORKER_Id, WORKER_Name,WORKER_PhoneNum, WORKER_HouseTelpNo, WORKER_Email, WORKER_Address, Permission, Registered_at) " +
-                                     "VALUES (LAST_INSERT_ID(), @WORKER_Name, @WORKER_PhoneNum, @WORKER_HouseTelpNo, @WORKER_Email, @WORKER_Address, @Permission, NOW())";
+                                     "(WORKER_Id, WORKER_Name,WORKER_PhoneNum, WORKER_HouseTelpNo, WORKER_Email, WORKER_Address, Permission, Registered_at, WORKER_Notes) " +
+                                     "VALUES (LAST_INSERT_ID(), @WORKER_Name, @WORKER_PhoneNum, @WORKER_HouseTelpNo, @WORKER_Email, @WORKER_Address, @Permission, NOW(), @Worker_Note)";
 
                 MySqlCommand cmd = new MySqlCommand(insertQuery, conn);
                 cmd.Parameters.AddWithValue("@WORKER_Name", WorkerName.Text);
@@ -96,6 +96,7 @@ namespace Gas_Company
                 cmd.Parameters.AddWithValue("@WORKER_Email", WorkerEmail.Text);
                 cmd.Parameters.AddWithValue("@WORKER_Address", WorkerAddress.Text);
                 cmd.Parameters.AddWithValue("@Permission", PermissionValue.Text);
+                cmd.Parameters.AddWithValue("@WORKER_Note", WorkerNote.Text);
 
                 if (cmd.ExecuteNonQuery() == 1)
                 {
@@ -182,6 +183,59 @@ namespace Gas_Company
             }
 
             MessageBox.Show("權限變更成功", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void ClearButton_Click(object sender, EventArgs e)
+        {
+
+            WorkerID.Text = "";
+            WorkerName.Text = "";
+            WorkerPhone.Text = "";
+            WorkerTele.Text = "";
+            WorkerEmail.Text = "";
+            WorkerAddress.Text = "";
+            PermissionValue.Text = "";
+            WorkerNote.Text = "";
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            string searchTerm = textBox1.Text;
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                string query = "SELECT * FROM `worker` WHERE Customer_ID LIKE @Customer_ID OR Customer_Name LIKE @Customer_Name OR Customer_PhoneNo LIKE @Customer_PhoneNo";
+
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Customer_ID", "%" + searchTerm + "%");
+                        command.Parameters.AddWithValue("@Customer_Name", "%" + searchTerm + "%");
+                        command.Parameters.AddWithValue("@Customer_PhoneNo", "%" + searchTerm + "%");
+
+                        using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
+                        {
+                            DataTable table = new DataTable();
+                            adapter.Fill(table);
+
+                            if (table.Rows.Count == 0)
+                            {
+                                MessageBox.Show("未找到結果。請重試。", "搜索失敗", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                            else
+                            {
+                                dataGridView1.DataSource = table;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void RefreshButton_Click(object sender, EventArgs e)
+        {
+            Worker_Load(sender, e);
         }
     }
 }
