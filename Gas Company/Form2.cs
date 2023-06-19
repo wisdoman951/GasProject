@@ -111,7 +111,8 @@ namespace Gas_Company
         // Open 主頁面
         private void GasOrderPage_Click(object sender, EventArgs e)
         {
-            activeForm.Close();
+            if (activeForm != null)
+                activeForm.Close();
         }
 
         // Open 客戶管理視窗
