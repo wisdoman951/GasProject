@@ -25,7 +25,7 @@ namespace Gas_Company
 
         private void residual_gas_Load(object sender, EventArgs e)
         {
-            string query = "SELECT ca.Accum_Id, c.Customer_Id, c.Customer_Address, c.Customer_Name, ca.Gas_Volume, ca.Company_Id, c.Customer_PhoneNo FROM customer_accumulation ca JOIN customer c ON ca.Customer_Id = c.Customer_Id; ";
+            string query = $"SELECT ca.Accum_Id, c.Customer_Id, c.Customer_Address, c.Customer_Name, ca.Gas_Volume, ca.Company_Id, c.Customer_PhoneNo FROM customer_accumulation ca JOIN customer c ON ca.Customer_Id = c.Customer_Id WHERE ca.Company_Id = {GlobalVariables.CompanyId};";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -98,18 +98,18 @@ namespace Gas_Company
 
         private void SearchButton_Click(object sender, EventArgs e)
         {
-            string searchTerm = CustomerPhone.Text;
+            string searchTerm = txt.Text;
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                string query = "SELECT * FROM `customer` WHERE Customer_ID LIKE @Customer_ID OR Customer_Name LIKE @Customer_Name OR Customer_PhoneNo LIKE @Customer_PhoneNo";
+                string query = "SELECT ca.Accum_Id, c.Customer_Id, c.Customer_Address, c.Customer_Name, ca.Gas_Volume, ca.Company_Id, c.Customer_PhoneNo FROM customer_accumulation ca JOIN customer c ON ca.Customer_Id = c.Customer_Id " +
+                        "WHERE c.Customer_PhoneNo LIKE @Customer_PhoneNo;";
+
 
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Customer_ID", "%" + searchTerm + "%");
-                        command.Parameters.AddWithValue("@Customer_Name", "%" + searchTerm + "%");
                         command.Parameters.AddWithValue("@Customer_PhoneNo", "%" + searchTerm + "%");
 
                         using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))

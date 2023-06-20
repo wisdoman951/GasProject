@@ -31,7 +31,6 @@ namespace Gas_Company
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.edit = new System.Windows.Forms.Button();
             this.AccResidual = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.CustomerPhone = new System.Windows.Forms.TextBox();
@@ -54,7 +53,7 @@ namespace Gas_Company
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(29, 147);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
@@ -65,7 +64,6 @@ namespace Gas_Company
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.edit);
             this.panel1.Controls.Add(this.AccResidual);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.CustomerPhone);
@@ -75,25 +73,10 @@ namespace Gas_Company
             this.panel1.Controls.Add(this.CustomerID);
             this.panel1.Controls.Add(this.label12);
             this.panel1.Location = new System.Drawing.Point(29, 18);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(996, 75);
             this.panel1.TabIndex = 3;
-            // 
-            // edit
-            // 
-            this.edit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(118)))), ((int)(((byte)(58)))));
-            this.edit.FlatAppearance.BorderSize = 0;
-            this.edit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.edit.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.edit.ForeColor = System.Drawing.Color.White;
-            this.edit.Location = new System.Drawing.Point(613, 32);
-            this.edit.Name = "edit";
-            this.edit.Size = new System.Drawing.Size(83, 26);
-            this.edit.TabIndex = 7;
-            this.edit.Text = "殘氣修改";
-            this.edit.UseVisualStyleBackColor = false;
-            this.edit.Click += new System.EventHandler(this.edit_Click_1);
             // 
             // AccResidual
             // 
@@ -101,7 +84,7 @@ namespace Gas_Company
             this.AccResidual.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.AccResidual.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AccResidual.Location = new System.Drawing.Point(496, 34);
-            this.AccResidual.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.AccResidual.Margin = new System.Windows.Forms.Padding(2);
             this.AccResidual.Name = "AccResidual";
             this.AccResidual.ReadOnly = true;
             this.AccResidual.Size = new System.Drawing.Size(109, 20);
@@ -125,7 +108,7 @@ namespace Gas_Company
             this.CustomerPhone.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.CustomerPhone.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CustomerPhone.Location = new System.Drawing.Point(342, 34);
-            this.CustomerPhone.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.CustomerPhone.Margin = new System.Windows.Forms.Padding(2);
             this.CustomerPhone.Name = "CustomerPhone";
             this.CustomerPhone.Size = new System.Drawing.Size(109, 20);
             this.CustomerPhone.TabIndex = 42;
@@ -148,7 +131,7 @@ namespace Gas_Company
             this.CustomerName.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.CustomerName.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CustomerName.Location = new System.Drawing.Point(184, 34);
-            this.CustomerName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.CustomerName.Margin = new System.Windows.Forms.Padding(2);
             this.CustomerName.Name = "CustomerName";
             this.CustomerName.Size = new System.Drawing.Size(109, 20);
             this.CustomerName.TabIndex = 40;
@@ -171,7 +154,7 @@ namespace Gas_Company
             this.CustomerID.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.CustomerID.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CustomerID.Location = new System.Drawing.Point(29, 34);
-            this.CustomerID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.CustomerID.Margin = new System.Windows.Forms.Padding(2);
             this.CustomerID.Name = "CustomerID";
             this.CustomerID.Size = new System.Drawing.Size(109, 20);
             this.CustomerID.TabIndex = 34;
@@ -291,6 +274,5 @@ namespace Gas_Company
         private System.Windows.Forms.TextBox txt;
         private System.Windows.Forms.TextBox AccResidual;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button edit;
     }
 }

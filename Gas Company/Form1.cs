@@ -14,7 +14,6 @@ namespace Gas_Company
 {
     public partial class Form1 : Form
     {
-        //private readonly string connectionString = "Server=localhost;Database=new_test;Uid=root;Pwd=88888888";
         private readonly string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
 
 
@@ -52,8 +51,13 @@ namespace Gas_Company
 
                 if (result != null)
                 {
-                    int Employee_ID = Convert.ToInt32(result);
-                    MessageBox.Show($"{Employee_ID} 登入成功！");
+                    Console.WriteLine("Email: " + email);
+                    Console.WriteLine("Password: " + password);
+                    Console.WriteLine("Result: " + result);
+                    string managerId = Convert.ToString(result);
+                    GlobalVariables.CompanyId = managerId;
+                    Console.WriteLine(GlobalVariables.CompanyId);
+                    MessageBox.Show("登入成功！");
                     Form2 mainForm = new Form2();
                     mainForm.Show();
                     this.Hide();

@@ -253,43 +253,21 @@ namespace Gas_Company
         }
         private void CustomerInformation_Click(object sender, EventArgs e)
         {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            //開啟基本用戶資料頁面
+            //編輯修改某筆資料
+            if (dataGridView1.SelectedRows.Count > 0)
             {
-                connection.Open();
+                string id = dataGridView1.SelectedRows[0].Cells["ORDER_Id"].Value.ToString();
 
-                string query = @"SELECT *
-                                FROM customer
-                                WHERE CUSTOMER_Id = (
-                                    SELECT CUSTOMER_Id
-                                    FROM gas_order
-                                    WHERE ORDER_Id = @order_id
-                                )
-                                ";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+                // Pass the selected ID to the customer_form for editing
+                customer_form f1 = new customer_form(id);
+                if (f1.ShowDialog() == DialogResult.OK)
                 {
-                    command.Parameters.AddWithValue("@order_id", OrderID.Text);
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        List<CustomerData> customerDataList = new List<CustomerData>();
-                        while (reader.Read())
-                        {
-                            CustomerData customerData = new CustomerData
-                            {
-                                CustomerId = reader.GetString("CUSTOMER_Id"),
-                                CustomerName = reader.GetString("CUSTOMER_Name"),
-                                CustomerPhone = reader.GetString("CUSTOMER_PhoneNo"),
-                                CustomerSex = reader.GetString("CUSTOMER_Sex"),
-                                FamilyMemberId = reader.GetString("CUSTOMER_FamilyMemberId"),
-                                CustomerEmail = reader.GetString("CUSTOMER_Email")
-                            };
-                            customerDataList.Add(customerData);
-                        }
-                        CustomerInformation customerInformation = new CustomerInformation();
-                        customerInformation.Show();
-                        customerInformation.SetData(customerDataList);
-                    }
                 }
+            }
+            else
+            {
+                MessageBox.Show("請選擇要編輯的資料行", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

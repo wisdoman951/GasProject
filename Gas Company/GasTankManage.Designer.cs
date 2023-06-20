@@ -345,6 +345,7 @@ namespace Gas_Company
             this.edit.TabIndex = 92;
             this.edit.Text = "編輯";
             this.edit.UseVisualStyleBackColor = false;
+            this.edit.Click += new System.EventHandler(this.edit_Click);
             // 
             // GasAdd
             // 

@@ -23,7 +23,7 @@ namespace Gas_Company
 
         private void customer_Load(object sender, EventArgs e)
         {
-            string query = "SELECT * FROM `customer`";
+            string query = $"SELECT * FROM `customer` WHERE Company_Id = {GlobalVariables.CompanyId};";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -31,7 +31,7 @@ namespace Gas_Company
                 {
                     DataTable table = new DataTable();
                     adapter.Fill(table);
-                    CustomerField.DataSource = table;
+                    dataGridView1.DataSource = table;
                     // Change the original column order
                     string[] columnOrder = {
                                             "CUSTOMER_Id",
@@ -53,26 +53,26 @@ namespace Gas_Company
                     // Loop through the columns and set their display index
                     foreach (string columnName in columnOrder)
                     {
-                        if (CustomerField.Columns.Contains(columnName))
+                        if (dataGridView1.Columns.Contains(columnName))
                         {
-                            CustomerField.Columns[columnName].DisplayIndex = Array.IndexOf(columnOrder, columnName);
+                            dataGridView1.Columns[columnName].DisplayIndex = Array.IndexOf(columnOrder, columnName);
                         }
                     }
                     // Columns rename
-                    CustomerField.Columns["CUSTOMER_Id"].HeaderText = "客戶編號";
-                    CustomerField.Columns["CUSTOMER_Name"].HeaderText = "客戶姓名";
-                    CustomerField.Columns["CUSTOMER_Sex"].HeaderText = "客戶性別";
-                    CustomerField.Columns["CUSTOMER_PhoneNo"].HeaderText = "客戶電話";
-                    CustomerField.Columns["CUSTOMER_Postal_Code"].HeaderText = "客戶郵遞區號";
-                    CustomerField.Columns["CUSTOMER_Address"].HeaderText = "客戶地址";
-                    CustomerField.Columns["CUSTOMER_HouseTelpNo"].HeaderText = "客戶家用電話";
-                    CustomerField.Columns["CUSTOMER_Password"].HeaderText = "客戶密碼";
-                    CustomerField.Columns["CUSTOMER_Email"].HeaderText = "客戶電子郵件";
-                    CustomerField.Columns["CUSTOMER_FamilyMemberId"].HeaderText = "客戶關係家人";
-                    CustomerField.Columns["COMPANY_Id"].HeaderText = "客戶瓦斯行";
-                    CustomerField.Columns["COMPANY_HistoryID"].HeaderText = "客戶歷史瓦斯行";
-                    CustomerField.Columns["CUSTOMER_Notes"].HeaderText = "客戶備註";
-                    CustomerField.Columns["CUSTOMER_Registration_Time"].HeaderText = "客戶註冊時間";
+                    dataGridView1.Columns["CUSTOMER_Id"].HeaderText = "客戶編號";
+                    dataGridView1.Columns["CUSTOMER_Name"].HeaderText = "客戶姓名";
+                    dataGridView1.Columns["CUSTOMER_Sex"].HeaderText = "客戶性別";
+                    dataGridView1.Columns["CUSTOMER_PhoneNo"].HeaderText = "客戶電話";
+                    dataGridView1.Columns["CUSTOMER_Postal_Code"].HeaderText = "客戶郵遞區號";
+                    dataGridView1.Columns["CUSTOMER_Address"].HeaderText = "客戶地址";
+                    dataGridView1.Columns["CUSTOMER_HouseTelpNo"].HeaderText = "客戶家用電話";
+                    dataGridView1.Columns["CUSTOMER_Password"].HeaderText = "客戶密碼";
+                    dataGridView1.Columns["CUSTOMER_Email"].HeaderText = "客戶電子郵件";
+                    dataGridView1.Columns["CUSTOMER_FamilyMemberId"].HeaderText = "客戶關係家人";
+                    dataGridView1.Columns["COMPANY_Id"].HeaderText = "客戶瓦斯行";
+                    dataGridView1.Columns["COMPANY_HistoryID"].HeaderText = "客戶歷史瓦斯行";
+                    dataGridView1.Columns["CUSTOMER_Notes"].HeaderText = "客戶備註";
+                    dataGridView1.Columns["CUSTOMER_Registration_Time"].HeaderText = "客戶註冊時間";
 
                 }
             }
@@ -83,7 +83,7 @@ namespace Gas_Company
         {
             if (e.RowIndex >= 0)
             {
-                DataGridViewRow selectedRow = CustomerField.Rows[e.RowIndex];
+                DataGridViewRow selectedRow = dataGridView1.Rows[e.RowIndex];
 
                 // Access the data in the selected row and autofill other fields in the form
 
@@ -118,7 +118,7 @@ namespace Gas_Company
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                string query = "SELECT * FROM `customer` WHERE Customer_ID LIKE @Customer_ID OR Customer_Name LIKE @Customer_Name OR Customer_PhoneNo LIKE @Customer_PhoneNo";
+                string query = $"SELECT * FROM `customer` WHERE Customer_ID LIKE @Customer_ID OR Customer_Name LIKE @Customer_Name OR Customer_PhoneNo LIKE @Customer_PhoneNo WHERE Company_Id = {GlobalVariables.CompanyId};";
 
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
@@ -139,7 +139,7 @@ namespace Gas_Company
                             }
                             else
                             {
-                                CustomerField.DataSource = table;
+                                dataGridView1.DataSource = table;
                             }
                         }
                     }
@@ -149,12 +149,12 @@ namespace Gas_Company
 
         private void CDeleteButton_Click(object sender, EventArgs e)
         {
-            if (CustomerField.SelectedRows.Count > 0)
+            if (dataGridView1.SelectedRows.Count > 0)
             {
                 DialogResult result = MessageBox.Show("确定删除此行資料？", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    string customerId = CustomerField.SelectedRows[0].Cells[0].Value.ToString();
+                    string customerId = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
                     string query = "DELETE FROM `customer` WHERE `customer_Id` = @customerId";
                     using (MySqlConnection connection = new MySqlConnection(connectionString))
                     {
@@ -166,7 +166,7 @@ namespace Gas_Company
                             connection.Close();
                             if (rowsAffected > 0)
                             {
-                                CustomerField.Rows.RemoveAt(CustomerField.SelectedRows[0].Index);
+                                dataGridView1.Rows.RemoveAt(dataGridView1.SelectedRows[0].Index);
                                 MessageBox.Show("删除成功", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
                         }
@@ -181,67 +181,19 @@ namespace Gas_Company
 
         private void CUpdateButton_Click(object sender, EventArgs e)
         {
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                conn.Open();
-
-                MySqlCommand cmd = new MySqlCommand("SELECT * FROM customer", conn);
-                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-
-                da.Fill(dt);
-                CustomerField.DataSource = dt;
-                conn.Close();
-            }
+            customer_Load(sender, e);
         }
 
         private void CAddButton_Click(object sender, EventArgs e)
         {
-            string connStr = ConfigurationManager.AppSettings["ConnectionString"];
-            using (MySqlConnection conn = new MySqlConnection(connStr))
+            //開啟基本用戶資料頁面
+            //新增一筆資料
+            customer_form f1 = new customer_form(null);
+            if (f1.ShowDialog() == DialogResult.OK)
             {
-                conn.Open();
-
-                //string insertQuery = "INSERT INTO customer (CCUSTOMER_Id, CUSTOMER_Name, CUSTOMER_Sex, CUSTOMER_PhoneNo, CUSTOMER_HouseTelpNo, CUSTOMER_Email, CUSTOMER_City, CUSTOMER_District, CUSTOMER_Address, CUSTOMER_FamilyMemberId, COMPANY_Id, CUSTOMER_Registration_Time) " +
-                //    "VALUES (LAST_INSERT_ID(), @CUSTOMER_Name, @CUSTOMER_Sex, @CUSTOMER_PhoneNo, @CUSTOMER_HouseTelpNo, @CUSTOMER_Email, @CUSTOMER_City, @CUSTOMER_District, @CUSTOMER_Address, @CUSTOMER_FamilyMemberId, @COMPANY_Id, NOW())";
-                string insertQuery = "INSERT INTO customer (CUSTOMER_Id, CUSTOMER_Name, CUSTOMER_Sex, CUSTOMER_PhoneNo, CUSTOMER_Email, CUSTOMER_Address, CUSTOMER_Registration_Time) " +
-                    "VALUES (LAST_INSERT_ID(), @CUSTOMER_Name, @CUSTOMER_Sex, @CUSTOMER_PhoneNo, @CUSTOMER_Email, @CUSTOMER_Address, NOW())";
-
-                using (MySqlCommand cmd = new MySqlCommand(insertQuery, conn))
-                {
-
-                    cmd.Parameters.AddWithValue("@CUSTOMER_Name", CustomerName.Text);
-                    cmd.Parameters.AddWithValue("@CUSTOMER_Sex", CustomerSex.Text);
-                    cmd.Parameters.AddWithValue("@CUSTOMER_PhoneNo", CustomerPhone.Text);
-                    cmd.Parameters.AddWithValue("@CUSTOMER_HouseTelpNo", CustomerNumber.Text);
-                    cmd.Parameters.AddWithValue("@CUSTOMER_Email", CustomerEmail.Text);
-                    cmd.Parameters.AddWithValue("@CUSTOMER_Address", CustomerAddress.Text);
-                    //cmd.Parameters.AddWithValue("@CUSTOMER_FamilyMemberId", family.Text);
-                    //cmd.Parameters.AddWithValue("@COMPANY_Id", company.Text);
-
-                    if (cmd.ExecuteNonQuery() == 1)
-                    {
-                        MessageBox.Show("登錄成功！");
-                        this.Close();
-                    }
-                    else
-                    {
-                        MessageBox.Show("登錄失敗！");
-                    }
-                }
-
-                
+                // Perform data refresh or any other required actions after the form is closed
+                RefreshData();
             }
-        }
-
-        private void dataGridView1_Paint(object sender, PaintEventArgs e)
-        {
-            
-        }
-
-        private void CustomerName_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void HistoryOrderButton_Click(object sender, EventArgs e)
@@ -280,6 +232,41 @@ namespace Gas_Company
                         historyOrderForm.ShowDialog();
 
                     }
+                }
+            }
+        }
+
+        private void edit_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                string id = dataGridView1.SelectedRows[0].Cells["CUSTOMER_Id"].Value.ToString();
+
+                // Pass the selected ID to the customer_form for editing
+                customer_form f1 = new customer_form(id);
+                if (f1.ShowDialog() == DialogResult.OK)
+                {
+                    // Perform data refresh or any other required actions after the form is closed
+                    RefreshData();
+                }
+            }
+            else
+            {
+                MessageBox.Show("請選擇要編輯的資料行", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+        // 操作完要REFRESH一下
+        private void RefreshData()
+        {
+            string query = "SELECT * FROM `customer`";
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection))
+                {
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+
+                    dataGridView1.DataSource = table;
                 }
             }
         }

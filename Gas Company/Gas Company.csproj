@@ -97,6 +97,12 @@
     <Compile Include="CustomerInformation.Designer.cs">
       <DependentUpon>CustomerInformation.cs</DependentUpon>
     </Compile>
+    <Compile Include="customer_form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="customer_form.Designer.cs">
+      <DependentUpon>customer_form.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,6 +121,19 @@
     <Compile Include="Form3.Designer.cs">
       <DependentUpon>Form3.cs</DependentUpon>
     </Compile>
+    <Compile Include="WorkerManage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WorkerManage.Designer.cs">
+      <DependentUpon>WorkerManage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="gas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="gas.Designer.cs">
+      <DependentUpon>gas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GlobalVariables.cs" />
     <Compile Include="ResidualChangeWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -153,6 +172,9 @@
     <EmbeddedResource Include="CustomerInformation.resx">
       <DependentUpon>CustomerInformation.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="customer_form.resx">
+      <DependentUpon>customer_form.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -161,6 +183,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form3.resx">
       <DependentUpon>Form3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="gas.resx">
+      <DependentUpon>gas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GasTankManage.resx">
       <DependentUpon>GasTankManage.cs</DependentUpon>
@@ -186,6 +211,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Worker.resx">
       <DependentUpon>Worker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WorkerManage.resx">
+      <DependentUpon>WorkerManage.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

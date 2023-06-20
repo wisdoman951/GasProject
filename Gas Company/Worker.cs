@@ -23,7 +23,7 @@ namespace Gas_Company
         }
         private void Worker_Load(object sender, EventArgs e)
         {
-            string query = "SELECT * FROM `worker`";
+            string query = $"SELECT * FROM `worker` WHERE WORKER_Company_Id = {GlobalVariables.CompanyId}";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -63,6 +63,7 @@ namespace Gas_Company
                 string workerEmail = selectedRow.Cells["WORKER_Email"].Value.ToString();
                 string workerAddress = selectedRow.Cells["WORKER_Address"].Value.ToString();
                 string workerPermission = selectedRow.Cells["Permission"].Value.ToString();
+                string workerNote = selectedRow.Cells["Worker_Notes"].Value.ToString();
 
                 // Autofill the other fields(Textbox) in the form
                 WorkerID.Text = workerId;
@@ -72,41 +73,11 @@ namespace Gas_Company
                 WorkerEmail.Text = workerEmail;
                 WorkerAddress.Text = workerAddress;
                 PermissionValue.Text = workerPermission;
+                WorkerNote.Text = workerNote;
 
                 originalPermission = Convert.ToInt32(workerPermission);
                 PermissionValue.SelectedIndexChanged += PermissionValue_SelectedIndexChanged;
 
-            }
-        }
-        //// Insert Employee
-        private void EmployeeAddButton_Click(object sender, EventArgs e)
-        {
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                conn.Open();
-
-                string insertQuery = "INSERT INTO worker " +
-                                     "(WORKER_Id, WORKER_Name,WORKER_PhoneNum, WORKER_HouseTelpNo, WORKER_Email, WORKER_Address, Permission, Registered_at, WORKER_Notes) " +
-                                     "VALUES (LAST_INSERT_ID(), @WORKER_Name, @WORKER_PhoneNum, @WORKER_HouseTelpNo, @WORKER_Email, @WORKER_Address, @Permission, NOW(), @Worker_Note)";
-
-                MySqlCommand cmd = new MySqlCommand(insertQuery, conn);
-                cmd.Parameters.AddWithValue("@WORKER_Name", WorkerName.Text);
-                cmd.Parameters.AddWithValue("@WORKER_PhoneNum", WorkerPhone.Text);
-                cmd.Parameters.AddWithValue("@WORKER_HouseTelpNo", WorkerTele.Text);
-                cmd.Parameters.AddWithValue("@WORKER_Email", WorkerEmail.Text);
-                cmd.Parameters.AddWithValue("@WORKER_Address", WorkerAddress.Text);
-                cmd.Parameters.AddWithValue("@Permission", PermissionValue.Text);
-                cmd.Parameters.AddWithValue("@WORKER_Note", WorkerNote.Text);
-
-                if (cmd.ExecuteNonQuery() == 1)
-                {
-                    MessageBox.Show("登錄成功！");
-                    this.Close();
-                }
-                else
-                {
-                    MessageBox.Show("登錄失敗！");
-                }
             }
         }
 
@@ -204,7 +175,7 @@ namespace Gas_Company
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                string query = "SELECT * FROM `worker` WHERE Customer_ID LIKE @Customer_ID OR Customer_Name LIKE @Customer_Name OR Customer_PhoneNo LIKE @Customer_PhoneNo";
+                string query = $"SELECT * FROM `worker` WHERE Customer_ID LIKE @Customer_ID OR Customer_Name LIKE @Customer_Name OR Customer_PhoneNo LIKE @Customer_PhoneNo WHERE WORKER_Company_Id = {GlobalVariables.CompanyId}";
 
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
@@ -236,6 +207,38 @@ namespace Gas_Company
         private void RefreshButton_Click(object sender, EventArgs e)
         {
             Worker_Load(sender, e);
+        }
+
+        private void WorkerAddButton_Click(object sender, EventArgs e)
+        {
+            //開啟基本用戶資料頁面
+            //新增一筆資料
+            WorkerManage f1 = new WorkerManage(null);
+            if (f1.ShowDialog() == DialogResult.OK)
+            {
+                // Perform data refresh or any other required actions after the form is closed
+                Worker_Load(sender, e);
+            }
+        }
+
+        private void WorkerEditButton_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                string id = dataGridView1.SelectedRows[0].Cells["WORKER_Id"].Value.ToString();
+
+                // Pass the selected ID to the customer_form for editing
+                WorkerManage f1 = new WorkerManage(id);
+                if (f1.ShowDialog() == DialogResult.OK)
+                {
+                    // Perform data refresh or any other required actions after the form is closed
+                    Worker_Load(sender, e);
+                }
+            }
+            else
+            {
+                MessageBox.Show("請選擇要編輯的資料行", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }

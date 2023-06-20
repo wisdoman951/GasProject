@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
 using MySql.Data.MySqlClient;
+using System.ComponentModel.Design;
 
 namespace Gas_Company
 {
@@ -28,7 +29,7 @@ namespace Gas_Company
 
         private void GasTankManage_Load(object sender, EventArgs e)
         {
-            string query = "SELECT * FROM `gas`";
+            string query = $"SELECT * FROM `gas` WHERE GAS_Company_Id = {GlobalVariables.CompanyId}";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -88,7 +89,7 @@ namespace Gas_Company
         }
         private void dataGridView1_CellFormatting_1(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (dataGridView1.Columns[e.ColumnIndex].Name == "GAS_Examine_Day") 
+            if (dataGridView1.Columns[e.ColumnIndex].Name == "GAS_Examine_day") 
             {
                 if (e.RowIndex >= 0 && e.RowIndex < dataGridView1.Rows.Count - 1)
                 {
@@ -99,7 +100,7 @@ namespace Gas_Company
                     int daysDifference = (int)(examineDate - currentDate).TotalDays;
 
                     // Set the background color based on the date comparison
-                    if (daysDifference <= 0)
+                    if (daysDifference < 0)
                     {
                         // Date has passed, set row background color to red
                         dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.IndianRed;
@@ -185,32 +186,9 @@ namespace Gas_Company
 
         private void GasAdd_Click(object sender, EventArgs e)
         {
-            /*using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                conn.Open();
-
-                string insertQuery = "INSERT INTO gas " +
-                                     "(GAS_Id, GAS_Company_Id, GAS_Weight_Full, , GAS_Type, GAS_Price, GAS_Volume, GAS_Examine_Day, GAS_Produce_Day, GAS_Supplier, Gas_Registration_Time, last_worker_id) " +
-                                     "VALUES (LAST_INSERT_ID(), @GAS_Company_Id, @GAS_Weight_Full, @GAS_Weight_Empty, @GAS_Price, @GAS_Volume, @GAS_Examine_Day, GAS_Produce_Day, GAS_Supplier, NOW())";
-
-                MySqlCommand cmd = new MySqlCommand(insertQuery, conn);
-                cmd.Parameters.AddWithValue("@WORKER_Name", WorkerName.Text);
-                cmd.Parameters.AddWithValue("@WORKER_PhoneNum", WorkerPhone.Text);
-                cmd.Parameters.AddWithValue("@WORKER_HouseTelpNo", WorkerTele.Text);
-                cmd.Parameters.AddWithValue("@WORKER_Email", WorkerEmail.Text);
-                cmd.Parameters.AddWithValue("@WORKER_Address", WorkerAddress.Text);
-                cmd.Parameters.AddWithValue("@Permission", PermissionValue.Text);
-
-                if (cmd.ExecuteNonQuery() == 1)
-                {
-                    MessageBox.Show("登錄成功！");
-                    this.Close();
-                }
-                else
-                {
-                    MessageBox.Show("登錄失敗！");
-                }
-            }*/
+            gas f1;
+            f1 = new gas();
+            f1.ShowDialog();
         }
 
         private void GasExamineDay_ValueChanged(object sender, EventArgs e)
@@ -260,6 +238,42 @@ namespace Gas_Company
             Supplier.Text = "";
             Note.Text = "";
             comboBox1.Text = "";
+        }
+
+        private void edit_Click(object sender, EventArgs e)
+        {
+            // Get the selected row
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                // Get the Gas_ID of the selected row
+                string gasId = dataGridView1.SelectedRows[0].Cells["Gas_ID"].Value.ToString();
+
+                // Pass the gasId to the edit form
+                gas editForm = new gas(gasId);
+                editForm.ShowDialog();
+
+                // Refresh the DataGridView after editing
+                RefreshDataGridView();
+            }
+            else
+            {
+                MessageBox.Show("Please select a row to edit.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+        private void RefreshDataGridView()
+        {
+            // Refresh the DataGridView
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("SELECT * FROM gas WHERE GAS_Company_Id = @CompanyId", conn);
+                cmd.Parameters.AddWithValue("@CompanyId", GlobalVariables.CompanyId);
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                dataGridView1.DataSource = dt;
+                conn.Close();
+            }
         }
     }
 }
