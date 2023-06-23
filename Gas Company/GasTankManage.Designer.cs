@@ -30,6 +30,8 @@ namespace Gas_Company
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.ResetFilterButton = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -63,6 +65,8 @@ namespace Gas_Company
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.label9);
+            this.panel1.Controls.Add(this.comboBox2);
             this.panel1.Controls.Add(this.ResetFilterButton);
             this.panel1.Controls.Add(this.comboBox1);
             this.panel1.Controls.Add(this.label3);
@@ -88,6 +92,26 @@ namespace Gas_Company
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(978, 209);
             this.panel1.TabIndex = 0;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label9.Location = new System.Drawing.Point(680, 132);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(74, 22);
+            this.label9.TabIndex = 59;
+            this.label9.Text = "製造年份";
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(684, 157);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(153, 25);
+            this.comboBox2.TabIndex = 58;
+            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
             // ResetFilterButton
             // 
@@ -125,7 +149,6 @@ namespace Gas_Company
             this.GasExamineDay.Name = "GasExamineDay";
             this.GasExamineDay.Size = new System.Drawing.Size(153, 27);
             this.GasExamineDay.TabIndex = 54;
-            this.GasExamineDay.ValueChanged += new System.EventHandler(this.GasExamineDay_ValueChanged);
             // 
             // GasProduceDay
             // 
@@ -315,7 +338,7 @@ namespace Gas_Company
             this.dataGridView1.Size = new System.Drawing.Size(978, 381);
             this.dataGridView1.TabIndex = 1;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
-            this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting_1);
+            this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
             // 
             // GasDelete
             // 
@@ -432,5 +455,7 @@ namespace Gas_Company
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button ResetFilterButton;
         private System.Windows.Forms.Button RefreshButton;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox comboBox2;
     }
 }

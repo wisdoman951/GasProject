@@ -22,7 +22,7 @@ namespace Gas_Company
         public GasTankManage()
         {
             InitializeComponent();
-            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged; // Assign the event handler
+            comboBox2.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
         }
         // 篩出所有桶重
         //private DataView dataView; // Declare a class-level variable to store the DataView
@@ -60,7 +60,20 @@ namespace Gas_Company
                     dataGridView1.Columns["last_worker_id"].HeaderText = "最後經手員工";
                     PopulateComboBox();
                 }
-            }   
+            }
+
+            // Populate the filter ComboBox
+            comboBox2.Items.Add("大於 30 年");
+            comboBox2.Items.Add("20 到 30 年");
+            comboBox2.Items.Add("20 年內");
+
+            // Set the sorting mode for the "GAS_Examine_Day" column to automatic
+            dataGridView1.Columns["GAS_Examine_Day"].SortMode = DataGridViewColumnSortMode.Automatic;
+
+            // Set the initial sorting order for the "GAS_Examine_Day" column to ascending
+            dataGridView1.Sort(dataGridView1.Columns["GAS_Examine_Day"], ListSortDirection.Ascending);
+
+            // Wire up the CellFormatting event handler
         }
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -87,33 +100,31 @@ namespace Gas_Company
                 Supplier.Text = supplier;
             }
         }
-        private void dataGridView1_CellFormatting_1(object sender, DataGridViewCellFormattingEventArgs e)
+
+        
+        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (dataGridView1.Columns[e.ColumnIndex].Name == "GAS_Examine_day") 
+            if (dataGridView1.Columns[e.ColumnIndex].Name == "GAS_Produce_Day")
             {
                 if (e.RowIndex >= 0 && e.RowIndex < dataGridView1.Rows.Count - 1)
                 {
-                    DateTime examineDate = Convert.ToDateTime(e.Value);
+                    DateTime produceDate = Convert.ToDateTime(e.Value);
 
                     // Compare with current date
                     DateTime currentDate = DateTime.Now;
-                    int daysDifference = (int)(examineDate - currentDate).TotalDays;
+                    int yearsDifference = currentDate.Year - produceDate.Year;
 
+                    Console.WriteLine(yearsDifference);
                     // Set the background color based on the date comparison
-                    if (daysDifference < 0)
+                    if (yearsDifference > 30)
                     {
-                        // Date has passed, set row background color to red
-                        dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.IndianRed;
+                        // More than 30 years, set row background color to gray
+                        dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Gray;
                     }
-                    else if (daysDifference <= 30)
+                    else if (yearsDifference >= 20 && yearsDifference <= 30)
                     {
-                        // Within 30 days, set row background color to yellow
-                        dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Khaki;
-                    }
-                    else
-                    {
-                        // More than 30 days, use the default row background color
-                        dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = dataGridView1.DefaultCellStyle.BackColor;
+                        // Between 20 and 30 years, set row background color to yellow
+                        dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Yellow;
                     }
                 }
             }
@@ -149,8 +160,6 @@ namespace Gas_Company
             comboBox1.Items.Clear();
             comboBox1.Items.AddRange(sortedValues.ToArray());
         }
-        
-
 
         private void GasDelete_Click(object sender, EventArgs e)
         {
@@ -191,21 +200,8 @@ namespace Gas_Company
             f1.ShowDialog();
         }
 
-        private void GasExamineDay_ValueChanged(object sender, EventArgs e)
-        {
-            /*// Get the selected date from the DateTimePicker
-            DateTime selectedDate = GasExamineDay.Value.Date;
-
-            // Filter the DataGridView based on the selected date
-            dataView.RowFilter = $"GAS_Examine_Day < '{selectedDate.ToShortDateString()}'";*/
-        }
-
         private void ResetFilterButton_Click(object sender, EventArgs e)
         {
-            // Clear the filter and show all data
-            //dataView.RowFilter = "";
-            //GasExamineDay.Value = DateTime.Today; // Reset the DateTimePicker value to today's date
-
             DateTime selectedDate = GasExamineDay.Value.Date;
 
             foreach (DataGridViewRow row in dataGridView1.Rows)
@@ -275,5 +271,54 @@ namespace Gas_Company
                 conn.Close();
             }
         }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedFilter = comboBox2.SelectedItem?.ToString();
+            if (!string.IsNullOrEmpty(selectedFilter))
+            {
+                switch (selectedFilter)
+                {
+                    case "大於 30 年":
+                        FilterRowsByProduceDay(30, 100);
+                        break;
+                    case "20 到 30 年":
+                        FilterRowsByProduceDay(20, 30);
+                        break;
+                    case "20 年內":
+                        FilterRowsByProduceDay(0, 20);
+                        break;
+                }
+            }
+            else
+            {
+                // Show all data when the ComboBox is cleared
+                dataView.RowFilter = "";
+            }
+        }
+        private void FilterRowsByProduceDay(int minYears, int maxYears)
+        {
+            if (minYears < -10000 || minYears > 10000)
+            {
+                throw new ArgumentOutOfRangeException(nameof(minYears), "Year value must be between -10000 and 10000.");
+            }
+
+            if (maxYears < -10000 || maxYears > 10000)
+            {
+                throw new ArgumentOutOfRangeException(nameof(maxYears), "Year value must be between -10000 and 10000.");
+            }
+
+            // Calculate the minimum and maximum dates based on the years provided
+            DateTime currentDate = DateTime.Now;
+            DateTime minDate = currentDate.AddYears(-maxYears);
+            DateTime maxDate = currentDate.AddYears(-minYears);
+
+            // Build the filter expression
+            string filterExpression = $"GAS_Produce_Day >= '{minDate:yyyy-MM-dd}' AND GAS_Produce_Day <= '{maxDate:yyyy-MM-dd}'";
+
+            // Apply the filter
+            dataView.RowFilter = filterExpression;
+        }
+
     }
 }

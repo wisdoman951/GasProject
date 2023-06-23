@@ -35,8 +35,6 @@ namespace Gas_Company
             this.CustomerNote = new System.Windows.Forms.TextBox();
             this.HistoryOrderButton = new System.Windows.Forms.Button();
             this.CustomerAddress = new System.Windows.Forms.TextBox();
-            this.CustomerDistrict = new System.Windows.Forms.TextBox();
-            this.CustomerCity = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.CustomerEmail = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -66,8 +64,6 @@ namespace Gas_Company
             this.groupBox1.Controls.Add(this.CustomerNote);
             this.groupBox1.Controls.Add(this.HistoryOrderButton);
             this.groupBox1.Controls.Add(this.CustomerAddress);
-            this.groupBox1.Controls.Add(this.CustomerDistrict);
-            this.groupBox1.Controls.Add(this.CustomerCity);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.CustomerEmail);
             this.groupBox1.Controls.Add(this.label4);
@@ -138,30 +134,10 @@ namespace Gas_Company
             this.CustomerAddress.BackColor = System.Drawing.Color.WhiteSmoke;
             this.CustomerAddress.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.CustomerAddress.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CustomerAddress.Location = new System.Drawing.Point(281, 207);
+            this.CustomerAddress.Location = new System.Drawing.Point(130, 207);
             this.CustomerAddress.Name = "CustomerAddress";
-            this.CustomerAddress.Size = new System.Drawing.Size(276, 20);
+            this.CustomerAddress.Size = new System.Drawing.Size(427, 20);
             this.CustomerAddress.TabIndex = 74;
-            // 
-            // CustomerDistrict
-            // 
-            this.CustomerDistrict.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.CustomerDistrict.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.CustomerDistrict.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CustomerDistrict.Location = new System.Drawing.Point(205, 207);
-            this.CustomerDistrict.Name = "CustomerDistrict";
-            this.CustomerDistrict.Size = new System.Drawing.Size(70, 20);
-            this.CustomerDistrict.TabIndex = 73;
-            // 
-            // CustomerCity
-            // 
-            this.CustomerCity.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.CustomerCity.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.CustomerCity.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CustomerCity.Location = new System.Drawing.Point(129, 207);
-            this.CustomerCity.Name = "CustomerCity";
-            this.CustomerCity.Size = new System.Drawing.Size(70, 20);
-            this.CustomerCity.TabIndex = 72;
             // 
             // label8
             // 
@@ -179,7 +155,7 @@ namespace Gas_Company
             this.CustomerEmail.BackColor = System.Drawing.Color.WhiteSmoke;
             this.CustomerEmail.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.CustomerEmail.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CustomerEmail.Location = new System.Drawing.Point(129, 157);
+            this.CustomerEmail.Location = new System.Drawing.Point(129, 162);
             this.CustomerEmail.Name = "CustomerEmail";
             this.CustomerEmail.Size = new System.Drawing.Size(428, 20);
             this.CustomerEmail.TabIndex = 70;
@@ -189,7 +165,7 @@ namespace Gas_Company
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label4.Location = new System.Drawing.Point(49, 156);
+            this.label4.Location = new System.Drawing.Point(49, 161);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(74, 22);
             this.label4.TabIndex = 69;
@@ -416,8 +392,6 @@ namespace Gas_Company
         private System.Windows.Forms.Button edit;
         private System.Windows.Forms.Button add;
         private System.Windows.Forms.TextBox CustomerAddress;
-        private System.Windows.Forms.TextBox CustomerDistrict;
-        private System.Windows.Forms.TextBox CustomerCity;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox CustomerEmail;
         private System.Windows.Forms.Label label4;

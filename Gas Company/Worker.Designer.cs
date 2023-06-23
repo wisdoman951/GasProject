@@ -226,9 +226,10 @@ namespace Gas_Company
             this.WorkerNote.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.WorkerNote.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WorkerNote.Location = new System.Drawing.Point(125, 295);
+            this.WorkerNote.Multiline = true;
             this.WorkerNote.Name = "WorkerNote";
             this.WorkerNote.ReadOnly = true;
-            this.WorkerNote.Size = new System.Drawing.Size(428, 20);
+            this.WorkerNote.Size = new System.Drawing.Size(428, 126);
             this.WorkerNote.TabIndex = 56;
             // 
             // label5

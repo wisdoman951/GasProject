@@ -51,7 +51,7 @@ namespace Gas_Company
             this.label14 = new System.Windows.Forms.Label();
             this.DeliveryMan = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.GasAmoung = new System.Windows.Forms.TextBox();
+            this.TotalPrice = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.GasQuantity = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -284,7 +284,7 @@ namespace Gas_Company
             this.groupBox1.Controls.Add(this.label14);
             this.groupBox1.Controls.Add(this.DeliveryMan);
             this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.GasAmoung);
+            this.groupBox1.Controls.Add(this.TotalPrice);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.GasQuantity);
             this.groupBox1.Controls.Add(this.label1);
@@ -377,15 +377,15 @@ namespace Gas_Company
             this.label9.TabIndex = 83;
             this.label9.Text = "送貨員";
             // 
-            // GasAmoung
+            // TotalPrice
             // 
-            this.GasAmoung.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.GasAmoung.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.GasAmoung.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GasAmoung.Location = new System.Drawing.Point(832, 116);
-            this.GasAmoung.Name = "GasAmoung";
-            this.GasAmoung.Size = new System.Drawing.Size(98, 20);
-            this.GasAmoung.TabIndex = 82;
+            this.TotalPrice.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.TotalPrice.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.TotalPrice.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TotalPrice.Location = new System.Drawing.Point(832, 116);
+            this.TotalPrice.Name = "TotalPrice";
+            this.TotalPrice.Size = new System.Drawing.Size(98, 20);
+            this.TotalPrice.TabIndex = 82;
             // 
             // label2
             // 
@@ -603,6 +603,7 @@ namespace Gas_Company
             this.ConfirmButton.TabIndex = 6;
             this.ConfirmButton.Text = "確認";
             this.ConfirmButton.UseVisualStyleBackColor = false;
+            this.ConfirmButton.Click += new System.EventHandler(this.ConfirmButton_Click);
             // 
             // AddButton
             // 
@@ -788,7 +789,7 @@ namespace Gas_Company
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ComboBox DeliveryMan;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox GasAmoung;
+        private System.Windows.Forms.TextBox TotalPrice;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox GasQuantity;
         private System.Windows.Forms.Label label1;

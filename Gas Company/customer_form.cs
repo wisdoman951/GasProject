@@ -56,17 +56,21 @@ namespace Gas_Company
             string query = "";
             if (orderId != null) { 
                  query = @"SELECT *
-                                    FROM customer
-                                    WHERE CUSTOMER_Id = (
-                                        SELECT CUSTOMER_Id
-                                        FROM gas_order
-                                        WHERE ORDER_Id = @order_id
-                                    )
-                                    ";
+                            FROM customer
+                            WHERE CUSTOMER_Id = (
+                                SELECT CUSTOMER_Id
+                                FROM gas_order
+                                WHERE ORDER_Id = @order_id
+                            )
+                            ";
             }
             else if(customerId != null)
             {
-                 query = "SELECT * FROM customer WHERE Customer_ID = @Customer_ID";
+                query = @"SELECT c.*, a.Alert_Volume
+                          FROM customer c
+                          JOIN iot i ON c.CUSTOMER_Id = i.CUSTOMER_Id
+                          JOIN alert a ON i.Sensor_Id = a.Sensor_Id
+                          WHERE c.CUSTOMER_Id = @Customer_ID";
             }
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -99,6 +103,8 @@ namespace Gas_Company
                             CustomerFamilyMember.Text = reader["Customer_FamilyMemberId"].ToString();
                             CustomerNotes.Text = reader["Customer_Notes"].ToString();
                             CustomerCompanyID.Text = reader["Company_Id"].ToString();
+                            double alertVolume = Convert.ToDouble(reader["Alert_Volume"]) * 100;
+                            CustomerAlert.Text = alertVolume.ToString();
                         }
                     }
 
@@ -107,7 +113,7 @@ namespace Gas_Company
             }
         }
 
-        private void ComfirmButton_Click(object sender, EventArgs e)
+        private void ConfirmButton_Click(object sender, EventArgs e)
         {
             // Perform validation
             if (string.IsNullOrEmpty(CustomerName.Text) || string.IsNullOrEmpty(CustomerSex.Text) ||
@@ -200,6 +206,18 @@ namespace Gas_Company
 
                 if (cmd.ExecuteNonQuery() == 1)
                 {
+                    // Update the Alert_Volume if CustomerAlert is not null
+                    if (!string.IsNullOrEmpty(CustomerAlert.Text))
+                    {
+                        string updateAlertQuery = "UPDATE alert SET Alert_Volume = @Alert_Volume WHERE SENSOR_Id IN (SELECT SENSOR_Id FROM iot WHERE CUSTOMER_Id = @Customer_Id)";
+                        MySqlCommand alertCmd = new MySqlCommand(updateAlertQuery, conn);
+                        double alertVolume = Convert.ToDouble(CustomerAlert.Text) / 100;
+                        CustomerAlert.Text = alertVolume.ToString();
+                        alertCmd.Parameters.AddWithValue("@Alert_Volume", CustomerAlert.Text);
+                        alertCmd.Parameters.AddWithValue("@Customer_Id", customerId);
+                        alertCmd.ExecuteNonQuery();
+                    }
+
                     MessageBox.Show("更新成功！");
                     this.DialogResult = DialogResult.OK;
                     this.Close();
@@ -213,6 +231,7 @@ namespace Gas_Company
             }
         }
 
-        
+
+
     }
 }

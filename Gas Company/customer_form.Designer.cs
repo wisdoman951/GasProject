@@ -51,6 +51,11 @@ namespace Gas_Company
             this.label4 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.CustomerNotes = new System.Windows.Forms.TextBox();
+            this.CustomerAlert = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // CustomerName
@@ -230,13 +235,13 @@ namespace Gas_Company
             this.ComfirmButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ComfirmButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ComfirmButton.ForeColor = System.Drawing.Color.White;
-            this.ComfirmButton.Location = new System.Drawing.Point(474, 443);
+            this.ComfirmButton.Location = new System.Drawing.Point(474, 487);
             this.ComfirmButton.Name = "ComfirmButton";
             this.ComfirmButton.Size = new System.Drawing.Size(83, 26);
             this.ComfirmButton.TabIndex = 28;
             this.ComfirmButton.Text = "儲存";
             this.ComfirmButton.UseVisualStyleBackColor = false;
-            this.ComfirmButton.Click += new System.EventHandler(this.ComfirmButton_Click);
+            this.ComfirmButton.Click += new System.EventHandler(this.ConfirmButton_Click);
             // 
             // CustomerAddress
             // 
@@ -275,7 +280,7 @@ namespace Gas_Company
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label10.Location = new System.Drawing.Point(65, 337);
+            this.label10.Location = new System.Drawing.Point(65, 381);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(42, 22);
             this.label10.TabIndex = 33;
@@ -286,18 +291,77 @@ namespace Gas_Company
             this.CustomerNotes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(239)))), ((int)(((byte)(243)))));
             this.CustomerNotes.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.CustomerNotes.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F);
-            this.CustomerNotes.Location = new System.Drawing.Point(121, 336);
+            this.CustomerNotes.Location = new System.Drawing.Point(121, 380);
             this.CustomerNotes.Multiline = true;
             this.CustomerNotes.Name = "CustomerNotes";
             this.CustomerNotes.Size = new System.Drawing.Size(436, 90);
             this.CustomerNotes.TabIndex = 34;
+            // 
+            // CustomerAlert
+            // 
+            this.CustomerAlert.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(239)))), ((int)(((byte)(243)))));
+            this.CustomerAlert.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.CustomerAlert.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CustomerAlert.Location = new System.Drawing.Point(233, 336);
+            this.CustomerAlert.Name = "CustomerAlert";
+            this.CustomerAlert.Size = new System.Drawing.Size(79, 20);
+            this.CustomerAlert.TabIndex = 36;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label11.Location = new System.Drawing.Point(25, 335);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(90, 22);
+            this.label11.TabIndex = 35;
+            this.label11.Text = "殘氣通報值";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label12.Location = new System.Drawing.Point(318, 335);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(25, 22);
+            this.label12.TabIndex = 37;
+            this.label12.Text = "%";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label13.Location = new System.Drawing.Point(121, 334);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(106, 22);
+            this.label13.TabIndex = 38;
+            this.label13.Text = "當殘氣量低於";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label14.Location = new System.Drawing.Point(349, 334);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(90, 22);
+            this.label14.TabIndex = 39;
+            this.label14.Text = "時進行通報";
             // 
             // customer_form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.ClientSize = new System.Drawing.Size(599, 499);
+            this.ClientSize = new System.Drawing.Size(599, 562);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.CustomerAlert);
+            this.Controls.Add(this.label11);
             this.Controls.Add(this.CustomerNotes);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.CustomerPassword);
@@ -354,5 +418,10 @@ namespace Gas_Company
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox CustomerNotes;
+        private System.Windows.Forms.TextBox CustomerAlert;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
     }
 }

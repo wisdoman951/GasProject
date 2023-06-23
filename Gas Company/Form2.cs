@@ -19,6 +19,7 @@ using Mysqlx.Crud;
 using static Google.Protobuf.Reflection.FieldOptions.Types;
 using System.Collections;
 using Google.Protobuf.WellKnownTypes;
+using MySqlX.XDevAPI.Relational;
 
 namespace Gas_Company
 {
@@ -71,11 +72,13 @@ namespace Gas_Company
         private void panel2_Paint(object sender, PaintEventArgs e)
         {
             // Here is to see the orders
-            string query = "SELECT o.ORDER_Id, c.CUSTOMER_PhoneNo, o.DELIVERY_Address, o.DELIVERY_Time, c.CUSTOMER_Name, od.Order_type, od.Order_weight, o.Gas_Quantity, o.COMPANY_Id, ca.Gas_Volume " +
-                           "FROM `gas_order` o " +
-                           "JOIN `customer` c ON o.CUSTOMER_Id = c.CUSTOMER_Id " +
-                           "JOIN `gas_order_detail` od ON o.ORDER_Id = od.Order_ID " +
-                           "JOIN `customer_accumulation` ca ON o.CUSTOMER_Id = ca.Customer_Id";
+            string query = "SELECT o.ORDER_Id, o.CUSTOMER_Id, c.CUSTOMER_PhoneNo, o.DELIVERY_Address, o.DELIVERY_Time, c.CUSTOMER_Name, od.Order_type, od.Order_weight, o.Gas_Quantity, o.COMPANY_Id, ca.Gas_Volume " +
+                            "FROM `gas_order` o " +
+                            "JOIN `customer` c ON o.CUSTOMER_Id = c.CUSTOMER_Id " +
+                            "JOIN `gas_order_detail` od ON o.ORDER_Id = od.Order_ID " +
+                            "JOIN `customer_accumulation` ca ON o.CUSTOMER_Id = ca.Customer_Id " +
+                            $"WHERE o.COMPANY_Id = {GlobalVariables.CompanyId}";
+
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection))
@@ -86,6 +89,7 @@ namespace Gas_Company
 
                     // Columns rename
                     dataGridView1.Columns["ORDER_Id"].HeaderText = "訂單編號";
+                    dataGridView1.Columns["CUSTOMER_Id"].HeaderText = "顧客編號";
                     dataGridView1.Columns["CUSTOMER_PhoneNo"].HeaderText = "顧客電話";
                     dataGridView1.Columns["DELIVERY_Address"].HeaderText = "送貨地址";
                     dataGridView1.Columns["DELIVERY_Time"].HeaderText = "送貨時間";
@@ -169,6 +173,7 @@ namespace Gas_Company
                 GasWeight.Text = orderWeight;
                 GasQuantity.Text = orderQuantity;
                 GasVolume.Text = gasVolume;
+                TotalPrice.Text = "";
             }
         }
 
@@ -278,7 +283,7 @@ namespace Gas_Company
             {
                 connection.Open();
 
-                string query = "SELECT WORKER_Id, WORKER_Name FROM worker";
+                string query = $"SELECT WORKER_Name FROM worker WHERE WORKER_Company_Id = {GlobalVariables.CompanyId}";
 
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
@@ -299,6 +304,7 @@ namespace Gas_Company
                 }
             }
         }
+
         // 歷史訂單
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -549,6 +555,67 @@ namespace Gas_Company
             GasWeight.Text = "";
             GasQuantity.Text = "";
             GasVolume.Text = "";
+        }
+
+        private void ConfirmButton_Click(object sender, EventArgs e)
+        {
+            // Check if a row is selected in the dataGridView1
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                // Retrieve the customerId and orderId from the selected row
+                int customerId = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells["CUSTOMER_Id"].Value);
+                int orderId = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells["ORDER_Id"].Value);
+
+                // Get the selected delivery man's name from the DeliveryMan ComboBox
+                string deliveryManName = DeliveryMan.SelectedItem?.ToString();
+
+                if (!string.IsNullOrEmpty(deliveryManName))
+                {
+                    // Query the database to get the workerId based on the selected delivery man's name
+                    string query = $"SELECT WORKER_Id FROM worker WHERE WORKER_Name = @WorkerName AND WORKER_Company_Id = {GlobalVariables.CompanyId}";
+
+                    using (MySqlConnection connection = new MySqlConnection(connectionString))
+                    {
+                        using (MySqlCommand command = new MySqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@WorkerName", deliveryManName);
+                            connection.Open();
+
+                            int workerId = Convert.ToInt32(command.ExecuteScalar());
+
+                            // Insert a new record into the assign table
+                            string insertQuery = "INSERT INTO assign (CUSTOMER_Id, WORKER_Id, ORDER_Id) VALUES (@CustomerId, @WorkerId, @OrderId)";
+
+                            using (MySqlCommand insertCommand = new MySqlCommand(insertQuery, connection))
+                            {
+                                insertCommand.Parameters.AddWithValue("@CustomerId", customerId);
+                                insertCommand.Parameters.AddWithValue("@WorkerId", workerId);
+                                insertCommand.Parameters.AddWithValue("@OrderId", orderId);
+
+                                if (insertCommand.ExecuteNonQuery() == 1)
+                                {
+                                    MessageBox.Show("Order assigned successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    // Additional actions or notifications can be added here if needed
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Failed to assign order!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                            }
+
+                            connection.Close();
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please select a delivery man!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select a row in the dataGridView1!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

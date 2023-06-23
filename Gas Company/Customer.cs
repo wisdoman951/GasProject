@@ -50,7 +50,7 @@ namespace Gas_Company
                                             "CUSTOMER_Registration_Time"
                                         };
 
-                    // Loop through the columns and set their display index
+                    // Loop through the columns and set their display order
                     foreach (string columnName in columnOrder)
                     {
                         if (dataGridView1.Columns.Contains(columnName))
@@ -258,7 +258,7 @@ namespace Gas_Company
         // 操作完要REFRESH一下
         private void RefreshData()
         {
-            string query = "SELECT * FROM `customer`";
+            string query = $"SELECT * FROM `customer` WHERE COMPANY_Id = {GlobalVariables.CompanyId}";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection))
