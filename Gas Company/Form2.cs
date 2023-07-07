@@ -523,8 +523,6 @@ namespace Gas_Company
             }
         }
 
-
-
         private void RefreshButton_Click(object sender, EventArgs e)
         {
             //刷新dataGridView顯示的資料表
