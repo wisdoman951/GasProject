@@ -29,6 +29,8 @@ namespace Gas_Company
 
         private void GasTankManage_Load(object sender, EventArgs e)
         {
+            dataGridView1.CellFormatting += dataGridView1_CellFormatting;
+
             string query = $"SELECT * FROM `gas` WHERE GAS_Company_Id = {GlobalVariables.CompanyId}";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -101,34 +103,59 @@ namespace Gas_Company
             }
         }
 
-        
+
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (dataGridView1.Columns[e.ColumnIndex].Name == "GAS_Produce_Day")
+            if (dataGridView1.Columns[e.ColumnIndex].Name == "GAS_Produce_day" || dataGridView1.Columns[e.ColumnIndex].Name == "GAS_Examine_day")
             {
-                if (e.RowIndex >= 0 && e.RowIndex < dataGridView1.Rows.Count - 1)
+                if (e.RowIndex >= 0 && e.RowIndex < dataGridView1.Rows.Count)
                 {
-                    DateTime produceDate = Convert.ToDateTime(e.Value);
+                    var produceCellValue = dataGridView1.Rows[e.RowIndex].Cells["GAS_Produce_day"].Value;
+                    var examineCellValue = dataGridView1.Rows[e.RowIndex].Cells["GAS_Examine_day"].Value;
 
-                    // Compare with current date
-                    DateTime currentDate = DateTime.Now;
-                    int yearsDifference = currentDate.Year - produceDate.Year;
+                    if (produceCellValue != null && examineCellValue != null && DateTime.TryParse(produceCellValue.ToString(), out DateTime produceDate) && DateTime.TryParse(examineCellValue.ToString(), out DateTime examineDate))
+                    {
+                        DateTime currentDate = DateTime.Now;
 
-                    Console.WriteLine(yearsDifference);
-                    // Set the background color based on the date comparison
-                    if (yearsDifference > 30)
-                    {
-                        // More than 30 years, set row background color to gray
-                        dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Gray;
-                    }
-                    else if (yearsDifference >= 20 && yearsDifference <= 30)
-                    {
-                        // Between 20 and 30 years, set row background color to yellow
-                        dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Yellow;
+                        TimeSpan produceDifference = currentDate.Subtract(produceDate);
+                        TimeSpan examineDifference = currentDate.Subtract(examineDate);
+
+                        int produceYearsDifference = (int)(produceDifference.TotalDays / 365.25);
+                        int examineYearsDifference = (int)(examineDifference.TotalDays / 365.25);
+
+                        if (produceYearsDifference < 20)
+                        {
+                            // Gas tank produced within 20 years
+                            if (examineYearsDifference >= 5 || currentDate >= produceDate.AddDays(20 * 365.25))
+                            {
+                                // More than 5 years since the last examination or reached the date after 20 years old, set row background color to yellow
+                                dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Yellow;
+                            }
+                        }
+                        else if (produceYearsDifference <= 30)
+                        {
+                            // Gas tank produced between 21 and 30 years
+                            if (examineYearsDifference >= 2 || examineDate < produceDate.AddDays(20 * 365.25))
+                            {
+                                // More than 2 years since the last examination or reached the date after 20 years old, set row background color to yellow
+                                dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Yellow;
+                            }
+                        }
+                        else
+                        {
+                            // Gas tank produced more than 30 years, set row background color to gray
+                            dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Gray;
+                        }
                     }
                 }
             }
         }
+
+
+
+
+
+
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selectedValue = comboBox1.SelectedItem?.ToString();
@@ -193,12 +220,6 @@ namespace Gas_Company
             }
         }
 
-        private void GasAdd_Click(object sender, EventArgs e)
-        {
-            gas f1;
-            f1 = new gas();
-            f1.ShowDialog();
-        }
 
         private void ResetFilterButton_Click(object sender, EventArgs e)
         {
@@ -236,6 +257,13 @@ namespace Gas_Company
             comboBox1.Text = "";
         }
 
+
+        private void GasAdd_Click(object sender, EventArgs e)
+        {
+            gas f1;
+            f1 = new gas();
+            f1.ShowDialog();
+        }
         private void edit_Click(object sender, EventArgs e)
         {
             // Get the selected row

@@ -44,6 +44,9 @@ namespace Gas_Company
             GasPrice.Text = originalRow["Gas_Price"].ToString();
             GasExamineDay.Text = originalRow["Gas_Examine_Day"].ToString();
             GasProduceDay.Text = originalRow["Gas_Produce_Day"].ToString();
+
+            isEditMode = !string.IsNullOrEmpty(gasId);
+
         }
         private void gas_Load(object sender, EventArgs e)
         {
@@ -79,8 +82,6 @@ namespace Gas_Company
             GasExamineDay.Text = "";
             GasProduceDay.Text = "";
         }
-
-
         private void ConfirmButton_Click(object sender, EventArgs e)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -114,6 +115,16 @@ namespace Gas_Company
                 }
                 else
                 {
+                    // Check if the gas ID already exists
+                    MySqlCommand checkIdCmd = new MySqlCommand("SELECT Gas_ID FROM gas WHERE Gas_ID = @Gas_ID", connection);
+                    checkIdCmd.Parameters.AddWithValue("@Gas_ID", gasId);
+
+                    if (checkIdCmd.ExecuteScalar() != null)
+                    {
+                        MessageBox.Show("Gas ID already exists. Please provide a different ID.");
+                        return; // Stop further execution
+                    }
+
                     cmd = new MySqlCommand(insertQuery, connection);
                 }
 

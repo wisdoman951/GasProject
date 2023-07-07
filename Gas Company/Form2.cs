@@ -142,8 +142,12 @@ namespace Gas_Company
         {
             openChildForm(new Worker());
         }
+        // Open 營業報表視窗
+        private void button7_Click(object sender, EventArgs e)
+        {
+            openChildForm(new report());
 
-
+        }
         //// Auto-fill when certain row is selected.
         ////* 需求需確認: 要哪些資料? *////
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -617,5 +621,6 @@ namespace Gas_Company
                 MessageBox.Show("Please select a row in the dataGridView1!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
     }
 }

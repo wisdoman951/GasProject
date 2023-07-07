@@ -45,7 +45,6 @@ namespace Gas_Company
             this.delete = new System.Windows.Forms.Button();
             this.EditButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.AutoFillButton = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.GasVolume = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
@@ -81,6 +80,7 @@ namespace Gas_Company
             this.txt = new System.Windows.Forms.TextBox();
             this.print = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.AutoFillButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel8.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -119,6 +119,7 @@ namespace Gas_Company
             this.button7.TabIndex = 6;
             this.button7.Text = "營業報表";
             this.button7.UseVisualStyleBackColor = false;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // button8
             // 
@@ -312,19 +313,6 @@ namespace Gas_Company
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "詳細訂單資訊";
-            // 
-            // AutoFillButton
-            // 
-            this.AutoFillButton.BackColor = System.Drawing.Color.LightBlue;
-            this.AutoFillButton.ForeColor = System.Drawing.Color.Cyan;
-            this.AutoFillButton.Image = global::Gas_Company.Properties.Resources._52448421;
-            this.AutoFillButton.Location = new System.Drawing.Point(255, 77);
-            this.AutoFillButton.Name = "AutoFillButton";
-            this.AutoFillButton.Size = new System.Drawing.Size(21, 21);
-            this.AutoFillButton.TabIndex = 88;
-            this.AutoFillButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.AutoFillButton.UseVisualStyleBackColor = false;
-            this.AutoFillButton.Click += new System.EventHandler(this.AutoFillButton_Click);
             // 
             // label13
             // 
@@ -716,6 +704,19 @@ namespace Gas_Company
             // 
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // AutoFillButton
+            // 
+            this.AutoFillButton.BackColor = System.Drawing.Color.LightBlue;
+            this.AutoFillButton.ForeColor = System.Drawing.Color.Cyan;
+            this.AutoFillButton.Image = global::Gas_Company.Properties.Resources._52448421;
+            this.AutoFillButton.Location = new System.Drawing.Point(255, 77);
+            this.AutoFillButton.Name = "AutoFillButton";
+            this.AutoFillButton.Size = new System.Drawing.Size(21, 21);
+            this.AutoFillButton.TabIndex = 88;
+            this.AutoFillButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.AutoFillButton.UseVisualStyleBackColor = false;
+            this.AutoFillButton.Click += new System.EventHandler(this.AutoFillButton_Click);
             // 
             // Form2
             // 
