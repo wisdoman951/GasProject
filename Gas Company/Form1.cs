@@ -16,7 +16,6 @@ namespace Gas_Company
     {
         private readonly string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
 
-
         public Form1()
         {
             InitializeComponent();
@@ -58,6 +57,8 @@ namespace Gas_Company
                     GlobalVariables.CompanyId = managerId;
                     Console.WriteLine(GlobalVariables.CompanyId);
                     MessageBox.Show("登入成功！");
+
+                    Application.Exit();
                     Form2 mainForm = new Form2();
                     mainForm.Show();
                     this.Hide();

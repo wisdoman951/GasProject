@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Configuration;
 using System.Data;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
@@ -82,7 +84,7 @@ namespace Gas_Company
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
-                MySqlCommand cmd = new MySqlCommand($"SELECT COUNT(*) FROM gas_order WHERE DATE(Order_Time) = CURDATE() AND DELIVERY_Condition != 'Completed' AND COMPANY_Id = {GlobalVariables.CompanyId}", connection);
+                MySqlCommand cmd = new MySqlCommand($"SELECT COUNT(*) FROM gas_order WHERE DATE(Order_Time) = CURDATE() AND DELIVERY_Condition != 'Finished' AND COMPANY_Id = {GlobalVariables.CompanyId}", connection);
                 object result = cmd.ExecuteScalar();
                 if (result != null)
                 {
@@ -97,7 +99,7 @@ namespace Gas_Company
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
-                MySqlCommand cmd = new MySqlCommand($"SELECT * FROM gas_order WHERE DATE(Order_Time) = CURDATE() AND DELIVERY_Condition != 'Completed' AND COMPANY_Id = {GlobalVariables.CompanyId}", connection);
+                MySqlCommand cmd = new MySqlCommand($"SELECT * FROM gas_order WHERE DATE(Order_Time) = CURDATE() AND DELIVERY_Condition != 'Finished' AND COMPANY_Id = {GlobalVariables.CompanyId}", connection);
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
@@ -181,6 +183,56 @@ namespace Gas_Company
         private void DeliverySchedulePage_Click(object sender, EventArgs e)
         {
             openChildForm(new report());
+        }
+
+        private void PrintButton_Click(object sender, EventArgs e)
+        {
+            // Create a SaveFileDialog to select the file path and name
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "CSV file (*.csv)|*.csv";
+                saveFileDialog.Title = "Save CSV file";
+                saveFileDialog.ShowDialog();
+
+                // If the user clicked the "Save" button
+                if (saveFileDialog.FileName != "")
+                {
+                    try
+                    {
+                        // Create the CSV file and write the column headers
+                        StringBuilder csvContent = new StringBuilder();
+                        for (int i = 0; i < dataGridView1.Columns.Count; i++)
+                        {
+                            csvContent.Append(dataGridView1.Columns[i].HeaderText);
+                            if (i < dataGridView1.Columns.Count - 1)
+                                csvContent.Append(",");
+                        }
+                        csvContent.AppendLine();
+
+                        // Write the data rows to the CSV file
+                        foreach (DataGridViewRow row in dataGridView1.Rows)
+                        {
+                            for (int i = 0; i < dataGridView1.Columns.Count; i++)
+                            {
+                                if (row.Cells[i].Value != null)
+                                    csvContent.Append(row.Cells[i].Value.ToString());
+                                if (i < dataGridView1.Columns.Count - 1)
+                                    csvContent.Append(",");
+                            }
+                            csvContent.AppendLine();
+                        }
+
+                        // Save the CSV file
+                        File.WriteAllText(saveFileDialog.FileName, csvContent.ToString());
+
+                        MessageBox.Show("CSV file saved successfully.", "Save Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error saving CSV file: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
         }
     }
 }

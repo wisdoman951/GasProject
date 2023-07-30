@@ -46,7 +46,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.PrintButton = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             this.TodayGasAmong.SuspendLayout();
@@ -62,10 +61,9 @@
             this.OrderStatPage.FlatAppearance.BorderSize = 0;
             this.OrderStatPage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.OrderStatPage.Font = new System.Drawing.Font("Microsoft JhengHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.OrderStatPage.Location = new System.Drawing.Point(147, 0);
-            this.OrderStatPage.Margin = new System.Windows.Forms.Padding(4);
+            this.OrderStatPage.Location = new System.Drawing.Point(110, 0);
             this.OrderStatPage.Name = "OrderStatPage";
-            this.OrderStatPage.Size = new System.Drawing.Size(149, 41);
+            this.OrderStatPage.Size = new System.Drawing.Size(112, 33);
             this.OrderStatPage.TabIndex = 5;
             this.OrderStatPage.Text = "訂單對帳統計";
             this.OrderStatPage.UseVisualStyleBackColor = false;
@@ -78,9 +76,8 @@
             this.DeliverySchedulePage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DeliverySchedulePage.Font = new System.Drawing.Font("Microsoft JhengHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.DeliverySchedulePage.Location = new System.Drawing.Point(-1, 0);
-            this.DeliverySchedulePage.Margin = new System.Windows.Forms.Padding(4);
             this.DeliverySchedulePage.Name = "DeliverySchedulePage";
-            this.DeliverySchedulePage.Size = new System.Drawing.Size(155, 41);
+            this.DeliverySchedulePage.Size = new System.Drawing.Size(116, 33);
             this.DeliverySchedulePage.TabIndex = 4;
             this.DeliverySchedulePage.Text = "配送計畫報表";
             this.DeliverySchedulePage.UseVisualStyleBackColor = false;
@@ -89,12 +86,11 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(320, 62);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridView1.Location = new System.Drawing.Point(240, 50);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(1024, 718);
+            this.dataGridView1.Size = new System.Drawing.Size(768, 574);
             this.dataGridView1.TabIndex = 9;
             // 
             // panel1
@@ -108,20 +104,18 @@
             this.panel1.Controls.Add(this.TodayUnfinishedOrder);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.TodayTotalOrder);
-            this.panel1.Location = new System.Drawing.Point(29, 62);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4);
+            this.panel1.Location = new System.Drawing.Point(22, 50);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(250, 748);
+            this.panel1.Size = new System.Drawing.Size(188, 599);
             this.panel1.TabIndex = 31;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label5.Location = new System.Drawing.Point(43, 534);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label5.Location = new System.Drawing.Point(32, 427);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(172, 25);
+            this.label5.Size = new System.Drawing.Size(138, 21);
             this.label5.TabIndex = 4;
             this.label5.Text = "今日已遞送瓦斯量";
             // 
@@ -129,10 +123,9 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label4.Location = new System.Drawing.Point(51, 397);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Location = new System.Drawing.Point(38, 318);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(132, 25);
+            this.label4.Size = new System.Drawing.Size(106, 21);
             this.label4.TabIndex = 3;
             this.label4.Text = "月完成訂單量";
             // 
@@ -140,10 +133,9 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label2.Location = new System.Drawing.Point(43, 245);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(32, 196);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(152, 25);
+            this.label2.Size = new System.Drawing.Size(122, 21);
             this.label2.TabIndex = 1;
             this.label2.Text = "今日未完成訂單";
             // 
@@ -151,20 +143,18 @@
             // 
             this.TodayGasAmong.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TodayGasAmong.Controls.Add(this.label10);
-            this.TodayGasAmong.Location = new System.Drawing.Point(20, 551);
-            this.TodayGasAmong.Margin = new System.Windows.Forms.Padding(4);
+            this.TodayGasAmong.Location = new System.Drawing.Point(15, 441);
             this.TodayGasAmong.Name = "TodayGasAmong";
-            this.TodayGasAmong.Size = new System.Drawing.Size(209, 100);
+            this.TodayGasAmong.Size = new System.Drawing.Size(157, 80);
             this.TodayGasAmong.TabIndex = 9;
             this.TodayGasAmong.Click += new System.EventHandler(this.TodayGasAmong_Click);
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(95, 41);
-            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label10.Location = new System.Drawing.Point(71, 33);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(14, 15);
+            this.label10.Size = new System.Drawing.Size(11, 12);
             this.label10.TabIndex = 0;
             this.label10.Text = "0";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -173,20 +163,18 @@
             // 
             this.MonthlyFinishedOrder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MonthlyFinishedOrder.Controls.Add(this.label9);
-            this.MonthlyFinishedOrder.Location = new System.Drawing.Point(20, 411);
-            this.MonthlyFinishedOrder.Margin = new System.Windows.Forms.Padding(4);
+            this.MonthlyFinishedOrder.Location = new System.Drawing.Point(15, 329);
             this.MonthlyFinishedOrder.Name = "MonthlyFinishedOrder";
-            this.MonthlyFinishedOrder.Size = new System.Drawing.Size(209, 100);
+            this.MonthlyFinishedOrder.Size = new System.Drawing.Size(157, 80);
             this.MonthlyFinishedOrder.TabIndex = 8;
             this.MonthlyFinishedOrder.Click += new System.EventHandler(this.MonthlyFinishedOrder_Click);
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(95, 42);
-            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label9.Location = new System.Drawing.Point(71, 34);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(14, 15);
+            this.label9.Size = new System.Drawing.Size(11, 12);
             this.label9.TabIndex = 0;
             this.label9.Text = "0";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -195,20 +183,18 @@
             // 
             this.TodayUnfinishedOrder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TodayUnfinishedOrder.Controls.Add(this.label7);
-            this.TodayUnfinishedOrder.Location = new System.Drawing.Point(20, 259);
-            this.TodayUnfinishedOrder.Margin = new System.Windows.Forms.Padding(4);
+            this.TodayUnfinishedOrder.Location = new System.Drawing.Point(15, 207);
             this.TodayUnfinishedOrder.Name = "TodayUnfinishedOrder";
-            this.TodayUnfinishedOrder.Size = new System.Drawing.Size(209, 100);
+            this.TodayUnfinishedOrder.Size = new System.Drawing.Size(157, 80);
             this.TodayUnfinishedOrder.TabIndex = 6;
             this.TodayUnfinishedOrder.Click += new System.EventHandler(this.TodayUnfinishedOrder_Click);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(95, 42);
-            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label7.Location = new System.Drawing.Point(71, 34);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(14, 15);
+            this.label7.Size = new System.Drawing.Size(11, 12);
             this.label7.TabIndex = 0;
             this.label7.Text = "0";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -217,10 +203,9 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label1.Location = new System.Drawing.Point(51, 95);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(38, 76);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(132, 25);
+            this.label1.Size = new System.Drawing.Size(106, 21);
             this.label1.TabIndex = 0;
             this.label1.Text = "今日總訂單量";
             // 
@@ -228,34 +213,32 @@
             // 
             this.TodayTotalOrder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TodayTotalOrder.Controls.Add(this.label3);
-            this.TodayTotalOrder.Location = new System.Drawing.Point(20, 108);
-            this.TodayTotalOrder.Margin = new System.Windows.Forms.Padding(4);
+            this.TodayTotalOrder.Location = new System.Drawing.Point(15, 86);
             this.TodayTotalOrder.Name = "TodayTotalOrder";
-            this.TodayTotalOrder.Size = new System.Drawing.Size(209, 100);
+            this.TodayTotalOrder.Size = new System.Drawing.Size(157, 80);
             this.TodayTotalOrder.TabIndex = 5;
             this.TodayTotalOrder.Click += new System.EventHandler(this.TodayTotalOrder_Click);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(93, 40);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(70, 32);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(14, 15);
+            this.label3.Size = new System.Drawing.Size(11, 12);
             this.label3.TabIndex = 0;
             this.label3.Text = "0";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.button4);
             this.panel2.Controls.Add(this.PrintButton);
             this.panel2.Controls.Add(this.panel1);
             this.panel2.Controls.Add(this.dataGridView1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1405, 825);
+            this.panel2.Size = new System.Drawing.Size(1054, 660);
             this.panel2.TabIndex = 30;
             // 
             // PrintButton
@@ -265,39 +248,24 @@
             this.PrintButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PrintButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PrintButton.ForeColor = System.Drawing.Color.White;
-            this.PrintButton.Location = new System.Drawing.Point(1233, 788);
-            this.PrintButton.Margin = new System.Windows.Forms.Padding(4);
+            this.PrintButton.Location = new System.Drawing.Point(925, 630);
             this.PrintButton.Name = "PrintButton";
-            this.PrintButton.Size = new System.Drawing.Size(111, 32);
+            this.PrintButton.Size = new System.Drawing.Size(83, 26);
             this.PrintButton.TabIndex = 32;
             this.PrintButton.Text = "匯出";
             this.PrintButton.UseVisualStyleBackColor = false;
-            // 
-            // button4
-            // 
-            this.button4.BackColor = System.Drawing.Color.MediumAquamarine;
-            this.button4.FlatAppearance.BorderSize = 0;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Font = new System.Drawing.Font("Microsoft JhengHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.button4.Location = new System.Drawing.Point(293, 0);
-            this.button4.Margin = new System.Windows.Forms.Padding(4);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(132, 41);
-            this.button4.TabIndex = 33;
-            this.button4.Text = "殘氣累積";
-            this.button4.UseVisualStyleBackColor = false;
+            this.PrintButton.Click += new System.EventHandler(this.PrintButton_Click);
             // 
             // report
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.ClientSize = new System.Drawing.Size(1405, 825);
+            this.ClientSize = new System.Drawing.Size(1054, 660);
             this.Controls.Add(this.OrderStatPage);
             this.Controls.Add(this.DeliverySchedulePage);
             this.Controls.Add(this.panel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "report";
             this.Text = "Form4";
             this.Load += new System.EventHandler(this.report_Load);
@@ -336,6 +304,5 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button PrintButton;
-        private System.Windows.Forms.Button button4;
     }
 }
