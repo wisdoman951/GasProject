@@ -32,6 +32,8 @@ namespace Gas_Company
                     DataTable table = new DataTable();
                     adapter.Fill(table);
                     dataGridView1.DataSource = table;
+
+                    table.Columns.Remove("WORKER_Company_Id");
                     // Columns rename
                     dataGridView1.Columns["WORKER_Id"].HeaderText = "員工編號";
                     dataGridView1.Columns["WORKER_Name"].HeaderText = "員工姓名";
@@ -42,7 +44,7 @@ namespace Gas_Company
                     dataGridView1.Columns["WORKER_Password"].HeaderText = "員工密碼";
                     dataGridView1.Columns["WORKER_Email"].HeaderText = "員工電子郵件";
                     dataGridView1.Columns["Permission"].HeaderText = "員工權限";
-                    dataGridView1.Columns["WORKER_Company_Id"].HeaderText = "員工所屬公司";
+                    dataGridView1.Columns["WORKER_notes"].HeaderText = "員工備註";
                 }
             }
         }

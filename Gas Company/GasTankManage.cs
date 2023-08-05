@@ -42,6 +42,7 @@ namespace Gas_Company
                     dataGridView1.DataSource = table;
                     dataView = table.DefaultView;
 
+                    table.Columns.Remove("GAS_Company_Id");
                     // Set the sorting mode for the "GAS_Examine_Day" column to automatic
                     dataGridView1.Columns["GAS_Examine_Day"].SortMode = DataGridViewColumnSortMode.Automatic;
 
@@ -49,7 +50,6 @@ namespace Gas_Company
                     dataGridView1.Sort(dataGridView1.Columns["GAS_Examine_Day"], ListSortDirection.Ascending);
                     // Columns rename
                     dataGridView1.Columns["GAS_Id"].HeaderText = "瓦斯桶編號";
-                    dataGridView1.Columns["GAS_Company_Id"].HeaderText = "所屬公司編號";
                     dataGridView1.Columns["GAS_Weight_Full"].HeaderText = "滿桶重量";
                     dataGridView1.Columns["GAS_Weight_Empty"].HeaderText = "空桶重量";
                     dataGridView1.Columns["GAS_Type"].HeaderText = "瓦斯桶種類";

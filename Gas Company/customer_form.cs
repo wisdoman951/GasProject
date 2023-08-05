@@ -26,11 +26,13 @@ namespace Gas_Company
             CustomerCompanyID.Text = GlobalVariables.CompanyId;
             if (isEditMode)
             {
+                Console.WriteLine("Edit mode on");
                 // Load customer data for editing
                 LoadCustomerData();
             }
             else
             {
+                Console.WriteLine("Add mode on");
                 // Clear the form for adding a new customer
                 ClearForm();
             }
@@ -56,7 +58,7 @@ namespace Gas_Company
             string query = "";
             if (orderId != null) { 
                  query = @"SELECT *
-                            FROM customer
+                            FROM CUSTOMER
                             WHERE CUSTOMER_Id = (
                                 SELECT CUSTOMER_Id
                                 FROM gas_order
@@ -66,11 +68,17 @@ namespace Gas_Company
             }
             else if(customerId != null)
             {
+                Console.WriteLine("Search customer data");
                 query = @"SELECT c.*, a.Alert_Volume
                           FROM customer c
                           JOIN iot i ON c.CUSTOMER_Id = i.CUSTOMER_Id
-                          JOIN alert a ON i.Sensor_Id = a.Sensor_Id
+                          LEFT JOIN alert a ON i.Sensor_Id = a.Sensor_Id
                           WHERE c.CUSTOMER_Id = @Customer_ID";
+
+
+                /*query = @"SELECT *
+                          FROM customer c
+                          WHERE CUSTOMER_Id = @Customer_ID";*/
             }
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -92,7 +100,7 @@ namespace Gas_Company
                     {
                         if (reader.Read())
                         {
-                            CustomerName.Text = reader["Customer_Name"].ToString();
+                            CustomerName.Text = reader["CUSTOMER_Name"].ToString();
                             CustomerSex.Text = reader["Customer_Sex"].ToString();
                             CustomerPhoneNo.Text = reader["Customer_PhoneNo"].ToString();
                             CustomerPostalCode.Text = reader["Customer_Postal_Code"].ToString();
@@ -102,9 +110,17 @@ namespace Gas_Company
                             CustomerEmail.Text = reader["Customer_Email"].ToString();
                             CustomerFamilyMember.Text = reader["Customer_FamilyMemberId"].ToString();
                             CustomerNotes.Text = reader["Customer_Notes"].ToString();
-                            CustomerCompanyID.Text = reader["Company_Id"].ToString();
-                            double alertVolume = Convert.ToDouble(reader["Alert_Volume"]) * 100;
-                            CustomerAlert.Text = alertVolume.ToString();
+                            CustomerCompanyID.Text = reader["Company_Id"].ToString(); double alertVolume;
+                            if (Double.TryParse(reader["Alert_Volume"].ToString(), out alertVolume))
+                            {
+                                alertVolume *= 100;
+                                CustomerAlert.Text = alertVolume.ToString();
+                            }
+                            else
+                            {
+                                CustomerAlert.Text = "N/A";
+                            }
+
                         }
                     }
 

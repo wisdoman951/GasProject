@@ -1,6 +1,6 @@
 ﻿namespace Gas_Company
 {
-    partial class HistoryOrder
+    partial class 客戶歷史訂單資料
     {
         /// <summary>
         /// Required designer variable.
@@ -35,21 +35,20 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 2);
+            this.dataGridView1.Location = new System.Drawing.Point(2, 0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(799, 447);
+            this.dataGridView1.Size = new System.Drawing.Size(1065, 524);
             this.dataGridView1.TabIndex = 0;
             // 
-            // HistoryOrder
+            // 客戶歷史訂單資料
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1069, 526);
             this.Controls.Add(this.dataGridView1);
-            this.Name = "HistoryOrder";
-            this.Text = "顧客歷史訂單資料";
-            this.Load += new System.EventHandler(this.HistoryOrder_Load);
+            this.Name = "客戶歷史訂單資料";
+            this.Text = "客戶歷史訂單資料";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 

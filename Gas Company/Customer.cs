@@ -15,6 +15,7 @@ namespace Gas_Company
     public partial class Customer : Form
     {
         private readonly string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
+        string customerId = "";
 
         public Customer()
         {
@@ -23,7 +24,17 @@ namespace Gas_Company
 
         private void customer_Load(object sender, EventArgs e)
         {
-            string query = $"SELECT * FROM `customer` WHERE Company_Id = {GlobalVariables.CompanyId};";
+            //string query = $"SELECT * FROM `customer` WHERE Company_Id = {GlobalVariables.CompanyId};";
+            string query = $@"SELECT c.*, a.Alert_Volume, sh.SENSOR_Weight, i.Sensor_Id
+                 FROM customer c
+                 LEFT JOIN iot i ON c.CUSTOMER_Id = i.CUSTOMER_Id
+                 LEFT JOIN alert a ON i.Sensor_Id = a.Sensor_Id
+                 LEFT JOIN (
+                     SELECT *,
+                            ROW_NUMBER() OVER (PARTITION BY SENSOR_Id ORDER BY SENSOR_Time DESC) AS rn
+                     FROM sensor_history
+                 ) sh ON i.Sensor_Id = sh.SENSOR_Id AND sh.rn = 1
+                 WHERE c.Company_Id = {GlobalVariables.CompanyId};";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -32,20 +43,25 @@ namespace Gas_Company
                     DataTable table = new DataTable();
                     adapter.Fill(table);
                     dataGridView1.DataSource = table;
+
+                    //客戶要求不要顯示出這些欄位
+                    table.Columns.Remove("CUSTOMER_Password");
+                    table.Columns.Remove("COMPANY_Id");
+                    table.Columns.Remove("COMPANY_HistoryID");
                     // Change the original column order
                     string[] columnOrder = {
                                             "CUSTOMER_Id",
                                             "CUSTOMER_Name",
                                             "CUSTOMER_Address",
+                                            "Sensor_Id",
+                                            "Alert_Volume",
+                                            "SENSOR_Weight",
                                             "CUSTOMER_PhoneNo",
                                             "CUSTOMER_Sex",
                                             "CUSTOMER_Postal_Code",
                                             "CUSTOMER_HouseTelpNo",
-                                            "CUSTOMER_Password",
                                             "CUSTOMER_Email",
                                             "CUSTOMER_FamilyMemberId",
-                                            "COMPANY_Id",
-                                            "COMPANY_HistoryID",
                                             "CUSTOMER_Notes",
                                             "CUSTOMER_Registration_Time"
                                         };
@@ -61,16 +77,16 @@ namespace Gas_Company
                     // Columns rename
                     dataGridView1.Columns["CUSTOMER_Id"].HeaderText = "客戶編號";
                     dataGridView1.Columns["CUSTOMER_Name"].HeaderText = "客戶姓名";
+                    dataGridView1.Columns["Sensor_Id"].HeaderText = "感測器編號";
+                    dataGridView1.Columns["Alert_Volume"].HeaderText = "通報門檻";
+                    dataGridView1.Columns["SENSOR_Weight"].HeaderText = "當前瓦斯量";
                     dataGridView1.Columns["CUSTOMER_Sex"].HeaderText = "客戶性別";
                     dataGridView1.Columns["CUSTOMER_PhoneNo"].HeaderText = "客戶電話";
                     dataGridView1.Columns["CUSTOMER_Postal_Code"].HeaderText = "客戶郵遞區號";
                     dataGridView1.Columns["CUSTOMER_Address"].HeaderText = "客戶地址";
                     dataGridView1.Columns["CUSTOMER_HouseTelpNo"].HeaderText = "客戶家用電話";
-                    dataGridView1.Columns["CUSTOMER_Password"].HeaderText = "客戶密碼";
                     dataGridView1.Columns["CUSTOMER_Email"].HeaderText = "客戶電子郵件";
                     dataGridView1.Columns["CUSTOMER_FamilyMemberId"].HeaderText = "客戶關係家人";
-                    dataGridView1.Columns["COMPANY_Id"].HeaderText = "客戶瓦斯行";
-                    dataGridView1.Columns["COMPANY_HistoryID"].HeaderText = "客戶歷史瓦斯行";
                     dataGridView1.Columns["CUSTOMER_Notes"].HeaderText = "客戶備註";
                     dataGridView1.Columns["CUSTOMER_Registration_Time"].HeaderText = "客戶註冊時間";
 
@@ -101,10 +117,8 @@ namespace Gas_Company
                 // Autofill the other fields(Textbox) in the form
                 CustomerID.Text = customerId;
                 CustomerName.Text = customerName;
-                CustomerSex.Text = customerSex;
                 CustomerPhone.Text = customerPhone;
                 CustomerNumber.Text = customerNumber;
-                CustomerEmail.Text = customerEmail;
                 //CustomerCity.Text = customerCity;
                 //CustomerDistrict.Text = customerDistrict;
                 CustomerAddress.Text = customerAddress;
@@ -118,8 +132,18 @@ namespace Gas_Company
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                string query = $"SELECT * FROM `customer` WHERE Customer_ID LIKE @Customer_ID OR Customer_Name LIKE @Customer_Name OR Customer_PhoneNo LIKE @Customer_PhoneNo WHERE Company_Id = {GlobalVariables.CompanyId};";
-
+                string query = $@"
+                                SELECT c.*, a.Alert_Volume, sh.SENSOR_Weight, i.Sensor_Id
+                                FROM customer c
+                                LEFT JOIN iot i ON c.CUSTOMER_Id = i.CUSTOMER_Id
+                                LEFT JOIN alert a ON i.Sensor_Id = a.Sensor_Id
+                                LEFT JOIN (
+                                    SELECT *,
+                                        ROW_NUMBER() OVER (PARTITION BY SENSOR_Id ORDER BY SENSOR_Time DESC) AS rn
+                                    FROM sensor_history
+                                ) sh ON i.Sensor_Id = sh.SENSOR_Id AND sh.rn = 1
+                                WHERE c.Company_Id = {GlobalVariables.CompanyId}
+                                AND (c.Customer_ID LIKE @Customer_ID OR c.Customer_Name LIKE @Customer_Name OR c.Customer_PhoneNo LIKE @Customer_PhoneNo OR c.Customer_Address LIKE @Customer_Address);";
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     using (MySqlCommand command = new MySqlCommand(query, connection))
@@ -127,12 +151,17 @@ namespace Gas_Company
                         command.Parameters.AddWithValue("@Customer_ID", "%" + searchTerm + "%");
                         command.Parameters.AddWithValue("@Customer_Name", "%" + searchTerm + "%");
                         command.Parameters.AddWithValue("@Customer_PhoneNo", "%" + searchTerm + "%");
+                        command.Parameters.AddWithValue("@Customer_Address", "%" + searchTerm + "%");
+
 
                         using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
                         {
                             DataTable table = new DataTable();
                             adapter.Fill(table);
 
+                            table.Columns.Remove("CUSTOMER_Password");
+                            table.Columns.Remove("COMPANY_Id");
+                            table.Columns.Remove("COMPANY_HistoryID");
                             if (table.Rows.Count == 0)
                             {
                                 MessageBox.Show("未找到結果。請重試。", "搜索失敗", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -181,7 +210,7 @@ namespace Gas_Company
 
         private void CUpdateButton_Click(object sender, EventArgs e)
         {
-            customer_Load(sender, e);
+            customer_form f1 = new customer_form(customerId);
         }
 
         private void CAddButton_Click(object sender, EventArgs e)
@@ -267,6 +296,66 @@ namespace Gas_Company
                     adapter.Fill(table);
 
                     dataGridView1.DataSource = table;
+                }
+            }
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string query = $"SELECT * FROM `customer` WHERE Company_Id = {GlobalVariables.CompanyId};";
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection))
+                {
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+                    dataGridView1.DataSource = table;
+                    // Change the original column order
+                    string[] columnOrder = {
+                                            "CUSTOMER_Id",
+                                            "CUSTOMER_Name",
+                                            "CUSTOMER_Address",
+                                            "CUSTOMER_PhoneNo",
+                                            "CUSTOMER_Sex",
+                                            "CUSTOMER_Postal_Code",
+                                            "CUSTOMER_HouseTelpNo",
+                                            "CUSTOMER_Email",
+                                            "CUSTOMER_FamilyMemberId",
+                                            "CUSTOMER_Notes",
+                                            "CUSTOMER_Registration_Time"
+                                        };
+
+                    // Loop through the columns and set their display order
+                    foreach (string columnName in columnOrder)
+                    {
+                        if (dataGridView1.Columns.Contains(columnName))
+                        {
+                            dataGridView1.Columns[columnName].DisplayIndex = Array.IndexOf(columnOrder, columnName);
+                        }
+                    }
+                    // Columns rename
+                    dataGridView1.Columns["CUSTOMER_Id"].HeaderText = "客戶編號";
+                    dataGridView1.Columns["CUSTOMER_Name"].HeaderText = "客戶姓名";
+                    dataGridView1.Columns["CUSTOMER_Sex"].HeaderText = "客戶性別";
+                    dataGridView1.Columns["CUSTOMER_PhoneNo"].HeaderText = "客戶電話";
+                    dataGridView1.Columns["CUSTOMER_Postal_Code"].HeaderText = "客戶郵遞區號";
+                    dataGridView1.Columns["CUSTOMER_Address"].HeaderText = "客戶地址";
+                    dataGridView1.Columns["CUSTOMER_HouseTelpNo"].HeaderText = "客戶家用電話";
+                    dataGridView1.Columns["CUSTOMER_Email"].HeaderText = "客戶電子郵件";
+                    dataGridView1.Columns["CUSTOMER_FamilyMemberId"].HeaderText = "客戶關係家人";
+                    dataGridView1.Columns["CUSTOMER_Notes"].HeaderText = "客戶備註";
+                    dataGridView1.Columns["CUSTOMER_Registration_Time"].HeaderText = "客戶註冊時間";
+
                 }
             }
         }

@@ -25,7 +25,7 @@ namespace Gas_Company
 
         private void residual_gas_Load(object sender, EventArgs e)
         {
-            string query = $"SELECT ca.Accum_Id, c.Customer_Id, c.Customer_Address, c.Customer_Name, ca.Gas_Volume, ca.Company_Id, c.Customer_PhoneNo FROM customer_accumulation ca JOIN customer c ON ca.Customer_Id = c.Customer_Id WHERE ca.Company_Id = {GlobalVariables.CompanyId};";
+            string query = $"SELECT ca.Accum_Id, c.Customer_Id, c.Customer_Address, c.Customer_Name, ca.Gas_Volume, c.Customer_PhoneNo FROM customer_accumulation ca JOIN customer c ON ca.Customer_Id = c.Customer_Id WHERE ca.Company_Id = {GlobalVariables.CompanyId};";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -41,7 +41,6 @@ namespace Gas_Company
                     dataGridView1.Columns["Customer_Name"].HeaderText = "顧客姓名";
                     dataGridView1.Columns["Customer_Address"].HeaderText = "顧客地址";
                     dataGridView1.Columns["Customer_PhoneNo"].HeaderText = "顧客電話";
-                    dataGridView1.Columns["Company_Id"].HeaderText = "瓦斯行編號";
                     dataGridView1.Columns["Gas_Volume"].HeaderText = "殘氣量";
                 }
             }
@@ -102,7 +101,7 @@ namespace Gas_Company
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                string query = "SELECT ca.Accum_Id, c.Customer_Id, c.Customer_Address, c.Customer_Name, ca.Gas_Volume, ca.Company_Id, c.Customer_PhoneNo FROM customer_accumulation ca JOIN customer c ON ca.Customer_Id = c.Customer_Id " +
+                string query = "SELECT ca.Accum_Id, c.Customer_Id, c.Customer_Address, c.Customer_Name, ca.Gas_Volume, c.Customer_PhoneNo FROM customer_accumulation ca JOIN customer c ON ca.Customer_Id = c.Customer_Id " +
                         "WHERE c.Customer_PhoneNo LIKE @Customer_PhoneNo;";
 
 

@@ -90,7 +90,7 @@ namespace Gas_Company
             this.GasWeightFull.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(239)))), ((int)(((byte)(243)))));
             this.GasWeightFull.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.GasWeightFull.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GasWeightFull.Location = new System.Drawing.Point(166, 108);
+            this.GasWeightFull.Location = new System.Drawing.Point(166, 149);
             this.GasWeightFull.Name = "GasWeightFull";
             this.GasWeightFull.Size = new System.Drawing.Size(97, 20);
             this.GasWeightFull.TabIndex = 65;
@@ -129,7 +129,7 @@ namespace Gas_Company
             this.GasWeightEmpty.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(239)))), ((int)(((byte)(243)))));
             this.GasWeightEmpty.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.GasWeightEmpty.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GasWeightEmpty.Location = new System.Drawing.Point(166, 149);
+            this.GasWeightEmpty.Location = new System.Drawing.Point(166, 110);
             this.GasWeightEmpty.Name = "GasWeightEmpty";
             this.GasWeightEmpty.Size = new System.Drawing.Size(97, 20);
             this.GasWeightEmpty.TabIndex = 71;

@@ -20,6 +20,7 @@ using static Google.Protobuf.Reflection.FieldOptions.Types;
 using System.Collections;
 using Google.Protobuf.WellKnownTypes;
 using MySqlX.XDevAPI.Relational;
+using System.IO;
 
 namespace Gas_Company
 {
@@ -30,6 +31,7 @@ namespace Gas_Company
         //Uid: The username used to authenticate the connection.
         //Pwd: The password associated with the provided username.
         private readonly string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
+        private Button lastClickedLabel;
 
         public Form2()
         {
@@ -71,45 +73,7 @@ namespace Gas_Company
         //// Data paint on panel
         private void panel2_Paint(object sender, PaintEventArgs e)
         {
-            // Here is to see the orders
-            string query = "SELECT o.ORDER_Id, o.CUSTOMER_Id, c.CUSTOMER_PhoneNo, o.DELIVERY_Address, o.DELIVERY_Time, c.CUSTOMER_Name, od.Order_type, od.Order_weight, o.Gas_Quantity, o.COMPANY_Id, ca.Gas_Volume " +
-                            "FROM `gas_order` o " +
-                            "JOIN `customer` c ON o.CUSTOMER_Id = c.CUSTOMER_Id " +
-                            "JOIN `gas_order_detail` od ON o.ORDER_Id = od.Order_ID " +
-                            "JOIN `customer_accumulation` ca ON o.CUSTOMER_Id = ca.Customer_Id " +
-                            $"WHERE o.COMPANY_Id = {GlobalVariables.CompanyId}";
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                using (MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection))
-                {
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-                    dataGridView1.DataSource = table;
-
-                    // Columns rename
-                    dataGridView1.Columns["ORDER_Id"].HeaderText = "訂單編號";
-                    dataGridView1.Columns["CUSTOMER_Id"].HeaderText = "顧客編號";
-                    dataGridView1.Columns["CUSTOMER_PhoneNo"].HeaderText = "顧客電話";
-                    dataGridView1.Columns["DELIVERY_Address"].HeaderText = "送貨地址";
-                    dataGridView1.Columns["DELIVERY_Time"].HeaderText = "送貨時間";
-                    dataGridView1.Columns["CUSTOMER_Name"].HeaderText = "訂購人";
-                    dataGridView1.Columns["Order_type"].HeaderText = "瓦斯桶種類";
-                    dataGridView1.Columns["Order_weight"].HeaderText = "瓦斯規格";
-                    dataGridView1.Columns["Gas_Quantity"].HeaderText = "數量";
-                    dataGridView1.Columns["COMPANY_Id"].HeaderText = "選擇瓦斯行";
-                    dataGridView1.Columns["Gas_Volume"].HeaderText = "顧客累積殘氣量";
-                    // You can check each column's name here
-                    /*foreach (DataColumn column in table.Columns)
-                    {
-                        Console.WriteLine(column.ColumnName);
-                    }*/
-
-                }
-            }
-            // Here is to load in the available workers
-
-
+            LoadData();
         }
 
         // Open 主頁面
@@ -117,37 +81,58 @@ namespace Gas_Company
         {
             if (activeForm != null)
                 activeForm.Close();
+
+            ChangeButtonColor((Button)sender);
         }
 
         // Open 客戶管理視窗
         private void CustomerManagePage_Click(object sender, EventArgs e)
         {
             openChildForm(new Customer());
+            ChangeButtonColor((Button)sender);
         }
 
         // Open 殘氣累積視窗
         private void ResidualGasPage_Click(object sender, EventArgs e)
         {
             openChildForm(new residual_gas());
+            ChangeButtonColor((Button)sender);
         }
 
         // Open 瓦斯桶管理視窗
         private void GasTankManagePage_Click(object sender, EventArgs e)
         {
             openChildForm(new GasTankManage());
+            ChangeButtonColor((Button)sender);
         }
 
         // Open 員工資料視窗
         private void WorkerPage_Click(object sender, EventArgs e)
         {
             openChildForm(new Worker());
+            ChangeButtonColor((Button)sender);
         }
+
         // Open 營業報表視窗
         private void button7_Click(object sender, EventArgs e)
         {
             openChildForm(new report());
-
+            ChangeButtonColor((Button)sender);
         }
+
+        // 點選其中一個頁面，其他頁面顏色要不同
+        private void ChangeButtonColor(Button clickedButton)
+        {
+            if (lastClickedLabel != null)
+            {
+                lastClickedLabel.BackColor = Color.Wheat; // Set the color back to its original state
+            }
+
+            clickedButton.BackColor = Color.LightBlue; // Set the desired color for the clicked button
+            lastClickedLabel = clickedButton; // Store the reference to the current clicked button
+        }
+
+
         //// Auto-fill when certain row is selected.
         ////* 需求需確認: 要哪些資料? *////
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -239,7 +224,8 @@ namespace Gas_Company
                 DataTable dataTable = (DataTable)dataGridView1.DataSource;
                 if (dataTable != null)
                 {
-                    string filterExpression = $"CUSTOMER_Name LIKE '%{searchTerm}%' OR CONVERT(ORDER_Id, 'System.String') LIKE '%{searchTerm}%' OR Customer_PhoneNo LIKE '%{searchTerm}%'";
+                    // Use parentheses to group the OR conditions together
+                    string filterExpression = $"(CUSTOMER_Name LIKE '%{searchTerm}%' OR CONVERT(ORDER_Id, 'System.String') LIKE '%{searchTerm}%' OR Customer_PhoneNo LIKE '%{searchTerm}%' OR DELIVERY_Address LIKE '%{searchTerm}%')";
                     dataTable.DefaultView.RowFilter = filterExpression;
                 }
             }
@@ -250,6 +236,8 @@ namespace Gas_Company
                 dataTable.DefaultView.RowFilter = string.Empty;
             }
         }
+
+
         // 顯示客戶資料
         public class CustomerData
         {
@@ -316,15 +304,19 @@ namespace Gas_Company
             {
                 connection.Open();
 
-                string query = @"SELECT *
-                                FROM gas_order_history
-                                WHERE CUSTOMER_Id = (
-                                    SELECT CUSTOMER_Id
-                                    FROM gas_order_history
-                                    WHERE ORDER_Id = @order_id
-                                )
-                                ORDER BY DELIVERY_Time DESC;
-                                ";
+                string query = "SELECT o.ORDER_Id, o.CUSTOMER_Id, c.CUSTOMER_PhoneNo, o.DELIVERY_Address, o.DELIVERY_Time, c.CUSTOMER_Name, od.Order_type, od.Order_weight, o.Gas_Quantity, ca.Gas_Volume " +
+                               "FROM `gas_order` o " +
+                               "JOIN `customer` c ON o.CUSTOMER_Id = c.CUSTOMER_Id " +
+                               "JOIN `gas_order_detail` od ON o.ORDER_Id = od.Order_ID " +
+                               "JOIN `customer_accumulation` ca ON o.CUSTOMER_Id = ca.Customer_Id " +
+                               $"WHERE o.COMPANY_Id = {GlobalVariables.CompanyId} " +
+                               "AND o.DELIVERY_Condition = 1 " +
+                               "AND o.CUSTOMER_Id = (" +
+                               "    SELECT CUSTOMER_Id " +
+                               "    FROM gas_order " +
+                               "    WHERE ORDER_Id = @order_id" +
+                               ") " +
+                               "ORDER BY o.DELIVERY_Time DESC;";
 
                 DataGridViewRow selectedRow = dataGridView1.Rows[e.RowIndex];
                 string order_id = selectedRow.Cells["Order_Id"].Value.ToString();
@@ -337,6 +329,18 @@ namespace Gas_Company
                         DataTable historyOrders = new DataTable();
                         adapter.Fill(historyOrders);
 
+
+                        // Columns rename
+                        historyOrders.Columns["ORDER_Id"].ColumnName = "訂單編號";
+                        historyOrders.Columns["CUSTOMER_Id"].ColumnName = "顧客編號";
+                        historyOrders.Columns["CUSTOMER_PhoneNo"].ColumnName = "顧客電話";
+                        historyOrders.Columns["DELIVERY_Address"].ColumnName = "送貨地址";
+                        historyOrders.Columns["DELIVERY_Time"].ColumnName = "送貨時間"; 
+                        historyOrders.Columns["CUSTOMER_Name"].ColumnName = "訂購人";
+                        historyOrders.Columns["Order_type"].ColumnName = "瓦斯桶種類";
+                        historyOrders.Columns["Order_weight"].ColumnName = "瓦斯規格";
+                        historyOrders.Columns["Gas_Quantity"].ColumnName = "數量";
+                        historyOrders.Columns["Gas_Volume"].ColumnName = "顧客累積殘氣量";
                         // Create an instance of the HistoryOrder form
                         HistoryOrder historyOrderForm = new HistoryOrder();
 
@@ -381,6 +385,7 @@ namespace Gas_Company
                         DataTable dataTable = new DataTable();
                         adapter.Fill(dataTable);
 
+                        dataGridView1.Columns["CUSTOMER_Id"].Visible = false;
                         if (dataTable.Rows.Count > 0)
                         {
                             DataRow row = dataTable.Rows[0];
@@ -422,10 +427,10 @@ namespace Gas_Company
             {
                 connection.Open();
 
-                // Step 1: Fetch relevant data from gas_order_history
                 string fetchQuery = @"SELECT *
-                              FROM gas_order_history
+                              FROM gas_order
                               WHERE DELIVERY_Phone = @searchTerm
+                              AND DELIVERY_Condition = 1
                               ORDER BY DELIVERY_Time DESC
                               LIMIT 1";
 
@@ -436,9 +441,6 @@ namespace Gas_Company
                     {
                         if (reader.Read())
                         {
-
-                            
-                            // Step 2: Extract data from the reader
                             int customerId = reader.GetInt32("CUSTOMER_Id");
                             int companyId = reader.GetInt32("COMPANY_Id");
                             string deliveryCondition = reader.GetString("DELIVERY_Condition");
@@ -525,28 +527,7 @@ namespace Gas_Company
 
         private void RefreshButton_Click(object sender, EventArgs e)
         {
-            //刷新dataGridView顯示的資料表
-            string query = "SELECT o.ORDER_Id, c.CUSTOMER_PhoneNo, o.DELIVERY_Address, o.DELIVERY_Time, c.CUSTOMER_Name, od.Order_type, od.Order_weight,o.Gas_Quantity, o.COMPANY_Id FROM `gas_order` o JOIN`customer` c ON o.CUSTOMER_Id = c.CUSTOMER_Id JOIN `gas_order_detail` od ON o.ORDER_Id = od.Order_ID;";
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                using (MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection))
-                {
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-
-                    dataGridView1.DataSource = table;
-                    dataGridView1.Columns["ORDER_Id"].HeaderText = "訂單編號";
-                    dataGridView1.Columns["CUSTOMER_PhoneNo"].HeaderText = "顧客電話";
-                    dataGridView1.Columns["DELIVERY_Address"].HeaderText = "送貨地址";
-                    dataGridView1.Columns["DELIVERY_Time"].HeaderText = "送貨時間";
-                    dataGridView1.Columns["CUSTOMER_Name"].HeaderText = "訂購人";
-                    dataGridView1.Columns["Order_type"].HeaderText = "瓦斯桶種類";
-                    dataGridView1.Columns["Order_weight"].HeaderText = "瓦斯規格";
-                    dataGridView1.Columns["Gas_Quantity"].HeaderText = "數量";
-                    dataGridView1.Columns["COMPANY_Id"].HeaderText = "選擇瓦斯行";
-                }
-            }
+            LoadData();
 
             OrderID.Text = "";
             CustomerName.Text = "";
@@ -611,14 +592,120 @@ namespace Gas_Company
                 }
                 else
                 {
-                    MessageBox.Show("Please select a delivery man!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("請選擇送貨員!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show("Please select a row in the dataGridView1!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("請選擇需要送的訂單!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
+        private void print_Click(object sender, EventArgs e)
+        {
+            // Create a SaveFileDialog to select the file path and name
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "CSV file (*.csv)|*.csv";
+                saveFileDialog.Title = "Save CSV file";
+                saveFileDialog.ShowDialog();
+
+                // If the user clicked the "Save" button
+                if (saveFileDialog.FileName != "")
+                {
+                    try
+                    {
+                        // Create the CSV file and write the column headers
+                        StringBuilder csvContent = new StringBuilder();
+                        for (int i = 0; i < dataGridView1.Columns.Count; i++)
+                        {
+                            csvContent.Append(dataGridView1.Columns[i].HeaderText);
+                            if (i < dataGridView1.Columns.Count - 1)
+                                csvContent.Append(",");
+                        }
+                        csvContent.AppendLine();
+
+                        // Write the data rows to the CSV file
+                        foreach (DataGridViewRow row in dataGridView1.Rows)
+                        {
+                            for (int i = 0; i < dataGridView1.Columns.Count; i++)
+                            {
+                                if (row.Cells[i].Value != null)
+                                    csvContent.Append(row.Cells[i].Value.ToString());
+                                if (i < dataGridView1.Columns.Count - 1)
+                                    csvContent.Append(",");
+                            }
+                            csvContent.AppendLine();
+                        }
+
+                        // Save the CSV file
+                        File.WriteAllText(saveFileDialog.FileName, csvContent.ToString());
+
+                        MessageBox.Show("CSV file saved successfully.", "Save Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error saving CSV file: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        // 用來替代 panel2_Paint
+        private void LoadData()
+        {
+            // Here is to see the orders
+            string query = "SELECT o.ORDER_Id, o.CUSTOMER_Id, c.CUSTOMER_PhoneNo, o.DELIVERY_Address, o.DELIVERY_Time, c.CUSTOMER_Name, od.Order_type, od.Order_weight, o.Gas_Quantity, ca.Gas_Volume " +
+                           "FROM `gas_order` o " +
+                           "JOIN `customer` c ON o.CUSTOMER_Id = c.CUSTOMER_Id " +
+                           "JOIN `gas_order_detail` od ON o.ORDER_Id = od.Order_ID " +
+                           "JOIN `customer_accumulation` ca ON o.CUSTOMER_Id = ca.Customer_Id " +
+                           $"WHERE o.COMPANY_Id = {GlobalVariables.CompanyId} " +
+                           "AND o.DELIVERY_Condition = 0";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection))
+                {
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+
+                    // Split the DELIVERY_Time column into "送貨日期" and "送貨時間" columns
+                    table.Columns.Add("送貨日期", typeof(string));
+                    table.Columns.Add("送貨時間", typeof(string));
+
+                    foreach (DataRow row in table.Rows)
+                    {
+                        if (DateTime.TryParse(row["DELIVERY_Time"].ToString(), out DateTime deliveryDateTime))
+                        {
+                            // Extract the date and time components
+                            string deliveryDate = deliveryDateTime.ToString("yyyy-MM-dd");
+                            string deliveryTime = deliveryDateTime.ToString("HH:mm:ss");
+
+                            // Set the values for the "送貨日期" and "送貨時間" columns
+                            row["送貨日期"] = deliveryDate;
+                            row["送貨時間"] = deliveryTime;
+                        }
+                    }
+
+                    dataGridView1.DataSource = table;
+
+                    dataGridView1.Columns["CUSTOMER_Id"].Visible = false;
+                    // Columns rename
+                    dataGridView1.Columns["ORDER_Id"].HeaderText = "訂單編號";
+                    dataGridView1.Columns["CUSTOMER_Id"].HeaderText = "顧客編號";
+                    dataGridView1.Columns["CUSTOMER_PhoneNo"].HeaderText = "顧客電話";
+                    dataGridView1.Columns["DELIVERY_Address"].HeaderText = "送貨地址";
+                    dataGridView1.Columns["送貨日期"].HeaderText = "送貨日期"; // New column header
+                    dataGridView1.Columns["送貨時間"].HeaderText = "送貨時間"; // New column header
+                    dataGridView1.Columns["DELIVERY_Time"].Visible = false; // Hide the original DELIVERY_Time column
+                    dataGridView1.Columns["CUSTOMER_Name"].HeaderText = "訂購人";
+                    dataGridView1.Columns["Order_type"].HeaderText = "瓦斯桶種類";
+                    dataGridView1.Columns["Order_weight"].HeaderText = "瓦斯規格";
+                    dataGridView1.Columns["Gas_Quantity"].HeaderText = "數量";
+                    dataGridView1.Columns["Gas_Volume"].HeaderText = "顧客累積殘氣量";
+                }
+            }
+        }
     }
 }

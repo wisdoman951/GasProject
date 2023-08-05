@@ -58,7 +58,6 @@ namespace Gas_Company
                     Console.WriteLine(GlobalVariables.CompanyId);
                     MessageBox.Show("登入成功！");
 
-                    Application.Exit();
                     Form2 mainForm = new Form2();
                     mainForm.Show();
                     this.Hide();
