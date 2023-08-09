@@ -343,6 +343,10 @@ namespace Gas_Company
                             dataGridView1.Columns[columnName].DisplayIndex = Array.IndexOf(columnOrder, columnName);
                         }
                     }
+
+                    table.Columns.Remove("CUSTOMER_Password");
+                    table.Columns.Remove("COMPANY_Id");
+                    table.Columns.Remove("COMPANY_HistoryID");
                     // Columns rename
                     dataGridView1.Columns["CUSTOMER_Id"].HeaderText = "客戶編號";
                     dataGridView1.Columns["CUSTOMER_Name"].HeaderText = "客戶姓名";

@@ -25,7 +25,7 @@ namespace Gas_Company
             // Process the data and display it in the form controls
             dataGridView1.DataSource = data;
 
-            dataGridView1.Columns["CUSTOMER_Id"].Visible = false;
+            //dataGridView1.Columns["CUSTOMER_Id"].Visible = false;
         }
 
         private void HistoryOrder_Load(object sender, EventArgs e)

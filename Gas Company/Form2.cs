@@ -651,15 +651,15 @@ namespace Gas_Company
             }
         }
 
-        // 用來替代 panel2_Paint
+        // 用來替代 panel2_Paint，為避免Function過於複雜，查詢分成兩個部分，純訂單顯示 + 查詢IoT資訊
         private void LoadData()
         {
-            // Here is to see the orders
-            string query = "SELECT o.ORDER_Id, o.CUSTOMER_Id, c.CUSTOMER_PhoneNo, o.DELIVERY_Address, o.DELIVERY_Time, c.CUSTOMER_Name, od.Order_type, od.Order_weight, o.Gas_Quantity, ca.Gas_Volume " +
+            string query = "SELECT o.ORDER_Id, o.CUSTOMER_Id, c.CUSTOMER_PhoneNo, o.DELIVERY_Address, o.DELIVERY_Time, c.CUSTOMER_Name, od.Order_type, od.Order_weight, o.Gas_Quantity, ca.Gas_Volume, a.WORKER_Id " +
                            "FROM `gas_order` o " +
                            "JOIN `customer` c ON o.CUSTOMER_Id = c.CUSTOMER_Id " +
                            "JOIN `gas_order_detail` od ON o.ORDER_Id = od.Order_ID " +
                            "JOIN `customer_accumulation` ca ON o.CUSTOMER_Id = ca.Customer_Id " +
+                           "LEFT JOIN `assign` a ON o.ORDER_Id = a.ORDER_Id " +
                            $"WHERE o.COMPANY_Id = {GlobalVariables.CompanyId} " +
                            "AND o.DELIVERY_Condition = 0";
 
@@ -670,24 +670,39 @@ namespace Gas_Company
                     DataTable table = new DataTable();
                     adapter.Fill(table);
 
-                    // Split the DELIVERY_Time column into "送貨日期" and "送貨時間" columns
+                    // Add columns for "送貨日期" and "送貨時間"
                     table.Columns.Add("送貨日期", typeof(string));
                     table.Columns.Add("送貨時間", typeof(string));
 
+                    // Handle "NAN" or NULL value from the assign table for "WORKER_Id"
                     foreach (DataRow row in table.Rows)
                     {
+                        // Set "未指派" if WORKER_Id is null or DBNull
+                        if (row["WORKER_Id"] == null || row["WORKER_Id"] == DBNull.Value)
+                        {
+                            row["WORKER_Id"] = DBNull.Value; // Set to DBNull
+                        }
+
                         if (DateTime.TryParse(row["DELIVERY_Time"].ToString(), out DateTime deliveryDateTime))
                         {
-                            // Extract the date and time components
                             string deliveryDate = deliveryDateTime.ToString("yyyy-MM-dd");
                             string deliveryTime = deliveryDateTime.ToString("HH:mm:ss");
 
-                            // Set the values for the "送貨日期" and "送貨時間" columns
                             row["送貨日期"] = deliveryDate;
                             row["送貨時間"] = deliveryTime;
                         }
                     }
 
+                    // 第二次查詢，查詢IoT資訊。
+                    /*table.Columns.Add("當前瓦斯量", typeof(decimal)); // Assuming SENSOR_Weight and Gas_Empty_Weight are of type decimal
+
+                    // Retrieve and fill the additional information from another query
+                    foreach (DataRow row in table.Rows)
+                    {
+                        // Fetch additional information for each row
+                        decimal currentGasAmount = FetchCurrentGasAmount(row["CUSTOMER_Id"].ToString());
+                        row["當前瓦斯量"] = currentGasAmount;
+                    }*/
                     dataGridView1.DataSource = table;
 
                     dataGridView1.Columns["CUSTOMER_Id"].Visible = false;
@@ -704,6 +719,60 @@ namespace Gas_Company
                     dataGridView1.Columns["Order_weight"].HeaderText = "瓦斯規格";
                     dataGridView1.Columns["Gas_Quantity"].HeaderText = "數量";
                     dataGridView1.Columns["Gas_Volume"].HeaderText = "顧客累積殘氣量";
+                    dataGridView1.Columns["WORKER_Id"].HeaderText = "派送人員";
+                }
+            }
+        }
+
+        /*private decimal FetchCurrentGasAmount(string customerId)
+        {
+            decimal currentGasAmount = 0;
+
+            // Perform SQL query to fetch the required information from iot and sensor_history tables
+            string additionalInfoQuery = $"SELECT (sh.SENSOR_Weight - iot.Gas_Empty_Weight) AS CurrentGasAmount " +
+                                         "FROM `iot` iot " +
+                                         "JOIN `sensor_history` sh ON iot.SENSOR_Id = sh.SENSOR_Id " +
+                                         $"WHERE iot.CUSTOMER_Id = {customerId} " +
+                                         "ORDER BY sh.SENSOR_Time DESC LIMIT 1"; // Get the latest entry
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                MySqlCommand command = new MySqlCommand(additionalInfoQuery, connection);
+                object result = command.ExecuteScalar();
+                if (result != null && result != DBNull.Value)
+                {
+                    currentGasAmount = Convert.ToDecimal(result);
+                }
+            }
+
+            return currentGasAmount;
+        }*/
+
+        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                // Assuming WORKER_Id is the column index where it resides
+                int workerIdColumnIndex = dataGridView1.Columns["WORKER_Id"].Index;
+
+                // Check if the current cell is in the WORKER_Id column
+                if (e.ColumnIndex == workerIdColumnIndex)
+                {
+                    // Get the value of the WORKER_Id column for the current row
+                    object workerIdValue = dataGridView1.Rows[e.RowIndex].Cells[workerIdColumnIndex].Value;
+
+                    // Check if the value is not null or DBNull
+                    if (workerIdValue != null && workerIdValue != DBNull.Value)
+                    {
+                        // Set the row's background color to a specific color for rows with WORKER_Id
+                        dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Khaki;
+                    }
+                    else
+                    {
+                        // Set the row's default background color for rows without WORKER_Id
+                        dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = dataGridView1.DefaultCellStyle.BackColor;
+                    }
                 }
             }
         }
