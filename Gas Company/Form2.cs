@@ -654,14 +654,18 @@ namespace Gas_Company
         // 用來替代 panel2_Paint，為避免Function過於複雜，查詢分成兩個部分，純訂單顯示 + 查詢IoT資訊
         private void LoadData()
         {
-            string query = "SELECT o.ORDER_Id, o.CUSTOMER_Id, c.CUSTOMER_PhoneNo, o.DELIVERY_Address, o.DELIVERY_Time, c.CUSTOMER_Name, od.Order_type, od.Order_weight, o.Gas_Quantity, ca.Gas_Volume, a.WORKER_Id " +
-                           "FROM `gas_order` o " +
-                           "JOIN `customer` c ON o.CUSTOMER_Id = c.CUSTOMER_Id " +
-                           "JOIN `gas_order_detail` od ON o.ORDER_Id = od.Order_ID " +
-                           "JOIN `customer_accumulation` ca ON o.CUSTOMER_Id = ca.Customer_Id " +
-                           "LEFT JOIN `assign` a ON o.ORDER_Id = a.ORDER_Id " +
-                           $"WHERE o.COMPANY_Id = {GlobalVariables.CompanyId} " +
-                           "AND o.DELIVERY_Condition = 0";
+
+            string query = "SELECT o.ORDER_Id, o.CUSTOMER_Id, c.CUSTOMER_PhoneNo, o.DELIVERY_Address, o.DELIVERY_Time, c.CUSTOMER_Name, od.Order_type, od.Order_weight, o.Gas_Quantity, ca.Gas_Volume, a.WORKER_Id, o.sensor_id, " +
+                   "(CASE WHEN sh.SENSOR_Weight IS NOT NULL AND i.Gas_Empty_Weight IS NOT NULL THEN sh.SENSOR_Weight - i.Gas_Empty_Weight ELSE 0 END) AS CurrentGasAmount " +
+                   "FROM `gas_order` o " +
+                   "JOIN `customer` c ON o.CUSTOMER_Id = c.CUSTOMER_Id " +
+                   "JOIN `gas_order_detail` od ON o.ORDER_Id = od.Order_ID " +
+                   "JOIN `customer_accumulation` ca ON o.CUSTOMER_Id = ca.Customer_Id " +
+                   "LEFT JOIN `assign` a ON o.ORDER_Id = a.ORDER_Id " +
+                   $"LEFT JOIN `sensor_history` sh ON o.sensor_id = sh.SENSOR_Id AND sh.SENSOR_Time = (SELECT MAX(SENSOR_Time) FROM sensor_history sh2 WHERE sh2.SENSOR_Id = sh.SENSOR_Id) " +
+                   $"LEFT JOIN `iot` i ON o.sensor_id = i.SENSOR_Id " +
+                   $"WHERE o.COMPANY_Id = {GlobalVariables.CompanyId} " +
+                   "AND o.DELIVERY_Condition = 0";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -720,6 +724,8 @@ namespace Gas_Company
                     dataGridView1.Columns["Gas_Quantity"].HeaderText = "數量";
                     dataGridView1.Columns["Gas_Volume"].HeaderText = "顧客累積殘氣量";
                     dataGridView1.Columns["WORKER_Id"].HeaderText = "派送人員";
+                    dataGridView1.Columns["sensor_id"].HeaderText = "感測器編號";
+                    dataGridView1.Columns["CurrentGasAmount"].HeaderText = "當前瓦斯量";
                 }
             }
         }
