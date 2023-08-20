@@ -1,25 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.Remoting.Contexts;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 using MySql.Data.MySqlClient;
-using Mysqlx.Session;
-using MySqlX.XDevAPI;
-using Org.BouncyCastle.Crypto.IO;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Configuration;
-using Mysqlx.Crud;
-using static Google.Protobuf.Reflection.FieldOptions.Types;
-using System.Collections;
-using Google.Protobuf.WellKnownTypes;
-using MySqlX.XDevAPI.Relational;
 using System.IO;
 
 namespace Gas_Company
@@ -32,6 +17,11 @@ namespace Gas_Company
         //Pwd: The password associated with the provided username.
         private readonly string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
         private Button lastClickedLabel;
+        // 一開始只顯示有被Assigned的訂單
+        private bool showAssignedOrders = true; // Default to show assigned orders
+        private WorkerOrdersForm workerOrdersForm;
+
+
 
         public Form2()
         {
@@ -45,8 +35,17 @@ namespace Gas_Company
             date.Text = DateTime.Now.ToLongDateString();
             time.Text = DateTime.Now.ToLongTimeString();
             week.Text = DateTime.Now.ToString("dddd"); // dddd: Represents the full name of the day of the week (e.g., Monday, Tuesday, ..., Sunday). instaed of abbreviation.
-        }
 
+            //顯示指派/未指派訂單按鈕起始顏色設定
+            ShowAssignedButton.BackColor = Color.Wheat;
+            ShowUnassignedButton.BackColor = Color.FromArgb(14, 144, 255);
+            ShowAssignedButton.ForeColor = Color.Black;
+
+            //開啟訂單分配檢視表
+            WorkerOrdersForm workerOrdersForm = new WorkerOrdersForm();
+            workerOrdersForm.Show();
+
+        }
         private void timer1_Tick(object sender, EventArgs e)
         {
             time.Text = DateTime.Now.ToLongTimeString();
@@ -68,12 +67,14 @@ namespace Gas_Company
             panel2.Tag = childForm;
             childForm.BringToFront();
             childForm.Show();
+            
         }
 
         //// Data paint on panel
         private void panel2_Paint(object sender, PaintEventArgs e)
         {
             LoadData();
+
         }
 
         // Open 主頁面
@@ -166,19 +167,13 @@ namespace Gas_Company
             }
         }
 
-        //// 插入資料
-        private void InsertButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
         ////刪除資料視窗
         // dataGridView1: data table side.
         private void delete_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count == 1)
             {
-                DialogResult result = MessageBox.Show("确定删除此行資料？", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult result = MessageBox.Show("確定刪除此行資料？", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
                     string orderId = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
@@ -187,32 +182,55 @@ namespace Gas_Company
                     {
                         connection.Open();
 
-                        // Delete associated child rows first
-                        string deleteChildQuery = "DELETE FROM `gas_order_detail` WHERE `Order_ID` = @Order_ID";
-                        using (MySqlCommand deleteChildCommand = new MySqlCommand(deleteChildQuery, connection))
+                        using (MySqlTransaction transaction = connection.BeginTransaction())
                         {
-                            deleteChildCommand.Parameters.AddWithValue("@Order_ID", orderId);
-                            deleteChildCommand.ExecuteNonQuery();
-                        }
-
-                        // Delete the parent row
-                        string deleteParentQuery = "DELETE FROM `gas_order` WHERE `Order_ID` = @Order_ID";
-                        using (MySqlCommand deleteParentCommand = new MySqlCommand(deleteParentQuery, connection))
-                        {
-                            deleteParentCommand.Parameters.AddWithValue("@Order_ID", orderId);
-                            int rowsAffected = deleteParentCommand.ExecuteNonQuery();
-                            if (rowsAffected > 0)
+                            try
                             {
-                                dataGridView1.Rows.RemoveAt(dataGridView1.SelectedRows[0].Index);
-                                MessageBox.Show("删除成功", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                // Delete associated child rows from gas_order_detail table first
+                                string deleteChildQuery = "DELETE FROM `gas_order_detail` WHERE `Order_ID` = @Order_ID";
+                                using (MySqlCommand deleteChildCommand = new MySqlCommand(deleteChildQuery, connection))
+                                {
+                                    deleteChildCommand.Transaction = transaction;
+                                    deleteChildCommand.Parameters.AddWithValue("@Order_ID", orderId);
+                                    deleteChildCommand.ExecuteNonQuery();
+                                }
+
+                                // Delete associated rows from assign table
+                                string deleteAssignQuery = "DELETE FROM `assign` WHERE `ORDER_Id` = @Order_ID";
+                                using (MySqlCommand deleteAssignCommand = new MySqlCommand(deleteAssignQuery, connection))
+                                {
+                                    deleteAssignCommand.Transaction = transaction;
+                                    deleteAssignCommand.Parameters.AddWithValue("@Order_ID", orderId);
+                                    deleteAssignCommand.ExecuteNonQuery();
+                                }
+
+                                // Delete the parent row
+                                string deleteParentQuery = "DELETE FROM `gas_order` WHERE `ORDER_Id` = @Order_ID";
+                                using (MySqlCommand deleteParentCommand = new MySqlCommand(deleteParentQuery, connection))
+                                {
+                                    deleteParentCommand.Transaction = transaction;
+                                    deleteParentCommand.Parameters.AddWithValue("@Order_ID", orderId);
+                                    int rowsAffected = deleteParentCommand.ExecuteNonQuery();
+                                    if (rowsAffected > 0)
+                                    {
+                                        transaction.Commit();
+                                        dataGridView1.Rows.RemoveAt(dataGridView1.SelectedRows[0].Index);
+                                        MessageBox.Show("刪除成功", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                        LoadData();
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                transaction.Rollback();
+                                MessageBox.Show("刪除失敗：" + ex.Message, "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
-
                         connection.Close();
                     }
+
                 }
             }
-
         }
 
         private void SearchButton_Click(object sender, EventArgs e)
@@ -355,7 +373,7 @@ namespace Gas_Company
             }
         }
 
-        private void AutoFillButton_Click(object sender, EventArgs e)
+        /*private void AutoFillButton_Click(object sender, EventArgs e)
         {   // Fill out customer address, customer name,
             // delivery time use now(),
             // order_id ??
@@ -418,7 +436,7 @@ namespace Gas_Company
                     }
                 }
             }
-        }
+        }*/
 
         private void AddButton_Click(object sender, EventArgs e)
         {
@@ -471,7 +489,7 @@ namespace Gas_Company
                                 // Bind parameters for the insert statement
                                 insertOrderCommand.Parameters.AddWithValue("@customerId", customerId);
                                 insertOrderCommand.Parameters.AddWithValue("@companyId", companyId);
-                                insertOrderCommand.Parameters.AddWithValue("@deliveryCondition", deliveryCondition);
+                                insertOrderCommand.Parameters.AddWithValue("@deliveryCondition", 0);
                                 insertOrderCommand.Parameters.AddWithValue("@deliveryAddress", deliveryAddress);
                                 insertOrderCommand.Parameters.AddWithValue("@deliveryPhone", deliveryPhone);
                                 insertOrderCommand.Parameters.AddWithValue("@gasQuantity", gasQuantity);
@@ -491,9 +509,9 @@ namespace Gas_Company
 
                                     // Use the orderId variable to insert into gas_order_detail table
                                     string insertOrderDetailQuery = @"INSERT INTO gas_order_detail
-                                                              (Order_ID, Order_Quantity, Order_type, Order_weight, exchange)
+                                                              (Order_ID, Order_Quantity, Order_type, Order_weight)
                                                               VALUES
-                                                              (@orderId, @orderQuantity, @orderType, @orderWeight, @exchange)";
+                                                              (@orderId, @orderQuantity, @orderType, @orderWeight)";
 
                                     using (MySqlCommand insertOrderDetailCommand = new MySqlCommand(insertOrderDetailQuery, connection))
                                     {
@@ -502,7 +520,6 @@ namespace Gas_Company
                                         insertOrderDetailCommand.Parameters.AddWithValue("@orderQuantity", orderQuantity);
                                         insertOrderDetailCommand.Parameters.AddWithValue("@orderType", orderType);
                                         insertOrderDetailCommand.Parameters.AddWithValue("@orderWeight", orderWeight);
-                                        insertOrderDetailCommand.Parameters.AddWithValue("@exchange", exchange);
 
                                         // Execute the insert statement for gas_order_detail
                                         insertOrderDetailCommand.ExecuteNonQuery();
@@ -542,19 +559,15 @@ namespace Gas_Company
 
         private void ConfirmButton_Click(object sender, EventArgs e)
         {
-            // Check if a row is selected in the dataGridView1
             if (dataGridView1.SelectedRows.Count > 0)
             {
-                // Retrieve the customerId and orderId from the selected row
                 int customerId = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells["CUSTOMER_Id"].Value);
                 int orderId = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells["ORDER_Id"].Value);
 
-                // Get the selected delivery man's name from the DeliveryMan ComboBox
                 string deliveryManName = DeliveryMan.SelectedItem?.ToString();
 
                 if (!string.IsNullOrEmpty(deliveryManName))
                 {
-                    // Query the database to get the workerId based on the selected delivery man's name
                     string query = $"SELECT WORKER_Id FROM worker WHERE WORKER_Name = @WorkerName AND WORKER_Company_Id = {GlobalVariables.CompanyId}";
 
                     using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -566,40 +579,57 @@ namespace Gas_Company
 
                             int workerId = Convert.ToInt32(command.ExecuteScalar());
 
-                            // Insert a new record into the assign table
-                            string insertQuery = "INSERT INTO assign (CUSTOMER_Id, WORKER_Id, ORDER_Id) VALUES (@CustomerId, @WorkerId, @OrderId)";
+                            // Check if the order has already been assigned
+                            string checkAssignmentQuery = "SELECT COUNT(*) FROM assign WHERE ORDER_Id = @OrderId";
 
-                            using (MySqlCommand insertCommand = new MySqlCommand(insertQuery, connection))
+                            using (MySqlCommand checkAssignmentCommand = new MySqlCommand(checkAssignmentQuery, connection))
                             {
-                                insertCommand.Parameters.AddWithValue("@CustomerId", customerId);
-                                insertCommand.Parameters.AddWithValue("@WorkerId", workerId);
-                                insertCommand.Parameters.AddWithValue("@OrderId", orderId);
+                                checkAssignmentCommand.Parameters.AddWithValue("@OrderId", orderId);
+                                int assignmentCount = Convert.ToInt32(checkAssignmentCommand.ExecuteScalar());
 
-                                if (insertCommand.ExecuteNonQuery() == 1)
+                                if (assignmentCount > 0)
                                 {
-                                    MessageBox.Show("Order assigned successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                    // Additional actions or notifications can be added here if needed
+                                    MessageBox.Show("該訂單已經被指派！", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
                                 else
                                 {
-                                    MessageBox.Show("Failed to assign order!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    // Proceed with assignment
+                                    string insertQuery = "INSERT INTO assign (CUSTOMER_Id, WORKER_Id, ORDER_Id) VALUES (@CustomerId, @WorkerId, @OrderId)";
+
+                                    using (MySqlCommand insertCommand = new MySqlCommand(insertQuery, connection))
+                                    {
+                                        insertCommand.Parameters.AddWithValue("@CustomerId", customerId);
+                                        insertCommand.Parameters.AddWithValue("@WorkerId", workerId);
+                                        insertCommand.Parameters.AddWithValue("@OrderId", orderId);
+
+                                        if (insertCommand.ExecuteNonQuery() == 1)
+                                        {
+                                            MessageBox.Show("訂單已成功指派！", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                            LoadData();
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("無法指派訂單！", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        }
+                                    }
                                 }
                             }
-
                             connection.Close();
                         }
                     }
                 }
                 else
                 {
-                    MessageBox.Show("請選擇送貨員!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("請選擇送貨員！", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+
             else
             {
-                MessageBox.Show("請選擇需要送的訂單!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("請選擇需要送的訂單！", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void print_Click(object sender, EventArgs e)
         {
@@ -655,17 +685,19 @@ namespace Gas_Company
         private void LoadData()
         {
 
-            string query = "SELECT o.ORDER_Id, o.CUSTOMER_Id, c.CUSTOMER_PhoneNo, o.DELIVERY_Address, o.DELIVERY_Time, c.CUSTOMER_Name, od.Order_type, od.Order_weight, o.Gas_Quantity, ca.Gas_Volume, a.WORKER_Id, o.sensor_id, " +
-                   "(CASE WHEN sh.SENSOR_Weight IS NOT NULL AND i.Gas_Empty_Weight IS NOT NULL THEN sh.SENSOR_Weight - i.Gas_Empty_Weight ELSE 0 END) AS CurrentGasAmount " +
-                   "FROM `gas_order` o " +
-                   "JOIN `customer` c ON o.CUSTOMER_Id = c.CUSTOMER_Id " +
-                   "JOIN `gas_order_detail` od ON o.ORDER_Id = od.Order_ID " +
-                   "JOIN `customer_accumulation` ca ON o.CUSTOMER_Id = ca.Customer_Id " +
-                   "LEFT JOIN `assign` a ON o.ORDER_Id = a.ORDER_Id " +
-                   $"LEFT JOIN `sensor_history` sh ON o.sensor_id = sh.SENSOR_Id AND sh.SENSOR_Time = (SELECT MAX(SENSOR_Time) FROM sensor_history sh2 WHERE sh2.SENSOR_Id = sh.SENSOR_Id) " +
-                   $"LEFT JOIN `iot` i ON o.sensor_id = i.SENSOR_Id " +
-                   $"WHERE o.COMPANY_Id = {GlobalVariables.CompanyId} " +
-                   "AND o.DELIVERY_Condition = 0";
+            string query = "SELECT o.ORDER_Id, o.CUSTOMER_Id, c.CUSTOMER_PhoneNo, o.DELIVERY_Address, o.DELIVERY_Time, c.CUSTOMER_Name, od.Order_type, od.Order_weight, o.Gas_Quantity, ca.Gas_Volume, a.WORKER_Id, w.WORKER_Name, o.sensor_id " +
+               "FROM `gas_order` o " +
+               "JOIN `customer` c ON o.CUSTOMER_Id = c.CUSTOMER_Id " +
+               "JOIN `gas_order_detail` od ON o.ORDER_Id = od.Order_ID " +
+               "JOIN `customer_accumulation` ca ON o.CUSTOMER_Id = ca.Customer_Id " +
+               "LEFT JOIN `assign` a ON o.ORDER_Id = a.ORDER_Id " +
+               "LEFT JOIN `worker` w ON a.WORKER_Id = w.WORKER_Id " +
+               $"LEFT JOIN `sensor_history` sh ON o.sensor_id = sh.SENSOR_Id AND sh.SENSOR_Time = (SELECT MAX(SENSOR_Time) FROM sensor_history sh2 WHERE sh2.SENSOR_Id = sh.SENSOR_Id) " +
+               $"LEFT JOIN `iot` i ON o.sensor_id = i.SENSOR_Id " +
+               $"WHERE o.COMPANY_Id = {GlobalVariables.CompanyId} " +
+               "AND o.DELIVERY_Condition = 0";
+
+
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -698,7 +730,7 @@ namespace Gas_Company
                     }
 
                     // 第二次查詢，查詢IoT資訊。
-                    /*table.Columns.Add("當前瓦斯量", typeof(decimal)); // Assuming SENSOR_Weight and Gas_Empty_Weight are of type decimal
+                    table.Columns.Add("當前瓦斯量", typeof(decimal)); // Assuming SENSOR_Weight and Gas_Empty_Weight are of type decimal
 
                     // Retrieve and fill the additional information from another query
                     foreach (DataRow row in table.Rows)
@@ -706,8 +738,22 @@ namespace Gas_Company
                         // Fetch additional information for each row
                         decimal currentGasAmount = FetchCurrentGasAmount(row["CUSTOMER_Id"].ToString());
                         row["當前瓦斯量"] = currentGasAmount;
-                    }*/
-                    dataGridView1.DataSource = table;
+                    }
+
+                    // 檢查訂單是否已被Assigned.
+                    DataView dataView = new DataView(table);
+                    if (showAssignedOrders)
+                    {
+                        dataView.RowFilter = "WORKER_Id IS NOT NULL";
+                    }
+                    else
+                    {
+                        dataView.RowFilter = "WORKER_Id IS NULL";
+                    }
+
+                    dataGridView1.DataSource = dataView;
+                    dataGridView1.Columns["WORKER_Id"].Visible = false;
+                    dataGridView1.Columns["SENSOR_Id"].Visible = false;
 
                     dataGridView1.Columns["CUSTOMER_Id"].Visible = false;
                     // Columns rename
@@ -723,19 +769,35 @@ namespace Gas_Company
                     dataGridView1.Columns["Order_weight"].HeaderText = "瓦斯規格";
                     dataGridView1.Columns["Gas_Quantity"].HeaderText = "數量";
                     dataGridView1.Columns["Gas_Volume"].HeaderText = "顧客累積殘氣量";
-                    dataGridView1.Columns["WORKER_Id"].HeaderText = "派送人員";
+                    dataGridView1.Columns["WORKER_Name"].HeaderText = "派送人員";
                     dataGridView1.Columns["sensor_id"].HeaderText = "感測器編號";
-                    dataGridView1.Columns["CurrentGasAmount"].HeaderText = "當前瓦斯量";
+
+                    // Columns reorder
+                    dataGridView1.Columns["ORDER_Id"].DisplayIndex = 0;
+                    dataGridView1.Columns["CUSTOMER_PhoneNo"].DisplayIndex = 2;
+                    dataGridView1.Columns["DELIVERY_Address"].DisplayIndex = 3;
+                    dataGridView1.Columns["送貨日期"].DisplayIndex = 4;
+                    dataGridView1.Columns["送貨時間"].DisplayIndex = 5;
+                    dataGridView1.Columns["CUSTOMER_Name"].DisplayIndex = 6;
+                    dataGridView1.Columns["Order_type"].DisplayIndex = 7;
+                    dataGridView1.Columns["Order_weight"].DisplayIndex = 8;
+                    dataGridView1.Columns["Gas_Quantity"].DisplayIndex = 9;
+                    dataGridView1.Columns["Gas_Volume"].DisplayIndex = 10;
+                    dataGridView1.Columns["WORKER_Name"].DisplayIndex = 11;
+                    dataGridView1.Columns["sensor_id"].DisplayIndex = 12;
+                    dataGridView1.Columns["當前瓦斯量"].DisplayIndex = 1;
+
                 }
             }
         }
 
-        /*private decimal FetchCurrentGasAmount(string customerId)
+
+        private decimal FetchCurrentGasAmount(string customerId)
         {
             decimal currentGasAmount = 0;
 
             // Perform SQL query to fetch the required information from iot and sensor_history tables
-            string additionalInfoQuery = $"SELECT (sh.SENSOR_Weight - iot.Gas_Empty_Weight) AS CurrentGasAmount " +
+            string additionalInfoQuery = $"SELECT ((sh.SENSOR_Weight / 1000) - iot.Gas_Empty_Weight) AS CurrentGasAmount " +
                                          "FROM `iot` iot " +
                                          "JOIN `sensor_history` sh ON iot.SENSOR_Id = sh.SENSOR_Id " +
                                          $"WHERE iot.CUSTOMER_Id = {customerId} " +
@@ -753,14 +815,15 @@ namespace Gas_Company
             }
 
             return currentGasAmount;
-        }*/
+        }
 
+        // Mark the rows which has been assigned workers
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
                 // Assuming WORKER_Id is the column index where it resides
-                int workerIdColumnIndex = dataGridView1.Columns["WORKER_Id"].Index;
+                int workerIdColumnIndex = dataGridView1.Columns["WORKER_Name"].Index;
 
                 // Check if the current cell is in the WORKER_Id column
                 if (e.ColumnIndex == workerIdColumnIndex)
@@ -782,5 +845,29 @@ namespace Gas_Company
                 }
             }
         }
+        private void ShowAssignedButton_Click(object sender, EventArgs e)
+        {
+            showAssignedOrders = true;
+            LoadData();
+            //換顏色 籃底配白字 / 橘底配黑字
+            ShowAssignedButton.ForeColor = Color.Black;
+            ShowUnassignedButton.ForeColor = Color.White;
+
+            ShowAssignedButton.BackColor = Color.Wheat;
+            ShowUnassignedButton.BackColor = Color.FromArgb(14, 144, 255);
+        }
+
+        private void ShowUnassignedButton_Click(object sender, EventArgs e)
+        {
+            showAssignedOrders = false;
+            LoadData();
+            //換顏色 籃底配白字 / 橘底配黑字
+            ShowAssignedButton.ForeColor = Color.White;
+            ShowUnassignedButton.ForeColor = Color.Black;
+
+            ShowAssignedButton.BackColor = Color.FromArgb(14, 144, 255);
+            ShowUnassignedButton.BackColor = Color.Wheat;
+        }
+
     }
 }

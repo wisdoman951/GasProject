@@ -51,6 +51,7 @@ namespace Gas_Company
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.AddButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.AutoFillButton = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.GasVolume = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
@@ -78,7 +79,8 @@ namespace Gas_Company
             this.ConfirmButton = new System.Windows.Forms.Button();
             this.delete = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.AutoFillButton = new System.Windows.Forms.Button();
+            this.ShowUnassignedButton = new System.Windows.Forms.Button();
+            this.ShowAssignedButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel8.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -226,7 +228,7 @@ namespace Gas_Company
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(99, 33);
             this.button1.TabIndex = 0;
-            this.button1.Text = "瓦斯訂購";
+            this.button1.Text = "配送清單";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.GasOrderPage_Click);
             // 
@@ -380,6 +382,18 @@ namespace Gas_Company
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "詳細訂單資訊";
             // 
+            // AutoFillButton
+            // 
+            this.AutoFillButton.BackColor = System.Drawing.Color.LightBlue;
+            this.AutoFillButton.ForeColor = System.Drawing.Color.Cyan;
+            this.AutoFillButton.Image = global::Gas_Company.Properties.Resources._52448421;
+            this.AutoFillButton.Location = new System.Drawing.Point(255, 77);
+            this.AutoFillButton.Name = "AutoFillButton";
+            this.AutoFillButton.Size = new System.Drawing.Size(21, 21);
+            this.AutoFillButton.TabIndex = 88;
+            this.AutoFillButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.AutoFillButton.UseVisualStyleBackColor = false;
+            // 
             // label13
             // 
             this.label13.AutoSize = true;
@@ -396,6 +410,7 @@ namespace Gas_Company
             this.GasVolume.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GasVolume.Location = new System.Drawing.Point(832, 77);
             this.GasVolume.Name = "GasVolume";
+            this.GasVolume.ReadOnly = true;
             this.GasVolume.Size = new System.Drawing.Size(60, 20);
             this.GasVolume.TabIndex = 86;
             // 
@@ -531,6 +546,7 @@ namespace Gas_Company
             this.DeliveryAddress.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DeliveryAddress.Location = new System.Drawing.Point(104, 119);
             this.DeliveryAddress.Name = "DeliveryAddress";
+            this.DeliveryAddress.ReadOnly = true;
             this.DeliveryAddress.Size = new System.Drawing.Size(412, 20);
             this.DeliveryAddress.TabIndex = 46;
             // 
@@ -552,6 +568,7 @@ namespace Gas_Company
             this.CustomerPhone.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CustomerPhone.Location = new System.Drawing.Point(104, 77);
             this.CustomerPhone.Name = "CustomerPhone";
+            this.CustomerPhone.ReadOnly = true;
             this.CustomerPhone.Size = new System.Drawing.Size(145, 20);
             this.CustomerPhone.TabIndex = 42;
             // 
@@ -573,6 +590,7 @@ namespace Gas_Company
             this.CustomerName.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CustomerName.Location = new System.Drawing.Point(371, 74);
             this.CustomerName.Name = "CustomerName";
+            this.CustomerName.ReadOnly = true;
             this.CustomerName.Size = new System.Drawing.Size(145, 20);
             this.CustomerName.TabIndex = 40;
             // 
@@ -615,6 +633,7 @@ namespace Gas_Company
             this.OrderID.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.OrderID.Location = new System.Drawing.Point(104, 35);
             this.OrderID.Name = "OrderID";
+            this.OrderID.ReadOnly = true;
             this.OrderID.Size = new System.Drawing.Size(145, 20);
             this.OrderID.TabIndex = 32;
             // 
@@ -662,6 +681,8 @@ namespace Gas_Company
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.panel2.Controls.Add(this.ShowUnassignedButton);
+            this.panel2.Controls.Add(this.ShowAssignedButton);
             this.panel2.Controls.Add(this.delete);
             this.panel2.Controls.Add(this.groupBox1);
             this.panel2.Controls.Add(this.AddButton);
@@ -674,18 +695,35 @@ namespace Gas_Company
             this.panel2.TabIndex = 1;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
-            // AutoFillButton
+            // ShowUnassignedButton
             // 
-            this.AutoFillButton.BackColor = System.Drawing.Color.LightBlue;
-            this.AutoFillButton.ForeColor = System.Drawing.Color.Cyan;
-            this.AutoFillButton.Image = global::Gas_Company.Properties.Resources._52448421;
-            this.AutoFillButton.Location = new System.Drawing.Point(255, 77);
-            this.AutoFillButton.Name = "AutoFillButton";
-            this.AutoFillButton.Size = new System.Drawing.Size(21, 21);
-            this.AutoFillButton.TabIndex = 88;
-            this.AutoFillButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.AutoFillButton.UseVisualStyleBackColor = false;
-            this.AutoFillButton.Click += new System.EventHandler(this.AutoFillButton_Click);
+            this.ShowUnassignedButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(144)))), ((int)(((byte)(255)))));
+            this.ShowUnassignedButton.FlatAppearance.BorderSize = 0;
+            this.ShowUnassignedButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ShowUnassignedButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShowUnassignedButton.ForeColor = System.Drawing.Color.White;
+            this.ShowUnassignedButton.Location = new System.Drawing.Point(112, 338);
+            this.ShowUnassignedButton.Name = "ShowUnassignedButton";
+            this.ShowUnassignedButton.Size = new System.Drawing.Size(83, 26);
+            this.ShowUnassignedButton.TabIndex = 91;
+            this.ShowUnassignedButton.Text = "未指派";
+            this.ShowUnassignedButton.UseVisualStyleBackColor = false;
+            this.ShowUnassignedButton.Click += new System.EventHandler(this.ShowUnassignedButton_Click);
+            // 
+            // ShowAssignedButton
+            // 
+            this.ShowAssignedButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(144)))), ((int)(((byte)(255)))));
+            this.ShowAssignedButton.FlatAppearance.BorderSize = 0;
+            this.ShowAssignedButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ShowAssignedButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShowAssignedButton.ForeColor = System.Drawing.Color.White;
+            this.ShowAssignedButton.Location = new System.Drawing.Point(29, 338);
+            this.ShowAssignedButton.Name = "ShowAssignedButton";
+            this.ShowAssignedButton.Size = new System.Drawing.Size(83, 26);
+            this.ShowAssignedButton.TabIndex = 7;
+            this.ShowAssignedButton.Text = "已指派";
+            this.ShowAssignedButton.UseVisualStyleBackColor = false;
+            this.ShowAssignedButton.Click += new System.EventHandler(this.ShowAssignedButton_Click);
             // 
             // Form2
             // 
@@ -763,5 +801,7 @@ namespace Gas_Company
         private System.Windows.Forms.Button ConfirmButton;
         private System.Windows.Forms.Button delete;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button ShowUnassignedButton;
+        private System.Windows.Forms.Button ShowAssignedButton;
     }
 }

@@ -14,7 +14,7 @@
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>E:\GAS_PUB\TestV2-1\</PublishUrl>
+    <PublishUrl>E:\GAS_PUB\TestV2-3\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -24,7 +24,6 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <AutorunEnabled>true</AutorunEnabled>
     <ApplicationRevision>15</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
@@ -175,6 +174,12 @@
     <Compile Include="Form3.Designer.cs">
       <DependentUpon>Form3.cs</DependentUpon>
     </Compile>
+    <Compile Include="WorkerOrdersForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WorkerOrdersForm.Designer.cs">
+      <DependentUpon>WorkerOrdersForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="客戶歷史訂單資料.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -292,6 +297,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="WorkerManage.resx">
       <DependentUpon>WorkerManage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WorkerOrdersForm.resx">
+      <DependentUpon>WorkerOrdersForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="客戶歷史訂單資料.resx">
       <DependentUpon>客戶歷史訂單資料.cs</DependentUpon>
