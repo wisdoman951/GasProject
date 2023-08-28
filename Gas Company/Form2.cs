@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using System.Configuration;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Gas_Company
 {
@@ -685,26 +686,51 @@ namespace Gas_Company
         private void LoadData()
         {
 
-            string query = "SELECT o.ORDER_Id, o.CUSTOMER_Id, c.CUSTOMER_PhoneNo, o.DELIVERY_Address, o.DELIVERY_Time, c.CUSTOMER_Name, od.Order_type, od.Order_weight, o.Gas_Quantity, ca.Gas_Volume, a.WORKER_Id, w.WORKER_Name, o.sensor_id " +
-               "FROM `gas_order` o " +
-               "JOIN `customer` c ON o.CUSTOMER_Id = c.CUSTOMER_Id " +
-               "JOIN `gas_order_detail` od ON o.ORDER_Id = od.Order_ID " +
-               "JOIN `customer_accumulation` ca ON o.CUSTOMER_Id = ca.Customer_Id " +
-               "LEFT JOIN `assign` a ON o.ORDER_Id = a.ORDER_Id " +
-               "LEFT JOIN `worker` w ON a.WORKER_Id = w.WORKER_Id " +
-               $"LEFT JOIN `sensor_history` sh ON o.sensor_id = sh.SENSOR_Id AND sh.SENSOR_Time = (SELECT MAX(SENSOR_Time) FROM sensor_history sh2 WHERE sh2.SENSOR_Id = sh.SENSOR_Id) " +
-               $"LEFT JOIN `iot` i ON o.sensor_id = i.SENSOR_Id " +
-               $"WHERE o.COMPANY_Id = {GlobalVariables.CompanyId} " +
-               "AND o.DELIVERY_Condition = 0";
-
-
+            string query = "SELECT " +
+                           "o.ORDER_Id, " +
+                           "o.CUSTOMER_Id, " +
+                           "c.CUSTOMER_PhoneNo, " +
+                           "o.DELIVERY_Address, " +
+                           "o.DELIVERY_Time, " +
+                           "c.CUSTOMER_Name, " +
+                           "od.Order_type, " +
+                           "od.Order_weight, " +
+                           "o.Gas_Quantity, " +
+                           "ca.Gas_Volume, " +
+                           "a.WORKER_Id, " +
+                           "w.WORKER_Name, " +
+                           "o.sensor_id " +
+                       "FROM " +
+                           "`gas_order` o " +
+                       "JOIN " +
+                           "`customer` c " +
+                               "ON o.CUSTOMER_Id = c.CUSTOMER_Id " +
+                       "JOIN " +
+                           "`gas_order_detail` od " +
+                               "ON o.ORDER_Id = od.Order_ID " +
+                       "JOIN " +
+                           "`customer_accumulation` ca " +
+                               "ON o.CUSTOMER_Id = ca.Customer_Id " +
+                       "LEFT JOIN " +
+                           "`assign` a " +
+                               "ON o.ORDER_Id = a.ORDER_Id " +
+                       "LEFT JOIN " +
+                           "`worker` w " +
+                               "ON a.WORKER_Id = w.WORKER_Id " +
+                       "WHERE " +
+                           $"o.COMPANY_Id = {GlobalVariables.CompanyId} " +
+                           "AND o.DELIVERY_Condition = 0";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
+                connection.Open();
+
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection))
                 {
                     DataTable table = new DataTable();
+                    // normal way
                     adapter.Fill(table);
+
 
                     // Add columns for "送貨日期" and "送貨時間"
                     table.Columns.Add("送貨日期", typeof(string));
@@ -755,7 +781,6 @@ namespace Gas_Company
                     dataGridView1.Columns["WORKER_Id"].Visible = false;
                     dataGridView1.Columns["SENSOR_Id"].Visible = false;
 
-                    dataGridView1.Columns["CUSTOMER_Id"].Visible = false;
                     // Columns rename
                     dataGridView1.Columns["ORDER_Id"].HeaderText = "訂單編號";
                     dataGridView1.Columns["CUSTOMER_Id"].HeaderText = "顧客編號";
@@ -848,7 +873,7 @@ namespace Gas_Company
         private void ShowAssignedButton_Click(object sender, EventArgs e)
         {
             showAssignedOrders = true;
-            LoadData();
+             LoadData();
             //換顏色 籃底配白字 / 橘底配黑字
             ShowAssignedButton.ForeColor = Color.Black;
             ShowUnassignedButton.ForeColor = Color.White;
@@ -860,7 +885,7 @@ namespace Gas_Company
         private void ShowUnassignedButton_Click(object sender, EventArgs e)
         {
             showAssignedOrders = false;
-            LoadData();
+             LoadData();
             //換顏色 籃底配白字 / 橘底配黑字
             ShowAssignedButton.ForeColor = Color.White;
             ShowUnassignedButton.ForeColor = Color.Black;

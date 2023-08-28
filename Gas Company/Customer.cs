@@ -15,7 +15,7 @@ namespace Gas_Company
     public partial class Customer : Form
     {
         private readonly string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
-        string customerId = "";
+        readonly string customerId = "";
 
         public Customer()
         {
