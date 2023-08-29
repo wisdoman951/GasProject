@@ -43,7 +43,7 @@ namespace Gas_Company
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = conn;
-                cmd.CommandText = @"SELECT Manager_ID FROM manager_account WHERE Email = @Email AND Password = @Password;";
+                cmd.CommandText = @"SELECT Manager_ID FROM manager_account WHERE MANAGER_Email = @Email AND MANAGER_Password = @Password;";
                 cmd.Parameters.AddWithValue("@Email", email);
                 cmd.Parameters.AddWithValue("@Password", password);
                 object result = cmd.ExecuteScalar();

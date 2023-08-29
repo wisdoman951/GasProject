@@ -7,6 +7,8 @@ using MySql.Data.MySqlClient;
 using System.Configuration;
 using System.IO;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Gas_Company
 {
@@ -30,7 +32,7 @@ namespace Gas_Company
         }
 
         //// Real-time time clock
-        private void Form2_Load(object sender, EventArgs e)
+        private async void Form2_Load(object sender, EventArgs e)
         {
             timer1.Start();
             date.Text = DateTime.Now.ToLongDateString();
@@ -45,7 +47,7 @@ namespace Gas_Company
             //開啟訂單分配檢視表
             WorkerOrdersForm workerOrdersForm = new WorkerOrdersForm();
             workerOrdersForm.Show();
-
+            await LoadData();
         }
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -72,11 +74,10 @@ namespace Gas_Company
         }
 
         //// Data paint on panel
-        private void panel2_Paint(object sender, PaintEventArgs e)
+        /*private async Task panel2_Paint(object sender, PaintEventArgs e)
         {
-            LoadData();
-
-        }
+            await LoadData();
+        }*/
 
         // Open 主頁面
         private void GasOrderPage_Click(object sender, EventArgs e)
@@ -683,9 +684,8 @@ namespace Gas_Company
         }
 
         // 用來替代 panel2_Paint，為避免Function過於複雜，查詢分成兩個部分，純訂單顯示 + 查詢IoT資訊
-        private void LoadData()
+        private async Task LoadData()
         {
-
             string query = "SELECT " +
                            "o.ORDER_Id, " +
                            "o.CUSTOMER_Id, " +
@@ -723,21 +723,22 @@ namespace Gas_Company
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                connection.Open();
+                await connection.OpenAsync();
 
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection))
                 {
                     DataTable table = new DataTable();
-                    // normal way
-                    adapter.Fill(table);
-
 
                     // Add columns for "送貨日期" and "送貨時間"
                     table.Columns.Add("送貨日期", typeof(string));
                     table.Columns.Add("送貨時間", typeof(string));
+                    table.Columns.Add("當前瓦斯量", typeof(decimal)); // Add "當前瓦斯量" column here
+
+                    await adapter.FillAsync(table);
+
 
                     // Handle "NAN" or NULL value from the assign table for "WORKER_Id"
-                    foreach (DataRow row in table.Rows)
+                    /*foreach (DataRow row in table.Rows)
                     {
                         // Set "未指派" if WORKER_Id is null or DBNull
                         if (row["WORKER_Id"] == null || row["WORKER_Id"] == DBNull.Value)
@@ -753,17 +754,53 @@ namespace Gas_Company
                             row["送貨日期"] = deliveryDate;
                             row["送貨時間"] = deliveryTime;
                         }
-                    }
+                        // Fetch additional information for each row
+                        string customerId = row["CUSTOMER_Id"].ToString();
+                        decimal currentGasAmount = await FetchCurrentGasAmount(customerId);
+                        row["當前瓦斯量"] = currentGasAmount;
+                    }*/
 
-                    // 第二次查詢，查詢IoT資訊。
-                    table.Columns.Add("當前瓦斯量", typeof(decimal)); // Assuming SENSOR_Weight and Gas_Empty_Weight are of type decimal
-
-                    // Retrieve and fill the additional information from another query
+                    // 建立一個dict來紀錄已經找過的rows id, 避免重複查詢造成系統回應時間過長
+                    Dictionary<string, bool> processedOrders = new Dictionary<string, bool>();
                     foreach (DataRow row in table.Rows)
                     {
-                        // Fetch additional information for each row
-                        decimal currentGasAmount = FetchCurrentGasAmount(row["CUSTOMER_Id"].ToString());
-                        row["當前瓦斯量"] = currentGasAmount;
+                        string orderId = row["ORDER_Id"].ToString();
+
+                        if (!processedOrders.ContainsKey(orderId))
+                        {
+                            processedOrders[orderId] = true;
+
+                            // Set "未指派" if WORKER_Id is null or DBNull
+                            if (row["WORKER_Id"] == null || row["WORKER_Id"] == DBNull.Value)
+                            {
+                                row["WORKER_Id"] = DBNull.Value; // Set to DBNull
+                            }
+
+                            if (DateTime.TryParse(row["DELIVERY_Time"].ToString(), out DateTime deliveryDateTime))
+                            {
+                                string deliveryDate = deliveryDateTime.ToString("yyyy-MM-dd");
+                                string deliveryTime = deliveryDateTime.ToString("HH:mm:ss");
+
+                                row["送貨日期"] = deliveryDate;
+                                row["送貨時間"] = deliveryTime;
+                            }
+
+                            // Fetch additional information for each row
+                            string customerId = row["CUSTOMER_Id"].ToString();
+                            decimal currentGasAmount = await FetchCurrentGasAmount(customerId);
+                            row["當前瓦斯量"] = currentGasAmount;
+                        }
+                        else
+                        {
+                            // Copy data from the first occurrence
+                            DataRow firstOccurrenceRow = table.Select($"ORDER_Id = '{orderId}'").FirstOrDefault();
+                            if (firstOccurrenceRow != null)
+                            {
+                                row["送貨日期"] = firstOccurrenceRow["送貨日期"];
+                                row["送貨時間"] = firstOccurrenceRow["送貨時間"];
+                                row["當前瓦斯量"] = firstOccurrenceRow["當前瓦斯量"];
+                            }
+                        }
                     }
 
                     // 檢查訂單是否已被Assigned.
@@ -817,7 +854,7 @@ namespace Gas_Company
         }
 
 
-        private decimal FetchCurrentGasAmount(string customerId)
+        private async Task<decimal> FetchCurrentGasAmount(string customerId)
         {
             decimal currentGasAmount = 0;
 
@@ -830,15 +867,15 @@ namespace Gas_Company
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                connection.Open();
+                await connection.OpenAsync();
+
                 MySqlCommand command = new MySqlCommand(additionalInfoQuery, connection);
-                object result = command.ExecuteScalar();
+                object result = await command.ExecuteScalarAsync();
                 if (result != null && result != DBNull.Value)
                 {
                     currentGasAmount = Convert.ToDecimal(result);
                 }
             }
-
             return currentGasAmount;
         }
 
@@ -870,10 +907,10 @@ namespace Gas_Company
                 }
             }
         }
-        private void ShowAssignedButton_Click(object sender, EventArgs e)
+        private async void ShowAssignedButton_Click(object sender, EventArgs e)
         {
             showAssignedOrders = true;
-             LoadData();
+            await LoadData();
             //換顏色 籃底配白字 / 橘底配黑字
             ShowAssignedButton.ForeColor = Color.Black;
             ShowUnassignedButton.ForeColor = Color.White;
@@ -882,10 +919,10 @@ namespace Gas_Company
             ShowUnassignedButton.BackColor = Color.FromArgb(14, 144, 255);
         }
 
-        private void ShowUnassignedButton_Click(object sender, EventArgs e)
+        private async void ShowUnassignedButton_Click(object sender, EventArgs e)
         {
             showAssignedOrders = false;
-             LoadData();
+            await LoadData();
             //換顏色 籃底配白字 / 橘底配黑字
             ShowAssignedButton.ForeColor = Color.White;
             ShowUnassignedButton.ForeColor = Color.Black;

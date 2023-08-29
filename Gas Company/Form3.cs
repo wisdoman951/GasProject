@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using System.Configuration;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace Gas_Company
 {
@@ -36,17 +37,17 @@ namespace Gas_Company
 
         private void btnRegister_Click_1(object sender, EventArgs e)
         {
-            string Employee_Name = txtName.Text;
-            string Phone = txtPhone.Text;
-            string City = txtCity.Text;
-            string District = txtDistrict.Text;
-            string Address = txtAddress.Text;
+            string employee_Name = txtName.Text;
+            string phone = txtPhone.Text;
+            string city = txtCity.Text;
+            string district = txtDistrict.Text;
+            string address = txtAddress.Text;
             string email = txtEmail.Text;
             string password = txtPassword.Text;
             string confirmPassword = txtPassword2.Text;
 
-            if (string.IsNullOrEmpty(Employee_Name) || string.IsNullOrEmpty(Phone) ||
-                string.IsNullOrEmpty(City) || string.IsNullOrEmpty(District) || string.IsNullOrEmpty(Address) ||
+            if (string.IsNullOrEmpty(employee_Name) || string.IsNullOrEmpty(phone) ||
+                string.IsNullOrEmpty(city) || string.IsNullOrEmpty(district) || string.IsNullOrEmpty(address) ||
                 string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(confirmPassword))
             {
                 MessageBox.Show("所有欄位皆為必填。");
@@ -58,38 +59,24 @@ namespace Gas_Company
                 MessageBox.Show("密碼和確認密碼不相符。");
                 return;
             }
-
-            int Employee_ID;
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = conn;
-                cmd.CommandText = @"INSERT INTO company_employee (Employee_Name, Employee_Phone,Employee_City, Employee_District, Employee_Address, Registered_at)
-                            VALUES (@Employee_Name, @Employee_Phone, @Employee_City, @Employee_District, @Employee_Address, @Registered_at);
-                            SELECT LAST_INSERT_ID();";
-                cmd.Parameters.AddWithValue("@Employee_Name", Employee_Name);
-                cmd.Parameters.AddWithValue("@Employee_Phone", Phone);
-                cmd.Parameters.AddWithValue("@Employee_City", City);
-                cmd.Parameters.AddWithValue("@Employee_District", District);
-                cmd.Parameters.AddWithValue("@Employee_Address", Address);
-                cmd.Parameters.AddWithValue("@Registered_at", DateTime.Now);
-                Employee_ID = Convert.ToInt32(cmd.ExecuteScalar());
-            }
-
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = conn;
-                cmd.CommandText = @"INSERT INTO Employee_account (Employee_ID, Email, Password)
-                            VALUES (@Employee_ID, @Email, @Password);";
-                cmd.Parameters.AddWithValue("@Employee_ID", Employee_ID);
-                cmd.Parameters.AddWithValue("@Email", email);
-                cmd.Parameters.AddWithValue("@Password", password);
+                cmd.CommandText = @"INSERT INTO manager_account (MANAGER_Name, MANAGER_PhoneNo, MANAGER_Email, MANAGER_City, MANAGER_District, MANAGER_Address, MANAGER_Password, Register_at)
+                    VALUES (@MANAGER_Name, @MANAGER_PhoneNo, @MANAGER_Email, @MANAGER_City, @MANAGER_District, @MANAGER_Address, @MANAGER_Password, @Register_at);
+                    SELECT LAST_INSERT_ID();";
+                cmd.Parameters.AddWithValue("@MANAGER_Name", employee_Name);
+                cmd.Parameters.AddWithValue("@MANAGER_PhoneNo", phone);
+                cmd.Parameters.AddWithValue("@MANAGER_Email", email);
+                cmd.Parameters.AddWithValue("@MANAGER_City", city);
+                cmd.Parameters.AddWithValue("@MANAGER_District", district);
+                cmd.Parameters.AddWithValue("@MANAGER_Address", address);
+                cmd.Parameters.AddWithValue("@MANAGER_Password", password);
+                cmd.Parameters.AddWithValue("@Register_at", DateTime.Now);
                 cmd.ExecuteNonQuery();
             }
-
             MessageBox.Show("註冊成功！");
             this.Close();
             Form1 f1 = new Form1();
