@@ -559,7 +559,7 @@ namespace Gas_Company
             GasVolume.Text = "";
         }
 
-        private void ConfirmButton_Click(object sender, EventArgs e)
+        private async void ConfirmButton_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
@@ -607,7 +607,7 @@ namespace Gas_Company
                                         if (insertCommand.ExecuteNonQuery() == 1)
                                         {
                                             MessageBox.Show("訂單已成功指派！", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                            LoadData();
+                                            await LoadData();
                                         }
                                         else
                                         {
@@ -687,39 +687,39 @@ namespace Gas_Company
         private async Task LoadData()
         {
             string query = "SELECT " +
-                           "o.ORDER_Id, " +
-                           "o.CUSTOMER_Id, " +
-                           "c.CUSTOMER_PhoneNo, " +
-                           "o.DELIVERY_Address, " +
-                           "o.DELIVERY_Time, " +
-                           "c.CUSTOMER_Name, " +
-                           "od.Order_type, " +
-                           "od.Order_weight, " +
-                           "o.Gas_Quantity, " +
-                           "ca.Gas_Volume, " +
-                           "a.WORKER_Id, " +
-                           "w.WORKER_Name, " +
-                           "o.sensor_id " +
-                       "FROM " +
-                           "`gas_order` o " +
-                       "JOIN " +
-                           "`customer` c " +
-                               "ON o.CUSTOMER_Id = c.CUSTOMER_Id " +
-                       "JOIN " +
-                           "`gas_order_detail` od " +
-                               "ON o.ORDER_Id = od.Order_ID " +
-                       "JOIN " +
-                           "`customer_accumulation` ca " +
-                               "ON o.CUSTOMER_Id = ca.Customer_Id " +
-                       "LEFT JOIN " +
-                           "`assign` a " +
-                               "ON o.ORDER_Id = a.ORDER_Id " +
-                       "LEFT JOIN " +
-                           "`worker` w " +
-                               "ON a.WORKER_Id = w.WORKER_Id " +
-                       "WHERE " +
-                           $"o.COMPANY_Id = {GlobalVariables.CompanyId} " +
-                           "AND o.DELIVERY_Condition = 0";
+               "o.ORDER_Id, " +
+               "o.CUSTOMER_Id, " +
+               "c.CUSTOMER_PhoneNo, " +
+               "o.DELIVERY_Address, " +
+               "o.DELIVERY_Time, " +
+               "c.CUSTOMER_Name, " +
+               "od.Order_type, " +
+               "od.Order_weight, " +
+               "o.Gas_Quantity, " +
+               "ca.Gas_Volume, " +
+               "a.WORKER_Id, " +
+               "w.WORKER_Name, " +
+               "o.sensor_id " +
+               "FROM " +
+               "`gas_order` o " +
+               "LEFT JOIN " +
+               "`customer` c " +
+               "ON o.CUSTOMER_Id = c.CUSTOMER_Id " +
+               "LEFT JOIN " +
+               "`gas_order_detail` od " +
+               "ON o.ORDER_Id = od.Order_ID " +
+               "LEFT JOIN " +
+               "`customer_accumulation` ca " +
+               "ON o.CUSTOMER_Id = ca.Customer_Id " +
+               "LEFT JOIN " +
+               "`assign` a " +
+               "ON o.ORDER_Id = a.ORDER_Id " +
+               "LEFT JOIN " +
+               "`worker` w " +
+               "ON a.WORKER_Id = w.WORKER_Id " +
+               "WHERE " +
+               $"o.COMPANY_Id = {GlobalVariables.CompanyId} " +
+               "AND o.DELIVERY_Condition = 0";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -732,7 +732,7 @@ namespace Gas_Company
                     // Add columns for "送貨日期" and "送貨時間"
                     table.Columns.Add("送貨日期", typeof(string));
                     table.Columns.Add("送貨時間", typeof(string));
-                    table.Columns.Add("當前瓦斯量", typeof(decimal)); // Add "當前瓦斯量" column here
+                    //table.Columns.Add("當前瓦斯量", typeof(decimal)); // Add "當前瓦斯量" column here
 
                     await adapter.FillAsync(table);
 
@@ -787,18 +787,19 @@ namespace Gas_Company
 
                             // Fetch additional information for each row
                             string customerId = row["CUSTOMER_Id"].ToString();
-                            decimal currentGasAmount = await FetchCurrentGasAmount(customerId);
-                            row["當前瓦斯量"] = currentGasAmount;
+                            //decimal currentGasAmount = await FetchCurrentGasAmount(customerId);
+                            //row["當前瓦斯量"] = currentGasAmount;
                         }
                         else
                         {
+                            // 避免同樣ORDER_Id重複查詢
                             // Copy data from the first occurrence
                             DataRow firstOccurrenceRow = table.Select($"ORDER_Id = '{orderId}'").FirstOrDefault();
                             if (firstOccurrenceRow != null)
                             {
                                 row["送貨日期"] = firstOccurrenceRow["送貨日期"];
                                 row["送貨時間"] = firstOccurrenceRow["送貨時間"];
-                                row["當前瓦斯量"] = firstOccurrenceRow["當前瓦斯量"];
+                                //row["當前瓦斯量"] = firstOccurrenceRow["當前瓦斯量"];
                             }
                         }
                     }
@@ -817,6 +818,8 @@ namespace Gas_Company
                     dataGridView1.DataSource = dataView;
                     dataGridView1.Columns["WORKER_Id"].Visible = false;
                     dataGridView1.Columns["SENSOR_Id"].Visible = false;
+                    dataGridView1.Columns["CUSTOMER_Id"].Visible = false;
+
 
                     // Columns rename
                     dataGridView1.Columns["ORDER_Id"].HeaderText = "訂單編號";
@@ -847,7 +850,7 @@ namespace Gas_Company
                     dataGridView1.Columns["Gas_Volume"].DisplayIndex = 10;
                     dataGridView1.Columns["WORKER_Name"].DisplayIndex = 11;
                     dataGridView1.Columns["sensor_id"].DisplayIndex = 12;
-                    dataGridView1.Columns["當前瓦斯量"].DisplayIndex = 1;
+                   // dataGridView1.Columns["當前瓦斯量"].DisplayIndex = 1;
 
                 }
             }

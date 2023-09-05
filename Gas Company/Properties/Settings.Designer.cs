@@ -22,5 +22,14 @@ namespace Gas_Company.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string 設定 {
+            get {
+                return ((string)(this["設定"]));
+            }
+        }
     }
 }
