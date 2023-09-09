@@ -46,7 +46,7 @@ namespace Gas_Company
             CustomerPostalCode.Text = "";
             CustomerAddress.Text = "";
             CustomerHouseTelNo.Text = "";
-            CustomerPassword.Text = "";
+            //CustomerPassword.Text = "";
             CustomerEmail.Text = "";
             CustomerFamilyMember.Text = "";
             CustomerNotes.Text = "";
@@ -106,7 +106,7 @@ namespace Gas_Company
                             CustomerPostalCode.Text = reader["Customer_Postal_Code"].ToString();
                             CustomerAddress.Text = reader["Customer_Address"].ToString();
                             CustomerHouseTelNo.Text = reader["Customer_HouseTelpNo"].ToString();
-                            CustomerPassword.Text = reader["Customer_Password"].ToString();
+                            //CustomerPassword.Text = reader["Customer_Password"].ToString();
                             CustomerEmail.Text = reader["Customer_Email"].ToString();
                             CustomerFamilyMember.Text = reader["Customer_FamilyMemberId"].ToString();
                             CustomerNotes.Text = reader["Customer_Notes"].ToString();
@@ -134,9 +134,10 @@ namespace Gas_Company
             // Perform validation
             if (string.IsNullOrEmpty(CustomerName.Text) || string.IsNullOrEmpty(CustomerSex.Text) ||
                 string.IsNullOrEmpty(CustomerPhoneNo.Text) || string.IsNullOrEmpty(CustomerPostalCode.Text) ||
-                string.IsNullOrEmpty(CustomerAddress.Text) || string.IsNullOrEmpty(CustomerHouseTelNo.Text) ||
-                string.IsNullOrEmpty(CustomerPassword.Text) || string.IsNullOrEmpty(CustomerEmail.Text))
-               
+                string.IsNullOrEmpty(CustomerAddress.Text) || string.IsNullOrEmpty(CustomerHouseTelNo.Text) || string.IsNullOrEmpty(CustomerEmail.Text))
+            //string.IsNullOrEmpty(CustomerPassword.Text) 
+
+
             {
                 MessageBox.Show("All fields are required. Please fill in all the fields.", "Validation Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -171,7 +172,7 @@ namespace Gas_Company
                 cmd.Parameters.AddWithValue("@Customer_Postal_Code", CustomerPostalCode.Text);
                 cmd.Parameters.AddWithValue("@Customer_Address", CustomerAddress.Text);
                 cmd.Parameters.AddWithValue("@Customer_HouseTelpNo", CustomerHouseTelNo.Text);
-                cmd.Parameters.AddWithValue("@Customer_Password", CustomerPassword.Text);
+                //cmd.Parameters.AddWithValue("@Customer_Password", CustomerPassword.Text);
                 cmd.Parameters.AddWithValue("@Customer_Email", CustomerEmail.Text);
                 cmd.Parameters.AddWithValue("@Customer_FamilyMemberId", CustomerFamilyMember.Text);
                 cmd.Parameters.AddWithValue("@Customer_Notes", CustomerNotes.Text);
@@ -213,7 +214,7 @@ namespace Gas_Company
                 cmd.Parameters.AddWithValue("@Customer_Postal_Code", CustomerPostalCode.Text);
                 cmd.Parameters.AddWithValue("@Customer_Address", CustomerAddress.Text);
                 cmd.Parameters.AddWithValue("@Customer_HouseTelpNo", CustomerHouseTelNo.Text);
-                cmd.Parameters.AddWithValue("@Customer_Password", CustomerPassword.Text);
+                //cmd.Parameters.AddWithValue("@Customer_Password", CustomerPassword.Text);
                 cmd.Parameters.AddWithValue("@Customer_Email", CustomerEmail.Text);
                 cmd.Parameters.AddWithValue("@Customer_FamilyMemberId", CustomerFamilyMember.Text);
                 cmd.Parameters.AddWithValue("@Customer_Notes", CustomerNotes.Text);

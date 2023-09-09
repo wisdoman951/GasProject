@@ -686,40 +686,36 @@ namespace Gas_Company
         // 用來替代 panel2_Paint，為避免Function過於複雜，查詢分成兩個部分，純訂單顯示 + 查詢IoT資訊
         private async Task LoadData()
         {
-            string query = "SELECT " +
-               "o.ORDER_Id, " +
-               "o.CUSTOMER_Id, " +
-               "c.CUSTOMER_PhoneNo, " +
-               "o.DELIVERY_Address, " +
-               "o.DELIVERY_Time, " +
-               "c.CUSTOMER_Name, " +
-               "od.Order_type, " +
-               "od.Order_weight, " +
-               "o.Gas_Quantity, " +
-               "ca.Gas_Volume, " +
-               "a.WORKER_Id, " +
-               "w.WORKER_Name, " +
-               "o.sensor_id " +
-               "FROM " +
-               "`gas_order` o " +
-               "LEFT JOIN " +
-               "`customer` c " +
-               "ON o.CUSTOMER_Id = c.CUSTOMER_Id " +
-               "LEFT JOIN " +
-               "`gas_order_detail` od " +
-               "ON o.ORDER_Id = od.Order_ID " +
-               "LEFT JOIN " +
-               "`customer_accumulation` ca " +
-               "ON o.CUSTOMER_Id = ca.Customer_Id " +
-               "LEFT JOIN " +
-               "`assign` a " +
-               "ON o.ORDER_Id = a.ORDER_Id " +
-               "LEFT JOIN " +
-               "`worker` w " +
-               "ON a.WORKER_Id = w.WORKER_Id " +
-               "WHERE " +
-               $"o.COMPANY_Id = {GlobalVariables.CompanyId} " +
-               "AND o.DELIVERY_Condition = 0";
+            string query = @"SELECT
+                            o.ORDER_Id,
+                            o.CUSTOMER_Id,
+                            c.CUSTOMER_PhoneNo,
+                            o.DELIVERY_Address,
+                            o.DELIVERY_Time,
+                            c.CUSTOMER_Name,
+                            od.Order_type,
+                            od.Order_weight,
+                            o.Gas_Quantity,
+                            ca.Gas_Volume,
+                            a.WORKER_Id,
+                            w.WORKER_Name,
+                            o.sensor_id,
+                            (
+                                SELECT ROUND(((sh.SENSOR_Weight / 1000) - iot.Gas_Empty_Weight), 1) AS CurrentGasAmount
+                                FROM `sensor_history` sh
+                                JOIN `iot` iot ON sh.SENSOR_Id = iot.SENSOR_Id
+                                WHERE iot.CUSTOMER_Id = o.CUSTOMER_Id
+                                ORDER BY sh.SENSOR_Time DESC
+                                LIMIT 1
+                            ) AS CurrentGasAmount
+                        FROM `gas_order` o
+                        LEFT JOIN `customer` c ON o.CUSTOMER_Id = c.CUSTOMER_Id
+                        LEFT JOIN `gas_order_detail` od ON o.ORDER_Id = od.Order_ID
+                        LEFT JOIN `customer_accumulation` ca ON o.CUSTOMER_Id = ca.Customer_Id
+                        LEFT JOIN `assign` a ON o.ORDER_Id = a.ORDER_Id
+                        LEFT JOIN `worker` w ON a.WORKER_Id = w.WORKER_Id
+                        WHERE o.COMPANY_Id = @CompanyId
+                        AND o.DELIVERY_Condition = 0";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -727,25 +723,21 @@ namespace Gas_Company
 
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection))
                 {
+                    adapter.SelectCommand.Parameters.AddWithValue("@CompanyId", GlobalVariables.CompanyId);
+                        
                     DataTable table = new DataTable();
+                    await adapter.FillAsync(table);
 
                     // Add columns for "送貨日期" and "送貨時間"
                     table.Columns.Add("送貨日期", typeof(string));
                     table.Columns.Add("送貨時間", typeof(string));
-                    //table.Columns.Add("當前瓦斯量", typeof(decimal)); // Add "當前瓦斯量" column here
-
-                    await adapter.FillAsync(table);
-
-
-                    // Handle "NAN" or NULL value from the assign table for "WORKER_Id"
-                    /*foreach (DataRow row in table.Rows)
+                    // Set "未指派" if WORKER_Id is null or DBNull
+                    foreach (DataRow row in table.Rows)
                     {
-                        // Set "未指派" if WORKER_Id is null or DBNull
                         if (row["WORKER_Id"] == null || row["WORKER_Id"] == DBNull.Value)
                         {
                             row["WORKER_Id"] = DBNull.Value; // Set to DBNull
                         }
-
                         if (DateTime.TryParse(row["DELIVERY_Time"].ToString(), out DateTime deliveryDateTime))
                         {
                             string deliveryDate = deliveryDateTime.ToString("yyyy-MM-dd");
@@ -754,56 +746,7 @@ namespace Gas_Company
                             row["送貨日期"] = deliveryDate;
                             row["送貨時間"] = deliveryTime;
                         }
-                        // Fetch additional information for each row
-                        string customerId = row["CUSTOMER_Id"].ToString();
-                        decimal currentGasAmount = await FetchCurrentGasAmount(customerId);
-                        row["當前瓦斯量"] = currentGasAmount;
-                    }*/
-
-                    // 建立一個dict來紀錄已經找過的rows id, 避免重複查詢造成系統回應時間過長
-                    Dictionary<string, bool> processedOrders = new Dictionary<string, bool>();
-                    foreach (DataRow row in table.Rows)
-                    {
-                        string orderId = row["ORDER_Id"].ToString();
-
-                        if (!processedOrders.ContainsKey(orderId))
-                        {
-                            processedOrders[orderId] = true;
-
-                            // Set "未指派" if WORKER_Id is null or DBNull
-                            if (row["WORKER_Id"] == null || row["WORKER_Id"] == DBNull.Value)
-                            {
-                                row["WORKER_Id"] = DBNull.Value; // Set to DBNull
-                            }
-
-                            if (DateTime.TryParse(row["DELIVERY_Time"].ToString(), out DateTime deliveryDateTime))
-                            {
-                                string deliveryDate = deliveryDateTime.ToString("yyyy-MM-dd");
-                                string deliveryTime = deliveryDateTime.ToString("HH:mm:ss");
-
-                                row["送貨日期"] = deliveryDate;
-                                row["送貨時間"] = deliveryTime;
-                            }
-
-                            // Fetch additional information for each row
-                            string customerId = row["CUSTOMER_Id"].ToString();
-                            //decimal currentGasAmount = await FetchCurrentGasAmount(customerId);
-                            //row["當前瓦斯量"] = currentGasAmount;
-                        }
-                        else
-                        {
-                            // 避免同樣ORDER_Id重複查詢
-                            // Copy data from the first occurrence
-                            DataRow firstOccurrenceRow = table.Select($"ORDER_Id = '{orderId}'").FirstOrDefault();
-                            if (firstOccurrenceRow != null)
-                            {
-                                row["送貨日期"] = firstOccurrenceRow["送貨日期"];
-                                row["送貨時間"] = firstOccurrenceRow["送貨時間"];
-                                //row["當前瓦斯量"] = firstOccurrenceRow["當前瓦斯量"];
-                            }
-                        }
                     }
-
                     // 檢查訂單是否已被Assigned.
                     DataView dataView = new DataView(table);
                     if (showAssignedOrders)
@@ -836,6 +779,7 @@ namespace Gas_Company
                     dataGridView1.Columns["Gas_Volume"].HeaderText = "顧客累積殘氣量";
                     dataGridView1.Columns["WORKER_Name"].HeaderText = "派送人員";
                     dataGridView1.Columns["sensor_id"].HeaderText = "感測器編號";
+                    dataGridView1.Columns["CurrentGasAmount"].HeaderText = "當前瓦斯量";
 
                     // Columns reorder
                     dataGridView1.Columns["ORDER_Id"].DisplayIndex = 0;
@@ -850,7 +794,7 @@ namespace Gas_Company
                     dataGridView1.Columns["Gas_Volume"].DisplayIndex = 10;
                     dataGridView1.Columns["WORKER_Name"].DisplayIndex = 11;
                     dataGridView1.Columns["sensor_id"].DisplayIndex = 12;
-                   // dataGridView1.Columns["當前瓦斯量"].DisplayIndex = 1;
+                    dataGridView1.Columns["CurrentGasAmount"].DisplayIndex = 1;
 
                 }
             }

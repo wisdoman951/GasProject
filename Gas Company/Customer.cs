@@ -25,7 +25,7 @@ namespace Gas_Company
         private void customer_Load(object sender, EventArgs e)
         {
             //string query = $"SELECT * FROM `customer` WHERE Company_Id = {GlobalVariables.CompanyId};";
-            string query = $@"SELECT c.*, a.Alert_Volume, sh.SENSOR_Weight, i.Sensor_Id
+            string query = $@"SELECT c.*, ROUND(((sh.SENSOR_Weight / 1000) - i.Gas_Empty_Weight), 1) AS CurrentGasAmount, a.Alert_Volume, sh.SENSOR_Weight, i.Sensor_Id
                  FROM customer c
                  LEFT JOIN iot i ON c.CUSTOMER_Id = i.CUSTOMER_Id
                  LEFT JOIN alert a ON i.Sensor_Id = a.Sensor_Id
@@ -51,6 +51,7 @@ namespace Gas_Company
                     // Change the original column order
                     string[] columnOrder = {
                                             "CUSTOMER_Id",
+                                            "CurrentGasAmount",
                                             "CUSTOMER_Name",
                                             "CUSTOMER_Address",
                                             "Sensor_Id",
@@ -76,6 +77,7 @@ namespace Gas_Company
                     }
                     // Columns rename
                     dataGridView1.Columns["CUSTOMER_Id"].HeaderText = "客戶編號";
+                    dataGridView1.Columns["CurrentGasAmount"].HeaderText = "當前瓦斯量";
                     dataGridView1.Columns["CUSTOMER_Name"].HeaderText = "客戶姓名";
                     dataGridView1.Columns["Sensor_Id"].HeaderText = "感測器編號";
                     dataGridView1.Columns["Alert_Volume"].HeaderText = "通報門檻";
@@ -89,7 +91,6 @@ namespace Gas_Company
                     dataGridView1.Columns["CUSTOMER_FamilyMemberId"].HeaderText = "客戶關係家人";
                     dataGridView1.Columns["CUSTOMER_Notes"].HeaderText = "客戶備註";
                     dataGridView1.Columns["CUSTOMER_Registration_Time"].HeaderText = "客戶註冊時間";
-
                 }
             }
         }

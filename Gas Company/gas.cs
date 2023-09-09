@@ -37,7 +37,6 @@ namespace Gas_Company
             // Autofill the elements based on the original row data
             GasCompanyID.Text = originalRow["Gas_Company_ID"].ToString();
             GasWeightFull.Text = originalRow["Gas_Weight_Full"].ToString();
-            GasWeightEmpty.Text = originalRow["Gas_Weight_Empty"].ToString();
             GasType.Text = originalRow["Gas_Type"].ToString();
             GasVolume.Text = originalRow["Gas_Volume"].ToString();
             GasSupplier.Text = originalRow["Gas_Supplier"].ToString();
@@ -74,7 +73,6 @@ namespace Gas_Company
         {
             GasCompanyID.Text = "";
             GasWeightFull.Text = "";
-            GasWeightEmpty.Text = "";
             GasType.Text = "";
             GasVolume.Text = "";
             GasSupplier.Text = "";
@@ -88,7 +86,7 @@ namespace Gas_Company
             {
                 connection.Open();
 
-                string insertQuery = "INSERT INTO gas (Gas_Company_ID, Gas_Weight_Full, Gas_Weight_Empty, " +
+                string insertQuery = "INSERT INTO gas (Gas_Company_ID, Gas_Weight_Full," +
                                      "Gas_Type, Gas_Volume, Gas_Supplier, Gas_Price, Gas_Examine_Day, Gas_Produce_Day) " +
                                      "VALUES (@Gas_Company_ID, @Gas_Weight_Full, @Gas_Weight_Empty, " +
                                      "@Gas_Type, @Gas_Volume, @Gas_Supplier, @Gas_Price, " +
@@ -130,7 +128,6 @@ namespace Gas_Company
 
                 cmd.Parameters.AddWithValue("@Gas_Company_ID", GasCompanyID.Text);
                 cmd.Parameters.AddWithValue("@Gas_Weight_Full", GasWeightFull.Text);
-                cmd.Parameters.AddWithValue("@Gas_Weight_Empty", GasWeightEmpty.Text);
                 cmd.Parameters.AddWithValue("@Gas_Type", GasType.Text);
                 cmd.Parameters.AddWithValue("@Gas_Volume", GasVolume.Text);
                 cmd.Parameters.AddWithValue("@Gas_Supplier", GasSupplier.Text);

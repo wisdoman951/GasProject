@@ -81,12 +81,14 @@ namespace Gas_Company
             this.panel2 = new System.Windows.Forms.Panel();
             this.ShowUnassignedButton = new System.Windows.Forms.Button();
             this.ShowAssignedButton = new System.Windows.Forms.Button();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
             this.panel8.SuspendLayout();
             this.panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -244,7 +246,7 @@ namespace Gas_Company
             this.print.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.print.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.print.ForeColor = System.Drawing.Color.White;
-            this.print.Location = new System.Drawing.Point(934, 622);
+            this.print.Location = new System.Drawing.Point(959, 622);
             this.print.Name = "print";
             this.print.Size = new System.Drawing.Size(83, 26);
             this.print.TabIndex = 78;
@@ -338,7 +340,7 @@ namespace Gas_Company
             this.AddButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AddButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AddButton.ForeColor = System.Drawing.Color.White;
-            this.AddButton.Location = new System.Drawing.Point(756, 622);
+            this.AddButton.Location = new System.Drawing.Point(781, 622);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(83, 26);
             this.AddButton.TabIndex = 88;
@@ -375,9 +377,9 @@ namespace Gas_Company
             this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Controls.Add(this.ConfirmButton);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(29, 409);
+            this.groupBox1.Location = new System.Drawing.Point(29, 370);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(991, 197);
+            this.groupBox1.Size = new System.Drawing.Size(991, 175);
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "詳細訂單資訊";
@@ -655,7 +657,7 @@ namespace Gas_Company
             this.ConfirmButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ConfirmButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ConfirmButton.ForeColor = System.Drawing.Color.White;
-            this.ConfirmButton.Location = new System.Drawing.Point(902, 165);
+            this.ConfirmButton.Location = new System.Drawing.Point(902, 142);
             this.ConfirmButton.Name = "ConfirmButton";
             this.ConfirmButton.Size = new System.Drawing.Size(83, 26);
             this.ConfirmButton.TabIndex = 6;
@@ -670,7 +672,7 @@ namespace Gas_Company
             this.delete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.delete.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.delete.ForeColor = System.Drawing.Color.White;
-            this.delete.Location = new System.Drawing.Point(845, 622);
+            this.delete.Location = new System.Drawing.Point(870, 622);
             this.delete.Name = "delete";
             this.delete.Size = new System.Drawing.Size(83, 26);
             this.delete.TabIndex = 90;
@@ -681,6 +683,7 @@ namespace Gas_Company
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.panel2.Controls.Add(this.dataGridView2);
             this.panel2.Controls.Add(this.ShowUnassignedButton);
             this.panel2.Controls.Add(this.ShowAssignedButton);
             this.panel2.Controls.Add(this.delete);
@@ -724,6 +727,15 @@ namespace Gas_Company
             this.ShowAssignedButton.UseVisualStyleBackColor = false;
             this.ShowAssignedButton.Click += new System.EventHandler(this.ShowAssignedButton_Click);
             // 
+            // dataGridView2
+            // 
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Location = new System.Drawing.Point(29, 551);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.RowTemplate.Height = 24;
+            this.dataGridView2.Size = new System.Drawing.Size(746, 97);
+            this.dataGridView2.TabIndex = 92;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -745,6 +757,7 @@ namespace Gas_Company
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -802,5 +815,6 @@ namespace Gas_Company
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button ShowUnassignedButton;
         private System.Windows.Forms.Button ShowAssignedButton;
+        private System.Windows.Forms.DataGridView dataGridView2;
     }
 }
