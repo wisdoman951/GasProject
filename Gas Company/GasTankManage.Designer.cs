@@ -291,7 +291,7 @@ namespace Gas_Company
             this.GasNumber.BackColor = System.Drawing.Color.WhiteSmoke;
             this.GasNumber.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.GasNumber.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GasNumber.Location = new System.Drawing.Point(39, 103);
+            this.GasNumber.Location = new System.Drawing.Point(39, 41);
             this.GasNumber.Name = "GasNumber";
             this.GasNumber.Size = new System.Drawing.Size(145, 20);
             this.GasNumber.TabIndex = 36;
@@ -301,7 +301,7 @@ namespace Gas_Company
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label1.Location = new System.Drawing.Point(35, 77);
+            this.label1.Location = new System.Drawing.Point(35, 15);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(74, 22);
             this.label1.TabIndex = 35;
@@ -312,7 +312,7 @@ namespace Gas_Company
             this.GasId.BackColor = System.Drawing.Color.WhiteSmoke;
             this.GasId.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.GasId.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GasId.Location = new System.Drawing.Point(39, 43);
+            this.GasId.Location = new System.Drawing.Point(39, 105);
             this.GasId.Name = "GasId";
             this.GasId.Size = new System.Drawing.Size(145, 20);
             this.GasId.TabIndex = 34;
@@ -322,7 +322,7 @@ namespace Gas_Company
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label12.Location = new System.Drawing.Point(35, 15);
+            this.label12.Location = new System.Drawing.Point(35, 77);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(90, 22);
             this.label12.TabIndex = 33;

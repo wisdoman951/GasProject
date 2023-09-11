@@ -49,7 +49,7 @@ namespace Gas_Company
             this.label12 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.GasType = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label5
@@ -259,16 +259,16 @@ namespace Gas_Company
             this.label1.TabIndex = 88;
             this.label1.Text = "*容器編號";
             // 
-            // comboBox1
+            // GasType
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.GasType.FormattingEnabled = true;
+            this.GasType.Items.AddRange(new object[] {
             "鋼瓶",
             "複合材"});
-            this.comboBox1.Location = new System.Drawing.Point(166, 96);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(97, 29);
-            this.comboBox1.TabIndex = 90;
+            this.GasType.Location = new System.Drawing.Point(166, 96);
+            this.GasType.Name = "GasType";
+            this.GasType.Size = new System.Drawing.Size(97, 29);
+            this.GasType.TabIndex = 90;
             // 
             // gas
             // 
@@ -276,7 +276,7 @@ namespace Gas_Company
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
             this.ClientSize = new System.Drawing.Size(363, 433);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.GasType);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.GasPrice);
@@ -328,6 +328,6 @@ namespace Gas_Company
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox GasType;
     }
 }

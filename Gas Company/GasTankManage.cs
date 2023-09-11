@@ -64,6 +64,7 @@ namespace Gas_Company
                 }
             }
 
+            comboBox2.Items.Clear();
             // Populate the filter ComboBox
             comboBox2.Items.Add("大於 30 年");
             comboBox2.Items.Add("20 到 30 年");
