@@ -1,6 +1,6 @@
 ﻿namespace Gas_Company
 {
-    partial class HistoryOrder
+    partial class historyOrder
     {
         /// <summary>
         /// Required designer variable.

@@ -10,10 +10,10 @@ using System.Windows.Forms;
 
 namespace Gas_Company
 {
-    public partial class HistoryOrder : Form
+    public partial class historyOrder : Form
     {
         private DataTable data;
-        public HistoryOrder()
+        public historyOrder()
         {
             InitializeComponent();
         }

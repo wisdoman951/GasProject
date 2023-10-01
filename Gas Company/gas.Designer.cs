@@ -201,11 +201,11 @@ namespace Gas_Company
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label10.Location = new System.Drawing.Point(86, 219);
+            this.label10.Location = new System.Drawing.Point(70, 218);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(74, 22);
+            this.label10.Size = new System.Drawing.Size(90, 22);
             this.label10.TabIndex = 83;
-            this.label10.Text = "瓦斯容量";
+            this.label10.Text = "瓦斯桶規格";
             // 
             // label11
             // 

@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using System.Configuration;
 using MySql.Data.MySqlClient;
 using System.ComponentModel.Design;
+using Org.BouncyCastle.Asn1.X509;
+using System.Security.Cryptography;
 
 namespace Gas_Company
 {
@@ -31,7 +33,7 @@ namespace Gas_Company
         {
             dataGridView1.CellFormatting += dataGridView1_CellFormatting;
 
-            string query = $"SELECT * FROM `gas` WHERE GAS_Company_Id = {GlobalVariables.CompanyId}";
+            string query = $"SELECT * FROM `gas` WHERE GAS_Company_Id = {GlobalVariables.CompanyId} ORDER BY GAS_Addtime DESC";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -157,7 +159,7 @@ namespace Gas_Company
 
 
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        /*private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selectedValue = comboBox1.SelectedItem?.ToString();
 
@@ -169,9 +171,10 @@ namespace Gas_Company
             {
                 dataView.RowFilter = ""; // Show all data when the combobox is cleared
             }
-        }
+        }*/
         private void PopulateComboBox()
         {
+            comboBox2.Items.Clear();
             HashSet<string> uniqueValues = new HashSet<string>();
 
             foreach (DataGridViewRow row in dataGridView1.Rows)
@@ -185,8 +188,8 @@ namespace Gas_Company
 
             List<string> sortedValues = new List<string>(uniqueValues);
             sortedValues.Sort();
-            comboBox1.Items.Clear();
-            comboBox1.Items.AddRange(sortedValues.ToArray());
+            /*comboBox1.Items.Clear();
+            comboBox1.Items.AddRange(sortedValues.ToArray());*/
         }
 
         private void GasDelete_Click(object sender, EventArgs e)
@@ -255,7 +258,7 @@ namespace Gas_Company
             GasExamineDay.Text = "";
             Supplier.Text = "";
             Note.Text = "";
-            comboBox1.Text = "";
+            //comboBox1.Text = "";
         }
 
 
@@ -291,7 +294,7 @@ namespace Gas_Company
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 conn.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT * FROM gas WHERE GAS_Company_Id = @CompanyId", conn);
+                MySqlCommand cmd = new MySqlCommand("SELECT * FROM gas WHERE GAS_Company_Id = @CompanyId ORDER BY GAS_Addtime DESC", conn);
                 cmd.Parameters.AddWithValue("@CompanyId", GlobalVariables.CompanyId);
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
                 DataTable dt = new DataTable();

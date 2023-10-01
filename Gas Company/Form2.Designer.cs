@@ -51,6 +51,8 @@ namespace Gas_Company
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.AddButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.IntervalComboBox = new System.Windows.Forms.ComboBox();
+            this.DeliveryTimePicker = new System.Windows.Forms.DateTimePicker();
             this.AutoFillButton = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.GasVolume = new System.Windows.Forms.TextBox();
@@ -72,16 +74,16 @@ namespace Gas_Company
             this.label5 = new System.Windows.Forms.Label();
             this.CustomerName = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.DeliveryTime = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.OrderID = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.ConfirmButton = new System.Windows.Forms.Button();
             this.delete = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.ShowUnassignedButton = new System.Windows.Forms.Button();
             this.ShowAssignedButton = new System.Windows.Forms.Button();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
             this.panel8.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -89,6 +91,7 @@ namespace Gas_Company
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -106,7 +109,7 @@ namespace Gas_Company
             this.panel1.Controls.Add(this.button1);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1054, 66);
+            this.panel1.Size = new System.Drawing.Size(1054, 82);
             this.panel1.TabIndex = 0;
             // 
             // button7
@@ -173,7 +176,7 @@ namespace Gas_Company
             this.panel8.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel8.Location = new System.Drawing.Point(873, 0);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(181, 66);
+            this.panel8.Size = new System.Drawing.Size(181, 82);
             this.panel8.TabIndex = 2;
             // 
             // week
@@ -246,7 +249,7 @@ namespace Gas_Company
             this.print.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.print.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.print.ForeColor = System.Drawing.Color.White;
-            this.print.Location = new System.Drawing.Point(959, 622);
+            this.print.Location = new System.Drawing.Point(959, 638);
             this.print.Name = "print";
             this.print.Size = new System.Drawing.Size(83, 26);
             this.print.TabIndex = 78;
@@ -340,7 +343,7 @@ namespace Gas_Company
             this.AddButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AddButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AddButton.ForeColor = System.Drawing.Color.White;
-            this.AddButton.Location = new System.Drawing.Point(781, 622);
+            this.AddButton.Location = new System.Drawing.Point(781, 638);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(83, 26);
             this.AddButton.TabIndex = 88;
@@ -350,6 +353,8 @@ namespace Gas_Company
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.IntervalComboBox);
+            this.groupBox1.Controls.Add(this.DeliveryTimePicker);
             this.groupBox1.Controls.Add(this.AutoFillButton);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.GasVolume);
@@ -371,7 +376,6 @@ namespace Gas_Company
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.CustomerName);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.DeliveryTime);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.OrderID);
             this.groupBox1.Controls.Add(this.label12);
@@ -383,6 +387,24 @@ namespace Gas_Company
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "詳細訂單資訊";
+            // 
+            // IntervalComboBox
+            // 
+            this.IntervalComboBox.FormattingEnabled = true;
+            this.IntervalComboBox.Location = new System.Drawing.Point(465, 29);
+            this.IntervalComboBox.Name = "IntervalComboBox";
+            this.IntervalComboBox.Size = new System.Drawing.Size(70, 29);
+            this.IntervalComboBox.TabIndex = 90;
+            this.IntervalComboBox.SelectedIndexChanged += new System.EventHandler(this.IntervalComboBox_SelectedIndexChanged);
+            // 
+            // DeliveryTimePicker
+            // 
+            this.DeliveryTimePicker.CustomFormat = "MM-dd HH:mm";
+            this.DeliveryTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.DeliveryTimePicker.Location = new System.Drawing.Point(371, 29);
+            this.DeliveryTimePicker.Name = "DeliveryTimePicker";
+            this.DeliveryTimePicker.Size = new System.Drawing.Size(88, 28);
+            this.DeliveryTimePicker.TabIndex = 89;
             // 
             // AutoFillButton
             // 
@@ -435,7 +457,6 @@ namespace Gas_Company
             this.DeliveryMan.Name = "DeliveryMan";
             this.DeliveryMan.Size = new System.Drawing.Size(142, 27);
             this.DeliveryMan.TabIndex = 84;
-            this.DeliveryMan.Click += new System.EventHandler(this.DeliveryMan_Click);
             // 
             // label9
             // 
@@ -607,16 +628,6 @@ namespace Gas_Company
             this.label6.TabIndex = 39;
             this.label6.Text = "訂購人";
             // 
-            // DeliveryTime
-            // 
-            this.DeliveryTime.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.DeliveryTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.DeliveryTime.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DeliveryTime.Location = new System.Drawing.Point(371, 34);
-            this.DeliveryTime.Name = "DeliveryTime";
-            this.DeliveryTime.Size = new System.Drawing.Size(145, 20);
-            this.DeliveryTime.TabIndex = 34;
-            // 
             // label11
             // 
             this.label11.AutoSize = true;
@@ -626,7 +637,7 @@ namespace Gas_Company
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(74, 22);
             this.label11.TabIndex = 33;
-            this.label11.Text = "送貨時間";
+            this.label11.Text = "送貨日期";
             // 
             // OrderID
             // 
@@ -672,7 +683,7 @@ namespace Gas_Company
             this.delete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.delete.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.delete.ForeColor = System.Drawing.Color.White;
-            this.delete.Location = new System.Drawing.Point(870, 622);
+            this.delete.Location = new System.Drawing.Point(870, 638);
             this.delete.Name = "delete";
             this.delete.Size = new System.Drawing.Size(83, 26);
             this.delete.TabIndex = 90;
@@ -683,6 +694,7 @@ namespace Gas_Company
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.panel2.Controls.Add(this.dataGridView3);
             this.panel2.Controls.Add(this.dataGridView2);
             this.panel2.Controls.Add(this.ShowUnassignedButton);
             this.panel2.Controls.Add(this.ShowAssignedButton);
@@ -694,8 +706,17 @@ namespace Gas_Company
             this.panel2.Controls.Add(this.print);
             this.panel2.Location = new System.Drawing.Point(0, 66);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1054, 660);
+            this.panel2.Size = new System.Drawing.Size(1054, 677);
             this.panel2.TabIndex = 1;
+            // 
+            // dataGridView2
+            // 
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Location = new System.Drawing.Point(29, 551);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.RowTemplate.Height = 24;
+            this.dataGridView2.Size = new System.Drawing.Size(746, 97);
+            this.dataGridView2.TabIndex = 92;
             // 
             // ShowUnassignedButton
             // 
@@ -708,7 +729,7 @@ namespace Gas_Company
             this.ShowUnassignedButton.Name = "ShowUnassignedButton";
             this.ShowUnassignedButton.Size = new System.Drawing.Size(83, 26);
             this.ShowUnassignedButton.TabIndex = 91;
-            this.ShowUnassignedButton.Text = "未指派";
+            this.ShowUnassignedButton.Text = "已指派";
             this.ShowUnassignedButton.UseVisualStyleBackColor = false;
             this.ShowUnassignedButton.Click += new System.EventHandler(this.ShowUnassignedButton_Click);
             // 
@@ -723,25 +744,25 @@ namespace Gas_Company
             this.ShowAssignedButton.Name = "ShowAssignedButton";
             this.ShowAssignedButton.Size = new System.Drawing.Size(83, 26);
             this.ShowAssignedButton.TabIndex = 7;
-            this.ShowAssignedButton.Text = "已指派";
+            this.ShowAssignedButton.Text = "未指派";
             this.ShowAssignedButton.UseVisualStyleBackColor = false;
             this.ShowAssignedButton.Click += new System.EventHandler(this.ShowAssignedButton_Click);
             // 
-            // dataGridView2
+            // dataGridView3
             // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(29, 551);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.RowTemplate.Height = 24;
-            this.dataGridView2.Size = new System.Drawing.Size(746, 97);
-            this.dataGridView2.TabIndex = 92;
+            this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView3.Location = new System.Drawing.Point(29, 551);
+            this.dataGridView3.Name = "dataGridView3";
+            this.dataGridView3.RowTemplate.Height = 24;
+            this.dataGridView3.Size = new System.Drawing.Size(746, 113);
+            this.dataGridView3.TabIndex = 93;
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1054, 726);
+            this.ClientSize = new System.Drawing.Size(1054, 742);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "Form2";
@@ -758,6 +779,7 @@ namespace Gas_Company
             this.groupBox1.PerformLayout();
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -806,7 +828,6 @@ namespace Gas_Company
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox CustomerName;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox DeliveryTime;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox OrderID;
         private System.Windows.Forms.Label label12;
@@ -816,5 +837,8 @@ namespace Gas_Company
         private System.Windows.Forms.Button ShowUnassignedButton;
         private System.Windows.Forms.Button ShowAssignedButton;
         private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.DateTimePicker DeliveryTimePicker;
+        private System.Windows.Forms.ComboBox IntervalComboBox;
+        private System.Windows.Forms.DataGridView dataGridView3;
     }
 }

@@ -25,11 +25,19 @@ namespace Gas_Company
 
         private void PopulateWorkerOrders()
         {
-            string query = "SELECT w.WORKER_Name, COUNT(a.ORDER_Id) AS OrderCount " +
+            /*string query = "SELECT w.WORKER_Name, COUNT(a.ORDER_Id) AS OrderCount " +
                            "FROM `worker` w " +
                            "LEFT JOIN `assign` a ON w.WORKER_Id = a.WORKER_Id " +
                            $"WHERE w.WORKER_Company_Id = {GlobalVariables.CompanyId} " +
-                           "GROUP BY w.WORKER_Name";
+                           "GROUP BY w.WORKER_Name";*/
+
+            string query = "SELECT w.WORKER_Name, COUNT(a.ORDER_Id) AS OrderCount " +
+                            "FROM `worker` w " +
+                            "LEFT JOIN `assign` a ON w.WORKER_Id = a.WORKER_Id " +
+                            "LEFT JOIN `gas_order` go ON a.ORDER_Id = go.order_id " +
+                            $"WHERE w.WORKER_Company_Id = {GlobalVariables.CompanyId} AND go.DELIVERY_Condition = 0 " +
+                            "GROUP BY w.WORKER_Name";
+
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {

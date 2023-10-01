@@ -33,8 +33,6 @@ namespace Gas_Company
             this.label9 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.ResetFilterButton = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.GasExamineDay = new System.Windows.Forms.DateTimePicker();
             this.GasProduceDay = new System.Windows.Forms.DateTimePicker();
             this.Note = new System.Windows.Forms.TextBox();
@@ -68,8 +66,6 @@ namespace Gas_Company
             this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.comboBox2);
             this.panel1.Controls.Add(this.ResetFilterButton);
-            this.panel1.Controls.Add(this.comboBox1);
-            this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.GasExamineDay);
             this.panel1.Controls.Add(this.GasProduceDay);
             this.panel1.Controls.Add(this.Note);
@@ -98,7 +94,7 @@ namespace Gas_Company
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label9.Location = new System.Drawing.Point(680, 132);
+            this.label9.Location = new System.Drawing.Point(463, 137);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(74, 22);
             this.label9.TabIndex = 59;
@@ -107,7 +103,7 @@ namespace Gas_Company
             // comboBox2
             // 
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(684, 157);
+            this.comboBox2.Location = new System.Drawing.Point(467, 157);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(153, 25);
             this.comboBox2.TabIndex = 58;
@@ -121,25 +117,6 @@ namespace Gas_Company
             this.ResetFilterButton.TabIndex = 57;
             this.ResetFilterButton.UseVisualStyleBackColor = true;
             this.ResetFilterButton.Click += new System.EventHandler(this.ResetFilterButton_Click);
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(467, 158);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(153, 25);
-            this.comboBox1.TabIndex = 55;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label3.Location = new System.Drawing.Point(463, 134);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(58, 22);
-            this.label3.TabIndex = 56;
-            this.label3.Text = "空桶重";
             // 
             // GasExamineDay
             // 
@@ -451,8 +428,6 @@ namespace Gas_Company
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox GasId;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button ResetFilterButton;
         private System.Windows.Forms.Button RefreshButton;
         private System.Windows.Forms.Label label9;

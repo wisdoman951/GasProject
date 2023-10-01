@@ -82,15 +82,38 @@ namespace Gas_Company
         }
         private void ConfirmButton_Click(object sender, EventArgs e)
         {
+            string gasCompanyId = GasCompanyID.Text;
+            string gasProduceDay = GasProduceDay.Text;
+            string gasExamineDay = GasExamineDay.Text;
+
+            // Validate GasCompanyId
+            if (gasCompanyId.Length != 10 || !IsAlphanumeric(gasCompanyId))
+            {
+                MessageBox.Show("瓦斯桶編號必須由10位英數字混合！");
+                return; // Stop further execution
+            }
+            // Parse dates for comparison
+            if (!DateTime.TryParse(gasProduceDay, out DateTime produceDate) || !DateTime.TryParse(gasExamineDay, out DateTime examineDate))
+            {
+                MessageBox.Show("Invalid date format. Please use the correct date format.");
+                return; // Stop further execution
+            }
+
+            // Check if GasProduceDay is greater than GasExamineDay
+            if (produceDate > examineDate)
+            {
+                MessageBox.Show("Gas Produce Day cannot be greater than Gas Examine Day.");
+                return; // Stop further execution
+            }
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
 
                 string insertQuery = "INSERT INTO gas (Gas_Company_ID, Gas_Weight_Full," +
-                                     "Gas_Type, Gas_Volume, Gas_Supplier, Gas_Price, Gas_Examine_Day, Gas_Produce_Day) " +
+                                     "Gas_Type, Gas_Volume, Gas_Supplier, Gas_Price, Gas_Examine_Day, Gas_Produce_Day, Gas_Addtime) " +
                                      "VALUES (@Gas_Company_ID, @Gas_Weight_Full, @Gas_Weight_Empty, " +
                                      "@Gas_Type, @Gas_Volume, @Gas_Supplier, @Gas_Price, " +
-                                     "STR_TO_DATE(@Gas_Examine_Day, '%Y年%m月%d日'), STR_TO_DATE(@Gas_Produce_Day, '%Y年%m月%d日'))";
+                                     "STR_TO_DATE(@Gas_Examine_Day, '%Y年%m月%d日'), STR_TO_DATE(@Gas_Produce_Day, '%Y年%m月%d日'), NOW())";
 
                 string updateQuery = "UPDATE gas SET " +
                                      "Gas_Company_ID = @Gas_Company_ID, " +
@@ -119,14 +142,14 @@ namespace Gas_Company
 
                     if (checkIdCmd.ExecuteScalar() != null)
                     {
-                        MessageBox.Show("Gas ID already exists. Please provide a different ID.");
+                        MessageBox.Show("瓦斯桶編號已存在，請重新確認瓦斯桶編號！");
                         return; // Stop further execution
                     }
 
                     cmd = new MySqlCommand(insertQuery, connection);
                 }
 
-                cmd.Parameters.AddWithValue("@Gas_Company_ID", GasCompanyID.Text);
+                cmd.Parameters.AddWithValue("@Gas_Company_ID", gasCompanyId);
                 cmd.Parameters.AddWithValue("@Gas_Weight_Full", GasWeightFull.Text);
                 cmd.Parameters.AddWithValue("@Gas_Type", GasType.Text);
                 cmd.Parameters.AddWithValue("@Gas_Volume", GasVolume.Text);
@@ -148,6 +171,12 @@ namespace Gas_Company
                 }
                 RetrieveOriginalRowData();
             }
+        }
+
+        // Helper function to check if a string is alphanumeric
+        private bool IsAlphanumeric(string input)
+        {
+            return !string.IsNullOrWhiteSpace(input) && input.All(char.IsLetterOrDigit);
         }
     }
 }
