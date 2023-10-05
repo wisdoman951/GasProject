@@ -22,9 +22,11 @@ namespace Gas_Company
 
 
 
+
         public Form2()
         {
             InitializeComponent();
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect; // 只點選 cell 就可以選擇整個 row
         }
 
         //// Real-time time clock
@@ -181,7 +183,7 @@ namespace Gas_Company
                         }
                         if (DateTime.TryParse(row["DELIVERY_Time"].ToString(), out DateTime deliveryDateTime))
                         {
-                            string deliveryDate = deliveryDateTime.ToString("yyyy-MM-dd");
+                            string deliveryDate = deliveryDateTime.ToString("MM-dd");
                             string deliveryTime = deliveryDateTime.ToString("HH:mm:ss");
 
                             row["送貨日期"] = deliveryDate;
@@ -302,9 +304,7 @@ namespace Gas_Company
                     dataGridView3.Rows[j].Cells[i].Value = cellValue;
                 }
             }
-
-
-
+            dataGridView2.Rows[1].HeaderCell.Value = "昨日";
 
         }
 
@@ -319,7 +319,7 @@ namespace Gas_Company
                 string orderId = selectedRow.Cells["Order_ID"].Value.ToString();
                 string customerName = selectedRow.Cells["Customer_Name"].Value.ToString();
                 string customerPhone = selectedRow.Cells["Customer_PhoneNo"].Value.ToString();
-                string deliveryTime = selectedRow.Cells["DELIVERY_Time"].Value.ToString();
+                //string deliveryTime = selectedRow.Cells["DELIVERY_Time"].Value.ToString();
                 string deliveryAddress = selectedRow.Cells["Delivery_Address"].Value.ToString();
                 string orderWeight = selectedRow.Cells["Order_weight"].Value.ToString();
                 string orderType = selectedRow.Cells["Order_type"].Value.ToString();
@@ -330,7 +330,7 @@ namespace Gas_Company
                 OrderID.Text = orderId;
                 CustomerName.Text = customerName;
                 CustomerPhone.Text = customerPhone;
-                DeliveryTimePicker.Text = deliveryTime;
+                //DeliveryTimePicker.Text = deliveryTime;
                 DeliveryAddress.Text = deliveryAddress;
                 GasType.Text = orderType;
                 GasWeight.Text = orderWeight;
@@ -867,7 +867,7 @@ namespace Gas_Company
         {
             // Set the format and custom format for the DateTimePicker
             DeliveryTimePicker.Format = DateTimePickerFormat.Custom;
-            DeliveryTimePicker.CustomFormat = "MM-dd HH:mm";
+            DeliveryTimePicker.CustomFormat = "MM-dd";
 
             // Populate the intervals into a ComboBox or any other control for user selection
             IntervalComboBox.DataSource = deliveryTimeIntervals;
