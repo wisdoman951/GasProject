@@ -134,7 +134,7 @@ namespace Gas_Company
                             c.CUSTOMER_PhoneNo,
                             o.DELIVERY_Address,
                             o.DELIVERY_Time,
-                            o.Exchange,
+                            od.exchange,
                             c.CUSTOMER_Name,
                             od.Order_type,
                             od.Order_weight,
@@ -832,6 +832,19 @@ namespace Gas_Company
                         dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = dataGridView1.DefaultCellStyle.BackColor;
                     }
                 }
+                // 假設 Exchange 列的名稱為 "exchange"
+                if (dataGridView1.Columns[e.ColumnIndex].Name == "exchange")
+                {
+                    // 檢查儲存格的值是否為 1，是則設定顯示為 "是"，否則設定為 "否"
+                    if (e.Value != null && e.Value.ToString() == "1")
+                    {
+                        e.Value = "是";
+                    }
+                    else if (e.Value != null && e.Value.ToString() == "0")
+                    {
+                        e.Value = "否";
+                    }
+                }
             }
         }
         private async void ShowAssignedButton_Click(object sender, EventArgs e)
@@ -882,6 +895,7 @@ namespace Gas_Company
             // Set the selected time to the DateTimePicker control
             DeliveryTimePicker.Value = selectedTime;
         }
+
     }
 
     /*private void AutoFillButton_Click(object sender, EventArgs e)
