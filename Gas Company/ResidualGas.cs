@@ -13,12 +13,12 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Gas_Company
 {
-    public partial class residual_gas : Form
+    public partial class ResidualGas : Form
     {
         private readonly string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
         private ResidualChangeWindow f1; // Declare f1 as a class-level variable
 
-        public residual_gas()
+        public ResidualGas()
         {
             InitializeComponent();
         }

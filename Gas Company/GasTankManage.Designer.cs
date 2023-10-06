@@ -94,7 +94,7 @@ namespace Gas_Company
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label9.Location = new System.Drawing.Point(689, 79);
+            this.label9.Location = new System.Drawing.Point(688, 76);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(92, 27);
             this.label9.TabIndex = 59;
@@ -103,7 +103,7 @@ namespace Gas_Company
             // comboBox2
             // 
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(693, 99);
+            this.comboBox2.Location = new System.Drawing.Point(693, 101);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(153, 28);
             this.comboBox2.TabIndex = 58;

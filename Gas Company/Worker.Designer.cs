@@ -65,7 +65,7 @@ namespace Gas_Company
             this.WorkerDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.WorkerDelete.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WorkerDelete.ForeColor = System.Drawing.Color.White;
-            this.WorkerDelete.Location = new System.Drawing.Point(553, 549);
+            this.WorkerDelete.Location = new System.Drawing.Point(1201, 635);
             this.WorkerDelete.Name = "WorkerDelete";
             this.WorkerDelete.Size = new System.Drawing.Size(83, 26);
             this.WorkerDelete.TabIndex = 101;
@@ -80,7 +80,7 @@ namespace Gas_Company
             this.WorkerEditButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.WorkerEditButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WorkerEditButton.ForeColor = System.Drawing.Color.White;
-            this.WorkerEditButton.Location = new System.Drawing.Point(464, 549);
+            this.WorkerEditButton.Location = new System.Drawing.Point(1112, 635);
             this.WorkerEditButton.Name = "WorkerEditButton";
             this.WorkerEditButton.Size = new System.Drawing.Size(83, 26);
             this.WorkerEditButton.TabIndex = 100;
@@ -95,7 +95,7 @@ namespace Gas_Company
             this.WorkerAddButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.WorkerAddButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WorkerAddButton.ForeColor = System.Drawing.Color.White;
-            this.WorkerAddButton.Location = new System.Drawing.Point(375, 549);
+            this.WorkerAddButton.Location = new System.Drawing.Point(1023, 635);
             this.WorkerAddButton.Name = "WorkerAddButton";
             this.WorkerAddButton.Size = new System.Drawing.Size(83, 26);
             this.WorkerAddButton.TabIndex = 99;
@@ -110,7 +110,7 @@ namespace Gas_Company
             this.RefreshButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RefreshButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RefreshButton.ForeColor = System.Drawing.Color.White;
-            this.RefreshButton.Location = new System.Drawing.Point(288, 66);
+            this.RefreshButton.Location = new System.Drawing.Point(701, 207);
             this.RefreshButton.Name = "RefreshButton";
             this.RefreshButton.Size = new System.Drawing.Size(70, 26);
             this.RefreshButton.TabIndex = 98;
@@ -125,7 +125,7 @@ namespace Gas_Company
             this.SearchButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SearchButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SearchButton.ForeColor = System.Drawing.Color.White;
-            this.SearchButton.Location = new System.Drawing.Point(212, 66);
+            this.SearchButton.Location = new System.Drawing.Point(625, 207);
             this.SearchButton.Name = "SearchButton";
             this.SearchButton.Size = new System.Drawing.Size(70, 26);
             this.SearchButton.TabIndex = 97;
@@ -138,26 +138,25 @@ namespace Gas_Company
             this.textBox1.BackColor = System.Drawing.Color.WhiteSmoke;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(12, 69);
+            this.textBox1.Location = new System.Drawing.Point(21, 210);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(194, 20);
+            this.textBox1.Size = new System.Drawing.Size(598, 24);
             this.textBox1.TabIndex = 96;
             // 
             // dataGridView1
             // 
             this.dataGridView1.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 114);
+            this.dataGridView1.Location = new System.Drawing.Point(21, 253);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(346, 489);
+            this.dataGridView1.Size = new System.Drawing.Size(1263, 374);
             this.dataGridView1.TabIndex = 95;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.ClearButton);
             this.groupBox1.Controls.Add(this.PermissionValue);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.WorkerNote);
@@ -175,9 +174,9 @@ namespace Gas_Company
             this.groupBox1.Controls.Add(this.WorkerID);
             this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(375, 57);
+            this.groupBox1.Location = new System.Drawing.Point(21, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(667, 470);
+            this.groupBox1.Size = new System.Drawing.Size(1273, 192);
             this.groupBox1.TabIndex = 94;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "員工資料";
@@ -189,12 +188,13 @@ namespace Gas_Company
             this.ClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ClearButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ClearButton.ForeColor = System.Drawing.Color.White;
-            this.ClearButton.Location = new System.Drawing.Point(553, 438);
+            this.ClearButton.Location = new System.Drawing.Point(1134, 194);
             this.ClearButton.Name = "ClearButton";
             this.ClearButton.Size = new System.Drawing.Size(108, 26);
             this.ClearButton.TabIndex = 102;
             this.ClearButton.Text = "全部清除";
             this.ClearButton.UseVisualStyleBackColor = false;
+            this.ClearButton.Visible = false;
             this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
             // 
             // PermissionValue
@@ -203,9 +203,9 @@ namespace Gas_Company
             this.PermissionValue.Items.AddRange(new object[] {
             "1",
             "0"});
-            this.PermissionValue.Location = new System.Drawing.Point(125, 248);
+            this.PermissionValue.Location = new System.Drawing.Point(125, 142);
             this.PermissionValue.Name = "PermissionValue";
-            this.PermissionValue.Size = new System.Drawing.Size(136, 27);
+            this.PermissionValue.Size = new System.Drawing.Size(136, 34);
             this.PermissionValue.TabIndex = 58;
             this.PermissionValue.SelectedIndexChanged += new System.EventHandler(this.PermissionValue_SelectedIndexChanged);
             // 
@@ -214,9 +214,9 @@ namespace Gas_Company
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label6.Location = new System.Drawing.Point(46, 250);
+            this.label6.Location = new System.Drawing.Point(45, 144);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(74, 22);
+            this.label6.Size = new System.Drawing.Size(92, 27);
             this.label6.TabIndex = 57;
             this.label6.Text = "員工權限";
             // 
@@ -225,11 +225,11 @@ namespace Gas_Company
             this.WorkerNote.BackColor = System.Drawing.Color.WhiteSmoke;
             this.WorkerNote.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.WorkerNote.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WorkerNote.Location = new System.Drawing.Point(125, 295);
+            this.WorkerNote.Location = new System.Drawing.Point(1028, 55);
             this.WorkerNote.Multiline = true;
             this.WorkerNote.Name = "WorkerNote";
             this.WorkerNote.ReadOnly = true;
-            this.WorkerNote.Size = new System.Drawing.Size(428, 126);
+            this.WorkerNote.Size = new System.Drawing.Size(235, 121);
             this.WorkerNote.TabIndex = 56;
             // 
             // label5
@@ -237,9 +237,9 @@ namespace Gas_Company
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label5.Location = new System.Drawing.Point(77, 294);
+            this.label5.Location = new System.Drawing.Point(980, 54);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(42, 22);
+            this.label5.Size = new System.Drawing.Size(52, 27);
             this.label5.TabIndex = 55;
             this.label5.Text = "備註";
             // 
@@ -248,10 +248,10 @@ namespace Gas_Company
             this.WorkerAddress.BackColor = System.Drawing.Color.WhiteSmoke;
             this.WorkerAddress.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.WorkerAddress.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WorkerAddress.Location = new System.Drawing.Point(125, 205);
+            this.WorkerAddress.Location = new System.Drawing.Point(655, 105);
             this.WorkerAddress.Name = "WorkerAddress";
             this.WorkerAddress.ReadOnly = true;
-            this.WorkerAddress.Size = new System.Drawing.Size(428, 20);
+            this.WorkerAddress.Size = new System.Drawing.Size(316, 24);
             this.WorkerAddress.TabIndex = 54;
             // 
             // label8
@@ -259,9 +259,9 @@ namespace Gas_Company
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label8.Location = new System.Drawing.Point(45, 204);
+            this.label8.Location = new System.Drawing.Point(575, 104);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(74, 22);
+            this.label8.Size = new System.Drawing.Size(92, 27);
             this.label8.TabIndex = 51;
             this.label8.Text = "通訊地址";
             // 
@@ -270,10 +270,10 @@ namespace Gas_Company
             this.WorkerEmail.BackColor = System.Drawing.Color.WhiteSmoke;
             this.WorkerEmail.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.WorkerEmail.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WorkerEmail.Location = new System.Drawing.Point(125, 156);
+            this.WorkerEmail.Location = new System.Drawing.Point(655, 56);
             this.WorkerEmail.Name = "WorkerEmail";
             this.WorkerEmail.ReadOnly = true;
-            this.WorkerEmail.Size = new System.Drawing.Size(428, 20);
+            this.WorkerEmail.Size = new System.Drawing.Size(316, 24);
             this.WorkerEmail.TabIndex = 42;
             // 
             // label4
@@ -281,9 +281,9 @@ namespace Gas_Company
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label4.Location = new System.Drawing.Point(45, 155);
+            this.label4.Location = new System.Drawing.Point(575, 55);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(74, 22);
+            this.label4.Size = new System.Drawing.Size(92, 27);
             this.label4.TabIndex = 41;
             this.label4.Text = "電子信箱";
             // 
@@ -295,7 +295,7 @@ namespace Gas_Company
             this.WorkerTele.Location = new System.Drawing.Point(408, 105);
             this.WorkerTele.Name = "WorkerTele";
             this.WorkerTele.ReadOnly = true;
-            this.WorkerTele.Size = new System.Drawing.Size(145, 20);
+            this.WorkerTele.Size = new System.Drawing.Size(145, 24);
             this.WorkerTele.TabIndex = 40;
             // 
             // label3
@@ -305,7 +305,7 @@ namespace Gas_Company
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label3.Location = new System.Drawing.Point(328, 104);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(74, 22);
+            this.label3.Size = new System.Drawing.Size(92, 27);
             this.label3.TabIndex = 39;
             this.label3.Text = "電話號碼";
             // 
@@ -317,7 +317,7 @@ namespace Gas_Company
             this.WorkerPhone.Location = new System.Drawing.Point(125, 105);
             this.WorkerPhone.Name = "WorkerPhone";
             this.WorkerPhone.ReadOnly = true;
-            this.WorkerPhone.Size = new System.Drawing.Size(145, 20);
+            this.WorkerPhone.Size = new System.Drawing.Size(145, 24);
             this.WorkerPhone.TabIndex = 38;
             // 
             // label2
@@ -327,7 +327,7 @@ namespace Gas_Company
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label2.Location = new System.Drawing.Point(45, 104);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(74, 22);
+            this.label2.Size = new System.Drawing.Size(92, 27);
             this.label2.TabIndex = 37;
             this.label2.Text = "手機號碼";
             // 
@@ -339,7 +339,7 @@ namespace Gas_Company
             this.WorkerName.Location = new System.Drawing.Point(408, 57);
             this.WorkerName.Name = "WorkerName";
             this.WorkerName.ReadOnly = true;
-            this.WorkerName.Size = new System.Drawing.Size(145, 20);
+            this.WorkerName.Size = new System.Drawing.Size(145, 24);
             this.WorkerName.TabIndex = 36;
             // 
             // label1
@@ -349,7 +349,7 @@ namespace Gas_Company
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label1.Location = new System.Drawing.Point(328, 56);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(74, 22);
+            this.label1.Size = new System.Drawing.Size(92, 27);
             this.label1.TabIndex = 35;
             this.label1.Text = "員工名稱";
             // 
@@ -361,7 +361,7 @@ namespace Gas_Company
             this.WorkerID.Location = new System.Drawing.Point(125, 57);
             this.WorkerID.Name = "WorkerID";
             this.WorkerID.ReadOnly = true;
-            this.WorkerID.Size = new System.Drawing.Size(145, 20);
+            this.WorkerID.Size = new System.Drawing.Size(145, 24);
             this.WorkerID.TabIndex = 34;
             // 
             // label12
@@ -371,24 +371,25 @@ namespace Gas_Company
             this.label12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label12.Location = new System.Drawing.Point(45, 56);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(74, 22);
+            this.label12.Size = new System.Drawing.Size(92, 27);
             this.label12.TabIndex = 33;
             this.label12.Text = "員工編號";
             // 
             // Worker
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.ClientSize = new System.Drawing.Size(1054, 660);
+            this.ClientSize = new System.Drawing.Size(1310, 673);
+            this.Controls.Add(this.ClearButton);
             this.Controls.Add(this.WorkerDelete);
             this.Controls.Add(this.WorkerEditButton);
-            this.Controls.Add(this.WorkerAddButton);
-            this.Controls.Add(this.RefreshButton);
-            this.Controls.Add(this.SearchButton);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.RefreshButton);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.SearchButton);
+            this.Controls.Add(this.WorkerAddButton);
+            this.Controls.Add(this.textBox1);
             this.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);

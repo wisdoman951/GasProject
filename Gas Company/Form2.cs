@@ -88,7 +88,7 @@ namespace Gas_Company
         // Open 殘氣累積視窗
         private void ResidualGasPage_Click(object sender, EventArgs e)
         {
-            openChildForm(new residual_gas());
+            openChildForm(new ResidualGas());
             ChangeButtonColor((Button)sender);
         }
 

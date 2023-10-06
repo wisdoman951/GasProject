@@ -188,7 +188,7 @@ namespace Gas_Company
             // 
             this.week.AutoSize = true;
             this.week.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.week.Location = new System.Drawing.Point(164, 18);
+            this.week.Location = new System.Drawing.Point(401, 18);
             this.week.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.week.Name = "week";
             this.week.Size = new System.Drawing.Size(31, 26);
@@ -199,7 +199,7 @@ namespace Gas_Company
             // 
             this.date.AutoSize = true;
             this.date.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.date.Location = new System.Drawing.Point(7, 18);
+            this.date.Location = new System.Drawing.Point(244, 18);
             this.date.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.date.Name = "date";
             this.date.Size = new System.Drawing.Size(50, 26);
@@ -210,7 +210,7 @@ namespace Gas_Company
             // 
             this.time.AutoSize = true;
             this.time.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.time.Location = new System.Drawing.Point(84, 49);
+            this.time.Location = new System.Drawing.Point(321, 49);
             this.time.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.time.Name = "time";
             this.time.Size = new System.Drawing.Size(50, 26);
