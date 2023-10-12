@@ -304,8 +304,6 @@ namespace Gas_Company
                     dataGridView3.Rows[j].Cells[i].Value = cellValue;
                 }
             }
-            dataGridView2.Rows[1].HeaderCell.Value = "昨日";
-
         }
 
         // 點選一個row 自動填入下方 Labels.
@@ -374,6 +372,7 @@ namespace Gas_Company
                                 string selectedDate = DeliveryTimePicker.Value.ToString("yyyy-MM-dd");
                                 string selectedTime = IntervalComboBox.SelectedItem.ToString();
                                 string selectedDeliveryTime = $"{selectedDate} {selectedTime}";
+
                                 Console.WriteLine($"Selected Delivery Time: {selectedDeliveryTime}");
 
                                 //下面桶資訊先不要從歷史資訊抓然後插入，顧客可能想改
@@ -532,21 +531,30 @@ namespace Gas_Company
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                DataTable dataTable = (DataTable)dataGridView1.DataSource;
-                if (dataTable != null)
+                DataView dataView = (DataView)dataGridView1.DataSource;
+                if (dataView != null)
                 {
-                    // Use parentheses to group the OR conditions together
-                    string filterExpression = $"(CUSTOMER_Name LIKE '%{searchTerm}%' OR CONVERT(ORDER_Id, 'System.String') LIKE '%{searchTerm}%' OR Customer_PhoneNo LIKE '%{searchTerm}%' OR DELIVERY_Address LIKE '%{searchTerm}%')";
-                    dataTable.DefaultView.RowFilter = filterExpression;
+                    // Use RIGHT function to extract the last 5 characters of Customer_PhoneNo
+                    string filterExpression = $"(CUSTOMER_Name LIKE '%{searchTerm}%' OR DELIVERY_Address LIKE '%{searchTerm}%' OR RIGHT(Customer_PhoneNo, 3) = '{searchTerm}')";
+
+                    // If searchTerm can be converted to an integer, use '=' for ORDER_Id
+                    if (int.TryParse(searchTerm, out _))
+                    {
+                        filterExpression += $" OR ORDER_Id = {searchTerm}";
+                    }
+
+                    dataView.RowFilter = filterExpression;
                 }
             }
             else
             {
                 // Clear the filter if the search term is empty
-                DataTable dataTable = (DataTable)dataGridView1.DataSource;
-                dataTable.DefaultView.RowFilter = string.Empty;
+                DataView dataView = (DataView)dataGridView1.DataSource;
+                dataView.RowFilter = string.Empty;
             }
         }
+
+
 
         // 雙擊row檢視歷史訂單
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -656,6 +664,8 @@ namespace Gas_Company
                                             else
                                             {
                                                 MessageBox.Show($"無法重新指派訂單 {orderId}！", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                                return; // 在此處返回，避免繼續執行更新操作
+
                                             }
                                         }
                                     }
@@ -677,6 +687,8 @@ namespace Gas_Company
                                             else
                                             {
                                                 MessageBox.Show($"無法指派訂單 {orderId}！", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                                return; // 在此處返回，避免繼續執行更新操作
+
                                             }
                                         }
                                     }
@@ -794,7 +806,6 @@ namespace Gas_Company
             }
         }
 
-
         // 顯示客戶資料
         public class CustomerData
         {
@@ -880,7 +891,7 @@ namespace Gas_Company
         {
             // Set the format and custom format for the DateTimePicker
             DeliveryTimePicker.Format = DateTimePickerFormat.Custom;
-            DeliveryTimePicker.CustomFormat = "MM-dd";
+            DeliveryTimePicker.CustomFormat = "yyyy-MM-dd";
 
             // Populate the intervals into a ComboBox or any other control for user selection
             IntervalComboBox.DataSource = deliveryTimeIntervals;
@@ -895,73 +906,72 @@ namespace Gas_Company
             // Set the selected time to the DateTimePicker control
             DeliveryTimePicker.Value = selectedTime;
         }
+        private void AutoFillButton_Click(object sender, EventArgs e)
+        {   // Fill out customer address, customer name,
+            // delivery time use now(),
+            // order_id ??
+            // order_type, order_quantity, order_weight use newest historical data.
+            string searchTerm = CustomerPhone.Text;
 
-    }
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
 
-    /*private void AutoFillButton_Click(object sender, EventArgs e)
-    {   // Fill out customer address, customer name,
-        // delivery time use now(),
-        // order_id ??
-        // order_type, order_quantity, order_weight use newest historical data.
-        string searchTerm = CustomerPhone.Text;
-
-        using (MySqlConnection connection = new MySqlConnection(connectionString))
-        {
-            connection.Open();
-
-            // 在 gas_order_history裡面的電話是 string, 要改成 varchar(50)才能用 
-            string query = @"SELECT g.CUSTOMER_Id, g.DELIVERY_Time, g.DELIVERY_Address, g.DELIVERY_Phone, g.Gas_Quantity, g.Order_Time, g.Gas_Detail_Id, g.Order_Quantity, g.Order_type, g.Order_weight, g.Exchange, g.Completion_Date, c.CUSTOMER_Name, ca.Gas_Volume
-                            FROM gas_order_history g
-                            JOIN customer c ON g.CUSTOMER_Id = c.CUSTOMER_Id
-                            JOIN customer_accumulation ca ON g.CUSTOMER_Id = ca.CUSTOMER_Id
-                            WHERE g.DELIVERY_Phone LIKE CONCAT('%', @searchTerm, '%')
-                            ORDER BY g.DELIVERY_Time DESC
+                // 在 gas_order_history裡面的電話是 string, 要改成 varchar(50)才能用 
+                string query = @"SELECT o.CUSTOMER_Id, o.DELIVERY_Time, o.DELIVERY_Address, o.DELIVERY_Phone, o.Gas_Quantity, o.Order_Time, go.Order_type, go.Order_weight, o.Exchange, c.CUSTOMER_Name, ca.Gas_Volume
+                            FROM gas_order o
+                            JOIN gas_order_detail go
+                            JOIN customer c ON o.CUSTOMER_Id = c.CUSTOMER_Id
+                            JOIN customer_accumulation ca ON c.CUSTOMER_Id = ca.CUSTOMER_Id
+                            WHERE o.DELIVERY_Phone = @searchTerm 
+                            AND DELIVERY_Condition = 1 
+                            ORDER BY o.DELIVERY_Time DESC
                             LIMIT 1
                             ";
 
-            using (MySqlCommand command = new MySqlCommand(query, connection))
-            {
-                command.Parameters.AddWithValue("@searchTerm", searchTerm);
-
-                using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
+                    command.Parameters.AddWithValue("@searchTerm", searchTerm);
 
-                    dataGridView1.Columns["CUSTOMER_Id"].Visible = false;
-                    if (dataTable.Rows.Count > 0)
+                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
                     {
-                        DataRow row = dataTable.Rows[0];
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
 
-                        string customerName = row["CUSTOMER_Name"].ToString();
-                        //DateTime deliveryTime = (DateTime)row["DELIVERY_Time"];
-                        string deliveryAddress = row["DELIVERY_Address"].ToString();
-                        string deliveryPhone = row["DELIVERY_Phone"].ToString();
-                        string gasType = row["Order_type"].ToString();
-                        string gasWeight = row["Order_weight"].ToString();
-                        string gasQuantity = row["Order_Quantity"].ToString();
-                        string gasVolume = row["Gas_Volume"].ToString();
+                        dataGridView1.Columns["CUSTOMER_Id"].Visible = false;
+                        if (dataTable.Rows.Count > 0)
+                        {
+                            DataRow row = dataTable.Rows[0];
 
-                        OrderID.Text = "";
-                        CustomerName.Text = customerName;
-                        DeliveryTime.Text = DateTime.Now.ToLongTimeString();
-                        DeliveryAddress.Text = deliveryAddress;
-                        CustomerPhone.Text = deliveryPhone;
-                        GasType.Text = gasType;
-                        GasWeight.Text = gasWeight;
-                        GasQuantity.Text = gasQuantity;
-                        GasVolume.Text = gasVolume;
+                            string customerName = row["CUSTOMER_Name"].ToString();
+                            //DateTime deliveryTime = (DateTime)row["DELIVERY_Time"];
+                            string deliveryAddress = row["DELIVERY_Address"].ToString();
+                            string deliveryPhone = row["DELIVERY_Phone"].ToString();
+                            string gasType = row["Order_type"].ToString();
+                            string gasWeight = row["Order_weight"].ToString();
+                            string gasQuantity = row["Gas_Quantity"].ToString();
+                            string gasVolume = row["Gas_Volume"].ToString();
 
+                            OrderID.Text = "";
+                            CustomerName.Text = customerName;
+                            DeliveryAddress.Text = deliveryAddress;
+                            CustomerPhone.Text = deliveryPhone;
+                            GasType.Text = gasType;
+                            GasWeight.Text = gasWeight;
+                            GasQuantity.Text = gasQuantity;
+                            GasVolume.Text = gasVolume;
+                        }
+                        else
+                        {
 
-                    }
-                    else
-                    {
-
+                        }
                     }
                 }
             }
         }
-    }*/
+    }
+
+    
 
 
     /*private void dataGridView2_Paint(object sender, PaintEventArgs e)

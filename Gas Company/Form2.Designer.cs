@@ -526,6 +526,7 @@ namespace Gas_Company
             this.AutoFillButton.TabIndex = 88;
             this.AutoFillButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.AutoFillButton.UseVisualStyleBackColor = false;
+            this.AutoFillButton.Click += new System.EventHandler(this.AutoFillButton_Click);
             // 
             // label13
             // 
@@ -717,7 +718,6 @@ namespace Gas_Company
             this.CustomerPhone.Location = new System.Drawing.Point(139, 96);
             this.CustomerPhone.Margin = new System.Windows.Forms.Padding(4);
             this.CustomerPhone.Name = "CustomerPhone";
-            this.CustomerPhone.ReadOnly = true;
             this.CustomerPhone.Size = new System.Drawing.Size(193, 24);
             this.CustomerPhone.TabIndex = 42;
             // 
