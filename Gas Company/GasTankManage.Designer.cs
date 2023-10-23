@@ -30,6 +30,7 @@ namespace Gas_Company
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.Note = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.ResetFilterButton = new System.Windows.Forms.Button();
@@ -55,7 +56,11 @@ namespace Gas_Company
             this.edit = new System.Windows.Forms.Button();
             this.GasAdd = new System.Windows.Forms.Button();
             this.RefreshButton = new System.Windows.Forms.Button();
-            this.Note = new System.Windows.Forms.TextBox();
+            this.MonthlySelection = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.GasExamineAmountMonthlyLabel = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.GasExamineAmountYearlyLabel = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -88,6 +93,16 @@ namespace Gas_Company
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1205, 145);
             this.panel1.TabIndex = 0;
+            // 
+            // Note
+            // 
+            this.Note.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.Note.CausesValidation = false;
+            this.Note.Location = new System.Drawing.Point(895, 103);
+            this.Note.Multiline = true;
+            this.Note.Name = "Note";
+            this.Note.Size = new System.Drawing.Size(291, 28);
+            this.Note.TabIndex = 96;
             // 
             // label9
             // 
@@ -367,15 +382,62 @@ namespace Gas_Company
             this.RefreshButton.UseVisualStyleBackColor = false;
             this.RefreshButton.Click += new System.EventHandler(this.RefreshButton_Click);
             // 
-            // Note
+            // MonthlySelection
             // 
-            this.Note.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.Note.CausesValidation = false;
-            this.Note.Location = new System.Drawing.Point(895, 103);
-            this.Note.Multiline = true;
-            this.Note.Name = "Note";
-            this.Note.Size = new System.Drawing.Size(291, 28);
-            this.Note.TabIndex = 96;
+            this.MonthlySelection.FormattingEnabled = true;
+            this.MonthlySelection.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12"});
+            this.MonthlySelection.Location = new System.Drawing.Point(324, 168);
+            this.MonthlySelection.Name = "MonthlySelection";
+            this.MonthlySelection.Size = new System.Drawing.Size(121, 28);
+            this.MonthlySelection.TabIndex = 95;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(451, 171);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(129, 20);
+            this.label3.TabIndex = 96;
+            this.label3.Text = "月需檢驗桶數為：";
+            // 
+            // GasExamineAmountMonthlyLabel
+            // 
+            this.GasExamineAmountMonthlyLabel.AutoSize = true;
+            this.GasExamineAmountMonthlyLabel.Location = new System.Drawing.Point(571, 171);
+            this.GasExamineAmountMonthlyLabel.Name = "GasExamineAmountMonthlyLabel";
+            this.GasExamineAmountMonthlyLabel.Size = new System.Drawing.Size(38, 20);
+            this.GasExamineAmountMonthlyLabel.TabIndex = 97;
+            this.GasExamineAmountMonthlyLabel.Text = "N/A";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(632, 171);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(144, 20);
+            this.label10.TabIndex = 98;
+            this.label10.Text = "今年需檢驗桶數為：";
+            // 
+            // GasExamineAmountYearlyLabel
+            // 
+            this.GasExamineAmountYearlyLabel.AutoSize = true;
+            this.GasExamineAmountYearlyLabel.Location = new System.Drawing.Point(768, 171);
+            this.GasExamineAmountYearlyLabel.Name = "GasExamineAmountYearlyLabel";
+            this.GasExamineAmountYearlyLabel.Size = new System.Drawing.Size(38, 20);
+            this.GasExamineAmountYearlyLabel.TabIndex = 99;
+            this.GasExamineAmountYearlyLabel.Text = "N/A";
             // 
             // GasTankManage
             // 
@@ -383,6 +445,11 @@ namespace Gas_Company
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
             this.ClientSize = new System.Drawing.Size(1265, 694);
+            this.Controls.Add(this.GasExamineAmountYearlyLabel);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.GasExamineAmountMonthlyLabel);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.MonthlySelection);
             this.Controls.Add(this.RefreshButton);
             this.Controls.Add(this.GasDelete);
             this.Controls.Add(this.edit);
@@ -400,6 +467,7 @@ namespace Gas_Company
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -432,5 +500,10 @@ namespace Gas_Company
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.TextBox Note;
+        private System.Windows.Forms.ComboBox MonthlySelection;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label GasExamineAmountMonthlyLabel;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label GasExamineAmountYearlyLabel;
     }
 }

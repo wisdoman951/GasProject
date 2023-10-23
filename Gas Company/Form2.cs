@@ -133,7 +133,7 @@ namespace Gas_Company
                             o.CUSTOMER_Id,
                             c.CUSTOMER_PhoneNo,
                             o.DELIVERY_Address,
-                            o.DELIVERY_Time,
+                            o.Expect_time,
                             od.exchange,
                             c.CUSTOMER_Name,
                             od.Order_type,
@@ -181,7 +181,7 @@ namespace Gas_Company
                         {
                             row["WORKER_Id"] = DBNull.Value; // Set to DBNull
                         }
-                        if (DateTime.TryParse(row["DELIVERY_Time"].ToString(), out DateTime deliveryDateTime))
+                        if (DateTime.TryParse(row["Expect_time"].ToString(), out DateTime deliveryDateTime))
                         {
                             string deliveryDate = deliveryDateTime.ToString("MM-dd");
                             string deliveryTime = deliveryDateTime.ToString("HH:mm:ss");
@@ -222,9 +222,10 @@ namespace Gas_Company
                     dataGridView1.Columns["CUSTOMER_Id"].HeaderText = "顧客編號";
                     dataGridView1.Columns["CUSTOMER_PhoneNo"].HeaderText = "顧客電話";
                     dataGridView1.Columns["DELIVERY_Address"].HeaderText = "送貨地址";
+                    dataGridView1.Columns["EXPECT_Time"].Visible = false;
                     dataGridView1.Columns["送貨日期"].HeaderText = "送貨日期"; // New column header
                     dataGridView1.Columns["送貨時間"].HeaderText = "送貨時間"; // New column header
-                    dataGridView1.Columns["DELIVERY_Time"].Visible = false; // Hide the original DELIVERY_Time column
+                    //dataGridView1.Columns["DELIVERY_Time"].Visible = false; // Hide the original DELIVERY_Time column
                     dataGridView1.Columns["CUSTOMER_Name"].HeaderText = "訂購人";
                     dataGridView1.Columns["Order_type"].HeaderText = "瓦斯桶種類";
                     dataGridView1.Columns["Order_weight"].HeaderText = "瓦斯規格";
@@ -259,13 +260,15 @@ namespace Gas_Company
             DateTime tomorrow = today.AddDays(1);
 
             string queryMan = "SELECT w.WORKER_Name, " +
-                "SUM(CASE WHEN DATE(o.DELIVERY_Time) = CURDATE() THEN 1 ELSE 0 END) AS TodayOrderCount, " +
-                "SUM(CASE WHEN DATE(o.DELIVERY_Time) = DATE_ADD(CURDATE(), INTERVAL 1 DAY) THEN 1 ELSE 0 END) AS TomorrowOrderCount " +
-                "FROM `worker` w " +
-                "LEFT JOIN `assign` a ON w.WORKER_Id = a.WORKER_Id " +
-                "LEFT JOIN `gas_order` o ON a.ORDER_Id = o.ORDER_Id " +
-                $"WHERE w.WORKER_Company_Id = {GlobalVariables.CompanyId} " +
-                "GROUP BY w.WORKER_Name";
+                                "SUM(CASE WHEN DATE(o.Expect_Time) = CURDATE() THEN 1 ELSE 0 END) AS TodayOrderCount, " +
+                                "SUM(CASE WHEN DATE(o.Expect_Time) = DATE_ADD(CURDATE(), INTERVAL 1 DAY) THEN 1 ELSE 0 END) AS TomorrowOrderCount, " +
+                                "SUM(CASE WHEN DATE_FORMAT(o.Expect_Time, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m') THEN 1 ELSE 0 END) AS ThisMonthOrderCount " +
+                                "FROM `worker` w " +
+                                "LEFT JOIN `assign` a ON w.WORKER_Id = a.WORKER_Id " +
+                                "LEFT JOIN `gas_order` o ON a.ORDER_Id = o.ORDER_Id " +
+                                $"WHERE w.WORKER_Company_Id = {GlobalVariables.CompanyId} " +
+                                "GROUP BY w.WORKER_Name";
+
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -384,15 +387,14 @@ namespace Gas_Company
                                 string orderType = GasType.Text;
                                 //int orderWeight = reader.GetInt32("Order_weight");
                                 string orderWeight = GasWeight.Text;
-                                string expTime = DeliveryTimePicker.Text;
                                 string exchange = reader.GetString("Exchange");
                                 reader.Close();
 
                                 // Step 3: Construct and execute the insert statements
                                 string insertOrderQuery = @"INSERT INTO gas_order
-                                                    (CUSTOMER_Id, COMPANY_Id, DELIVERY_Time, DELIVERY_Condition, Exchange, DELIVERY_Address, DELIVERY_Phone, Gas_Quantity, Order_Time, Expect_Time, Delivery_Method)
+                                                    (CUSTOMER_Id, COMPANY_Id, DELIVERY_Condition, Exchange, DELIVERY_Address, DELIVERY_Phone, Gas_Quantity, Order_Time, Expect_Time, Delivery_Method)
                                                     VALUES
-                                                    (@customerId, @companyId, @selectedDeliveryTime , @deliveryCondition, @exchange, @deliveryAddress, @deliveryPhone, @gasQuantity, NOW(), @expTime, @deliveryMethod)";
+                                                    (@customerId, @companyId, @deliveryCondition, @exchange, @deliveryAddress, @deliveryPhone, @gasQuantity, NOW(), @expTime, @deliveryMethod)";
 
                                 using (MySqlCommand insertOrderCommand = new MySqlCommand(insertOrderQuery, connection))
                                 {
@@ -401,7 +403,7 @@ namespace Gas_Company
                                     insertOrderCommand.Parameters.AddWithValue("@companyId", companyId);
                                     insertOrderCommand.Parameters.AddWithValue("@deliveryCondition", 0);
                                     insertOrderCommand.Parameters.AddWithValue("@deliveryAddress", deliveryAddress);
-                                    insertOrderCommand.Parameters.AddWithValue("@expTime", expTime);
+                                    insertOrderCommand.Parameters.AddWithValue("@expTime", selectedDeliveryTime);
                                     insertOrderCommand.Parameters.AddWithValue("@deliveryPhone", deliveryPhone);
                                     insertOrderCommand.Parameters.AddWithValue("@gasQuantity", gasQuantity);
                                     insertOrderCommand.Parameters.AddWithValue("@exchange", exchange);
@@ -535,7 +537,7 @@ namespace Gas_Company
                 if (dataView != null)
                 {
                     // Use RIGHT function to extract the last 5 characters of Customer_PhoneNo
-                    string filterExpression = $"(CUSTOMER_Name LIKE '%{searchTerm}%' OR DELIVERY_Address LIKE '%{searchTerm}%' OR RIGHT(Customer_PhoneNo, 3) = '{searchTerm}')";
+                    string filterExpression = $"(CUSTOMER_Name LIKE '%{searchTerm}%' OR DELIVERY_Address LIKE '%{searchTerm}%' OR RIGHT(Customer_PhoneNo, 5) = '{searchTerm}')";
 
                     // If searchTerm can be converted to an integer, use '=' for ORDER_Id
                     if (int.TryParse(searchTerm, out _))
@@ -553,6 +555,8 @@ namespace Gas_Company
                 dataView.RowFilter = string.Empty;
             }
         }
+
+
 
 
 
@@ -614,7 +618,7 @@ namespace Gas_Company
         }
 
         // 確認派送訂單給工人
-        private async void ConfirmButton_Click(object sender, EventArgs e)
+        /*private async void ConfirmButton_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
@@ -708,7 +712,128 @@ namespace Gas_Company
             {
                 MessageBox.Show("請選擇需要送的訂單！", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }*/
+        private async void ConfirmButton_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                string deliveryManName = DeliveryMan.SelectedItem?.ToString();
+
+                if (!string.IsNullOrEmpty(deliveryManName))
+                {
+                    string query = $"SELECT WORKER_Id FROM worker WHERE WORKER_Name = @WorkerName AND WORKER_Company_Id = {GlobalVariables.CompanyId}";
+
+                    using (MySqlConnection connection = new MySqlConnection(connectionString))
+                    {
+                        using (MySqlCommand command = new MySqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@WorkerName", deliveryManName);
+                            connection.Open();
+
+                            int workerId = Convert.ToInt32(command.ExecuteScalar());
+
+                            // Iterate through selected rows and update (reassign) or insert orders
+                            foreach (DataGridViewRow selectedRow in dataGridView1.SelectedRows)
+                            {
+                                int customerId = Convert.ToInt32(selectedRow.Cells["CUSTOMER_Id"].Value);
+                                int orderId = Convert.ToInt32(selectedRow.Cells["ORDER_Id"].Value);
+
+                                // Check if an assignment already exists for the order
+                                string checkAssignmentQuery = "SELECT COUNT(*) FROM assign WHERE ORDER_Id = @OrderId";
+
+                                using (MySqlCommand checkAssignmentCommand = new MySqlCommand(checkAssignmentQuery, connection))
+                                {
+                                    checkAssignmentCommand.Parameters.AddWithValue("@OrderId", orderId);
+                                    int assignmentCount = Convert.ToInt32(checkAssignmentCommand.ExecuteScalar());
+
+                                    if (assignmentCount > 0)
+                                    {
+                                        // Order has been assigned, update the assignment (UPDATE query)
+                                        string updateQuery = "UPDATE assign SET WORKER_Id = @WorkerId WHERE ORDER_Id = @OrderId";
+
+                                        using (MySqlCommand updateCommand = new MySqlCommand(updateQuery, connection))
+                                        {
+                                            updateCommand.Parameters.AddWithValue("@WorkerId", workerId);
+                                            updateCommand.Parameters.AddWithValue("@OrderId", orderId);
+
+                                            if (updateCommand.ExecuteNonQuery() == 1)
+                                            {
+                                                // Update Expect_Time in gas_order
+                                                UpdateExpectTimeInGasOrder(orderId);
+
+                                                MessageBox.Show($"訂單 {orderId} 已成功重新指派！", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                            }
+                                            else
+                                            {
+                                                MessageBox.Show($"無法重新指派訂單 {orderId}！", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                                return; // Return here to avoid further execution
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // No assignment found, insert a new assignment (INSERT query)
+                                        string insertQuery = "INSERT INTO assign (CUSTOMER_Id, WORKER_Id, ORDER_Id) VALUES (@CustomerId, @WorkerId, @OrderId)";
+
+                                        using (MySqlCommand insertCommand = new MySqlCommand(insertQuery, connection))
+                                        {
+                                            insertCommand.Parameters.AddWithValue("@CustomerId", customerId);
+                                            insertCommand.Parameters.AddWithValue("@WorkerId", workerId);
+                                            insertCommand.Parameters.AddWithValue("@OrderId", orderId);
+
+                                            if (insertCommand.ExecuteNonQuery() == 1)
+                                            {
+                                                // Update Expect_Time in gas_order
+                                                UpdateExpectTimeInGasOrder(orderId);
+
+                                                MessageBox.Show($"訂單 {orderId} 已成功指派！", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                            }
+                                            else
+                                            {
+                                                MessageBox.Show($"無法指派訂單 {orderId}！", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                                return; // Return here to avoid further execution
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            connection.Close();
+                            await LoadData();
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("請選擇送貨員！", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("請選擇需要送的訂單！", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
+        // 更改Expect_Time 的 function，不跟ConfirmButton_Click() 放在一起的原因是要做隔離，一個function盡量不要多次呼叫DB
+        private void UpdateExpectTimeInGasOrder(int orderId)
+        {
+            string selectedDate = DeliveryTimePicker.Value.ToString("yyyy-MM-dd");
+            string selectedTime = IntervalComboBox.SelectedItem.ToString();
+            string selectedDeliveryTime = $"{selectedDate} {selectedTime}";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                string updateExpectTimeQuery = "UPDATE gas_order SET Expect_Time = @ExpectTime WHERE ORDER_Id = @OrderId";
+                using (MySqlCommand updateExpectTimeCommand = new MySqlCommand(updateExpectTimeQuery, connection))
+                {
+                    updateExpectTimeCommand.Parameters.AddWithValue("@ExpectTime", selectedDeliveryTime);
+                    updateExpectTimeCommand.Parameters.AddWithValue("@OrderId", orderId);
+                    updateExpectTimeCommand.ExecuteNonQuery();
+                }
+                connection.Close();
+            }
+        }
+
 
         // 工人下拉式選單
         private void PopulateDeliveryManComboBox()

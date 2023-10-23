@@ -178,7 +178,7 @@ namespace Gas_Company
             this.panel8.Controls.Add(this.week);
             this.panel8.Controls.Add(this.date);
             this.panel8.Controls.Add(this.time);
-            this.panel8.Location = new System.Drawing.Point(1203, 4);
+            this.panel8.Location = new System.Drawing.Point(1174, 4);
             this.panel8.Margin = new System.Windows.Forms.Padding(4);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(436, 102);
@@ -447,7 +447,7 @@ namespace Gas_Company
             // dataGridView3
             // 
             this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView3.Location = new System.Drawing.Point(1203, 696);
+            this.dataGridView3.Location = new System.Drawing.Point(642, 651);
             this.dataGridView3.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView3.Name = "dataGridView3";
             this.dataGridView3.RowHeadersWidth = 51;
