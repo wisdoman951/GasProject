@@ -45,6 +45,7 @@ namespace Gas_Company
                     dataView = table.DefaultView;
 
                     table.Columns.Remove("GAS_Company_Id");
+                    table.Columns.Remove("GAS_Weight_Empty");
                     // Set the sorting mode for the "GAS_Examine_Day" column to automatic
                     dataGridView1.Columns["GAS_Examine_Day"].SortMode = DataGridViewColumnSortMode.Automatic;
 
@@ -53,7 +54,6 @@ namespace Gas_Company
                     // Columns rename
                     dataGridView1.Columns["GAS_Id"].HeaderText = "瓦斯桶編號";
                     dataGridView1.Columns["GAS_Weight_Full"].HeaderText = "滿桶重量";
-                    dataGridView1.Columns["GAS_Weight_Empty"].HeaderText = "空桶重量";
                     dataGridView1.Columns["GAS_Type"].HeaderText = "瓦斯桶種類";
                     dataGridView1.Columns["GAS_Price"].HeaderText = "瓦斯價格";
                     dataGridView1.Columns["GAS_Volume"].HeaderText = "瓦斯桶容量";
@@ -63,6 +63,7 @@ namespace Gas_Company
                     dataGridView1.Columns["Gas_Registration_Time"].HeaderText = "瓦斯桶註冊時間";
                     dataGridView1.Columns["last_worker_id"].HeaderText = "最後經手員工";
                     PopulateComboBox();
+                    CountMonthlyExamineGasTank();
                 }
             }
 
@@ -78,7 +79,7 @@ namespace Gas_Company
             // Set the initial sorting order for the "GAS_Examine_Day" column to ascending
             dataGridView1.Sort(dataGridView1.Columns["GAS_Examine_Day"], ListSortDirection.Ascending);
 
-            // Wire up the CellFormatting event handler
+
         }
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -89,7 +90,6 @@ namespace Gas_Company
                 // Access the data in the selected row and autofill other fields in the form
                 string gasId = selectedRow.Cells["GAS_Id"].Value.ToString();
                 string gasWeightFull = selectedRow.Cells["GAS_Weight_Full"].Value.ToString();
-                string gasWeightEmpty = selectedRow.Cells["GAS_Weight_Empty"].Value.ToString();
                 string gasType = selectedRow.Cells["GAS_Type"].Value.ToString();
                 string gasProduceDay = selectedRow.Cells["GAS_Produce_Day"].Value.ToString();
                 string gasExamineDay = selectedRow.Cells["GAS_Examine_Day"].Value.ToString();
@@ -98,7 +98,6 @@ namespace Gas_Company
                 // Autofill the other fields(Textbox) in the form
                 GasId.Text = gasId;
                 GasWeightFull.Text = gasWeightFull;
-                GasWeightEmpty.Text = gasWeightEmpty;
                 GasType.Text = gasType;
                 GasProduceDay.Text = gasProduceDay;
                 GasExamineDay.Text = gasExamineDay;
@@ -154,11 +153,6 @@ namespace Gas_Company
             }
         }
 
-
-
-
-
-
         /*private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selectedValue = comboBox1.SelectedItem?.ToString();
@@ -179,7 +173,7 @@ namespace Gas_Company
 
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                string value = row.Cells["GAS_Weight_Empty"].Value?.ToString();
+                string value = row.Cells["GAS_Weight_Full"].Value?.ToString();
                 if (!string.IsNullOrEmpty(value))
                 {
                     uniqueValues.Add(value);
@@ -352,5 +346,43 @@ namespace Gas_Company
             dataView.RowFilter = filterExpression;
         }
 
+        private void MonthlySelection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CountMonthlyExamineGasTank();
+        }
+        private void CountMonthlyExamineGasTank()
+        {
+            string selectedMonth = MonthlySelection.SelectedItem.ToString();
+            string formattedMonth = selectedMonth.PadLeft(2, '0'); // Ensures the month is always two digits
+
+            string queryExamine = "SELECT " +
+                                    "COUNT(CASE WHEN DATE_FORMAT(GAS_Examine_Day, '%m') = @SelectedMonth THEN 1 END) AS MonthlyExamineCount, " +
+                                    "COUNT(CASE WHEN YEAR(GAS_Examine_Day) = YEAR(CURDATE()) THEN 1 END) AS YearlyExamineCount " +
+                                    "FROM `gas` " +
+                                    $"WHERE GAS_Company_Id = {GlobalVariables.CompanyId}";
+
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(queryExamine, connection))
+                {
+                    command.Parameters.AddWithValue("@SelectedMonth", formattedMonth);
+                    connection.Open();
+
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            int monthlyExamineCount = reader.GetInt32("MonthlyExamineCount");
+                            int yearlyExamineCount = reader.GetInt32("YearlyExamineCount");
+                            Console.WriteLine(monthlyExamineCount);
+                            // 这里你可以使用 monthlyExamineCount 和 yearlyExamineCount 来更新你的标签或其他控件
+                            GasExamineAmountMonthlyLabel.Text = monthlyExamineCount.ToString();
+                            GasExamineAmountYearlyLabel.Text = yearlyExamineCount.ToString();
+                        }
+                    }
+                }
+            }
+        }
     }
 }

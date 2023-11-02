@@ -133,7 +133,7 @@ namespace Gas_Company
                             o.CUSTOMER_Id,
                             c.CUSTOMER_PhoneNo,
                             o.DELIVERY_Address,
-                            o.Expect_time,
+                            o.DELIVERY_Time,
                             od.exchange,
                             c.CUSTOMER_Name,
                             od.Order_type,
@@ -181,7 +181,7 @@ namespace Gas_Company
                         {
                             row["WORKER_Id"] = DBNull.Value; // Set to DBNull
                         }
-                        if (DateTime.TryParse(row["Expect_time"].ToString(), out DateTime deliveryDateTime))
+                        if (DateTime.TryParse(row["DELIVERY_Time"].ToString(), out DateTime deliveryDateTime))
                         {
                             string deliveryDate = deliveryDateTime.ToString("MM-dd");
                             string deliveryTime = deliveryDateTime.ToString("HH:mm:ss");
@@ -222,10 +222,10 @@ namespace Gas_Company
                     dataGridView1.Columns["CUSTOMER_Id"].HeaderText = "顧客編號";
                     dataGridView1.Columns["CUSTOMER_PhoneNo"].HeaderText = "顧客電話";
                     dataGridView1.Columns["DELIVERY_Address"].HeaderText = "送貨地址";
-                    dataGridView1.Columns["EXPECT_Time"].Visible = false;
+                    //dataGridView1.Columns["EXPECT_Time"].Visible = false;
                     dataGridView1.Columns["送貨日期"].HeaderText = "送貨日期"; // New column header
                     dataGridView1.Columns["送貨時間"].HeaderText = "送貨時間"; // New column header
-                    //dataGridView1.Columns["DELIVERY_Time"].Visible = false; // Hide the original DELIVERY_Time column
+                    dataGridView1.Columns["DELIVERY_Time"].Visible = false; // Hide the original DELIVERY_Time column
                     dataGridView1.Columns["CUSTOMER_Name"].HeaderText = "訂購人";
                     dataGridView1.Columns["Order_type"].HeaderText = "瓦斯桶種類";
                     dataGridView1.Columns["Order_weight"].HeaderText = "瓦斯規格";
@@ -260,9 +260,9 @@ namespace Gas_Company
             DateTime tomorrow = today.AddDays(1);
 
             string queryMan = "SELECT w.WORKER_Name, " +
-                                "SUM(CASE WHEN DATE(o.Expect_Time) = CURDATE() THEN 1 ELSE 0 END) AS TodayOrderCount, " +
-                                "SUM(CASE WHEN DATE(o.Expect_Time) = DATE_ADD(CURDATE(), INTERVAL 1 DAY) THEN 1 ELSE 0 END) AS TomorrowOrderCount, " +
-                                "SUM(CASE WHEN DATE_FORMAT(o.Expect_Time, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m') THEN 1 ELSE 0 END) AS ThisMonthOrderCount " +
+                                "SUM(CASE WHEN DATE(o.DELIVERY_Time) = CURDATE() THEN 1 ELSE 0 END) AS TodayOrderCount, " +
+                                "SUM(CASE WHEN DATE(o.DELIVERY_Time) = DATE_ADD(CURDATE(), INTERVAL 1 DAY) THEN 1 ELSE 0 END) AS TomorrowOrderCount, " +
+                                "SUM(CASE WHEN DATE_FORMAT(o.DELIVERY_Time, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m') THEN 1 ELSE 0 END) AS ThisMonthOrderCount " +
                                 "FROM `worker` w " +
                                 "LEFT JOIN `assign` a ON w.WORKER_Id = a.WORKER_Id " +
                                 "LEFT JOIN `gas_order` o ON a.ORDER_Id = o.ORDER_Id " +
@@ -278,7 +278,6 @@ namespace Gas_Company
                     adapter.Fill(table);
 
                     dataGridView2.DataSource = table;
-                    Console.WriteLine(queryMan);
                     // 自訂列標題和格式化
                     dataGridView2.Columns["WORKER_Name"].HeaderText = "派送人員";
                     dataGridView2.Columns["TodayOrderCount"].HeaderText = "今日訂單數量";
@@ -320,7 +319,7 @@ namespace Gas_Company
                 string orderId = selectedRow.Cells["Order_ID"].Value.ToString();
                 string customerName = selectedRow.Cells["Customer_Name"].Value.ToString();
                 string customerPhone = selectedRow.Cells["Customer_PhoneNo"].Value.ToString();
-                //string deliveryTime = selectedRow.Cells["DELIVERY_Time"].Value.ToString();
+                string deliveryTime = selectedRow.Cells["DELIVERY_Time"].Value.ToString();
                 string deliveryAddress = selectedRow.Cells["Delivery_Address"].Value.ToString();
                 string orderWeight = selectedRow.Cells["Order_weight"].Value.ToString();
                 string orderType = selectedRow.Cells["Order_type"].Value.ToString();
@@ -376,7 +375,6 @@ namespace Gas_Company
                                 string selectedTime = IntervalComboBox.SelectedItem.ToString();
                                 string selectedDeliveryTime = $"{selectedDate} {selectedTime}";
 
-                                Console.WriteLine($"Selected Delivery Time: {selectedDeliveryTime}");
 
                                 //下面桶資訊先不要從歷史資訊抓然後插入，顧客可能想改
                                 //int gasQuantity = reader.GetInt32("Gas_Quantity");
@@ -392,7 +390,7 @@ namespace Gas_Company
 
                                 // Step 3: Construct and execute the insert statements
                                 string insertOrderQuery = @"INSERT INTO gas_order
-                                                    (CUSTOMER_Id, COMPANY_Id, DELIVERY_Condition, Exchange, DELIVERY_Address, DELIVERY_Phone, Gas_Quantity, Order_Time, Expect_Time, Delivery_Method)
+                                                    (CUSTOMER_Id, COMPANY_Id, DELIVERY_Condition, Exchange, DELIVERY_Address, DELIVERY_Phone, Gas_Quantity, Order_Time, DELIVERY_Time, Delivery_Method)
                                                     VALUES
                                                     (@customerId, @companyId, @deliveryCondition, @exchange, @deliveryAddress, @deliveryPhone, @gasQuantity, NOW(), @expTime, @deliveryMethod)";
 
@@ -597,7 +595,7 @@ namespace Gas_Company
                         historyOrders.Columns["CUSTOMER_Id"].ColumnName = "顧客編號";
                         historyOrders.Columns["CUSTOMER_PhoneNo"].ColumnName = "顧客電話";
                         historyOrders.Columns["DELIVERY_Address"].ColumnName = "送貨地址";
-                        historyOrders.Columns["Expect_Time"].ColumnName = "送貨時間";
+                        historyOrders.Columns["DELIVERY_Time"].ColumnName = "送貨時間";
                         historyOrders.Columns["CUSTOMER_Name"].ColumnName = "訂購人";
                         historyOrders.Columns["Order_type"].ColumnName = "瓦斯桶種類";
                         historyOrders.Columns["Order_weight"].ColumnName = "瓦斯規格";
@@ -660,9 +658,10 @@ namespace Gas_Company
                                         {
                                             updateCommand.Parameters.AddWithValue("@WorkerId", workerId);
                                             updateCommand.Parameters.AddWithValue("@OrderId", orderId);
-
+                                            
                                             if (updateCommand.ExecuteNonQuery() == 1)
                                             {
+
                                                 MessageBox.Show($"訂單 {orderId} 已成功重新指派！", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                             }
                                             else

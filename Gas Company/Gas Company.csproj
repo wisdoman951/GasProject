@@ -14,7 +14,7 @@
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>D:\計畫\gas\gas company\GAS_PUB\TestV2-9\</PublishUrl>
+    <PublishUrl>E:\GAS_PUB\TestV2-11\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -24,7 +24,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>31</ApplicationRevision>
+    <ApplicationRevision>35</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -47,7 +47,7 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>2</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>a4kjp-li91w-001.ico</ApplicationIcon>
@@ -304,7 +304,6 @@
     <EmbeddedResource Include="客戶歷史訂單資料.resx">
       <DependentUpon>客戶歷史訂單資料.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Gas Company_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -325,7 +324,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="a4kjp-li91w-001.ico" />
-    <Content Include="config.xml" />
     <None Include="Resources\52448421.png" />
     <None Include="Resources\5244842.png" />
   </ItemGroup>

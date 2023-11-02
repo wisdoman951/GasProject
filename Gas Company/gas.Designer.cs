@@ -40,7 +40,7 @@ namespace Gas_Company
             this.GasExamineDay = new System.Windows.Forms.DateTimePicker();
             this.GasSupplier = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.GasCompanyID = new System.Windows.Forms.TextBox();
+            this.GasTankID = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.GasVolume = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -165,15 +165,15 @@ namespace Gas_Company
             this.label9.TabIndex = 79;
             this.label9.Text = "供應商";
             // 
-            // GasCompanyID
+            // GasTankID
             // 
-            this.GasCompanyID.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(239)))), ((int)(((byte)(243)))));
-            this.GasCompanyID.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.GasCompanyID.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GasCompanyID.Location = new System.Drawing.Point(166, 58);
-            this.GasCompanyID.Name = "GasCompanyID";
-            this.GasCompanyID.Size = new System.Drawing.Size(147, 20);
-            this.GasCompanyID.TabIndex = 82;
+            this.GasTankID.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(239)))), ((int)(((byte)(243)))));
+            this.GasTankID.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.GasTankID.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GasTankID.Location = new System.Drawing.Point(166, 58);
+            this.GasTankID.Name = "GasTankID";
+            this.GasTankID.Size = new System.Drawing.Size(147, 20);
+            this.GasTankID.TabIndex = 82;
             // 
             // label3
             // 
@@ -284,7 +284,7 @@ namespace Gas_Company
             this.Controls.Add(this.label11);
             this.Controls.Add(this.GasVolume);
             this.Controls.Add(this.label10);
-            this.Controls.Add(this.GasCompanyID);
+            this.Controls.Add(this.GasTankID);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.GasSupplier);
             this.Controls.Add(this.label9);
@@ -319,7 +319,7 @@ namespace Gas_Company
         private System.Windows.Forms.DateTimePicker GasExamineDay;
         private System.Windows.Forms.TextBox GasSupplier;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox GasCompanyID;
+        private System.Windows.Forms.TextBox GasTankID;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox GasVolume;
         private System.Windows.Forms.Label label10;
