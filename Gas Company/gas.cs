@@ -35,6 +35,7 @@ namespace Gas_Company
             RetrieveOriginalRowData();
 
             // Autofill the elements based on the original row data
+            TankID.Text = originalRow["TANK_Id"].ToString();
             GasTankID.Text = originalRow["Gas_Id"].ToString();
             GasWeightFull.Text = originalRow["Gas_Weight_Full"].ToString();
             GasType.Text = originalRow["Gas_Type"].ToString();
@@ -70,6 +71,7 @@ namespace Gas_Company
         // For 新增資料前的清除動作
         private void ClearFields()
         {
+            TankID.Text = "";
             GasTankID.Text = "";
             GasWeightFull.Text = "";
             GasType.Text = "";
@@ -108,13 +110,14 @@ namespace Gas_Company
             {
                 connection.Open();
 
-                string insertQuery = "INSERT INTO gas (Gas_ID, Gas_Company_ID, Gas_Weight_Full," +
+                string insertQuery = "INSERT INTO gas (TANK_Id, Gas_ID, Gas_Company_ID, Gas_Weight_Full," +
                                      "Gas_Type, Gas_Volume, Gas_Supplier, Gas_Price, Gas_Examine_Day, Gas_Produce_Day, Gas_Addtime) " +
-                                     "VALUES (@Gas_Tank_ID, @Gas_Company_ID, @Gas_Weight_Full, " +
+                                     "VALUES (@TANK_Id, @Gas_Tank_ID, @Gas_Company_ID, @Gas_Weight_Full, " +
                                      "@Gas_Type, @Gas_Volume, @Gas_Supplier, @Gas_Price, " +
                                      "STR_TO_DATE(@Gas_Examine_Day, '%Y年%m月%d日'), STR_TO_DATE(@Gas_Produce_Day, '%Y年%m月%d日'), NOW())";
 
                 string updateQuery = "UPDATE gas SET " +
+                                     "TANK_Id = @TANK_ID, " +
                                      "Gas_Id = @Gas_Tank_ID, " +
                                      "Gas_Weight_Full = @Gas_Weight_Full, " +
                                      "Gas_Type = @Gas_Type, " +
@@ -146,6 +149,7 @@ namespace Gas_Company
 
                     cmd = new MySqlCommand(insertQuery, connection);
                 }
+                cmd.Parameters.AddWithValue("@TANK_Id", TankID.Text);
                 cmd.Parameters.AddWithValue("@Gas_Tank_ID", GasTankID.Text);
                 cmd.Parameters.AddWithValue("@Gas_Company_ID", gasCompanyId);
                 cmd.Parameters.AddWithValue("@Gas_Weight_Full", GasWeightFull.Text);

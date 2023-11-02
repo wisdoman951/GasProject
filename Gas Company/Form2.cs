@@ -133,7 +133,7 @@ namespace Gas_Company
                             o.CUSTOMER_Id,
                             c.CUSTOMER_PhoneNo,
                             o.DELIVERY_Address,
-                            o.DELIVERY_Time,
+                            o.EXPECT_Time,
                             od.exchange,
                             c.CUSTOMER_Name,
                             od.Order_type,
@@ -181,7 +181,7 @@ namespace Gas_Company
                         {
                             row["WORKER_Id"] = DBNull.Value; // Set to DBNull
                         }
-                        if (DateTime.TryParse(row["DELIVERY_Time"].ToString(), out DateTime deliveryDateTime))
+                        if (DateTime.TryParse(row["EXPECT_Time"].ToString(), out DateTime deliveryDateTime))
                         {
                             string deliveryDate = deliveryDateTime.ToString("MM-dd");
                             string deliveryTime = deliveryDateTime.ToString("HH:mm:ss");
@@ -222,10 +222,10 @@ namespace Gas_Company
                     dataGridView1.Columns["CUSTOMER_Id"].HeaderText = "顧客編號";
                     dataGridView1.Columns["CUSTOMER_PhoneNo"].HeaderText = "顧客電話";
                     dataGridView1.Columns["DELIVERY_Address"].HeaderText = "送貨地址";
-                    //dataGridView1.Columns["EXPECT_Time"].Visible = false;
+                    dataGridView1.Columns["EXPECT_Time"].Visible = false;
                     dataGridView1.Columns["送貨日期"].HeaderText = "送貨日期"; // New column header
                     dataGridView1.Columns["送貨時間"].HeaderText = "送貨時間"; // New column header
-                    dataGridView1.Columns["DELIVERY_Time"].Visible = false; // Hide the original DELIVERY_Time column
+                    //dataGridView1.Columns["DELIVERY_Time"].Visible = false; // Hide the original DELIVERY_Time column
                     dataGridView1.Columns["CUSTOMER_Name"].HeaderText = "訂購人";
                     dataGridView1.Columns["Order_type"].HeaderText = "瓦斯桶種類";
                     dataGridView1.Columns["Order_weight"].HeaderText = "瓦斯規格";
@@ -260,9 +260,9 @@ namespace Gas_Company
             DateTime tomorrow = today.AddDays(1);
 
             string queryMan = "SELECT w.WORKER_Name, " +
-                                "SUM(CASE WHEN DATE(o.DELIVERY_Time) = CURDATE() THEN 1 ELSE 0 END) AS TodayOrderCount, " +
-                                "SUM(CASE WHEN DATE(o.DELIVERY_Time) = DATE_ADD(CURDATE(), INTERVAL 1 DAY) THEN 1 ELSE 0 END) AS TomorrowOrderCount, " +
-                                "SUM(CASE WHEN DATE_FORMAT(o.DELIVERY_Time, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m') THEN 1 ELSE 0 END) AS ThisMonthOrderCount " +
+                                "SUM(CASE WHEN DATE(o.EXPECT_Time) = CURDATE() THEN 1 ELSE 0 END) AS TodayOrderCount, " +
+                                "SUM(CASE WHEN DATE(o.EXPECT_Time) = DATE_ADD(CURDATE(), INTERVAL 1 DAY) THEN 1 ELSE 0 END) AS TomorrowOrderCount, " +
+                                "SUM(CASE WHEN DATE_FORMAT(o.EXPECT_Time, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m') THEN 1 ELSE 0 END) AS ThisMonthOrderCount " +
                                 "FROM `worker` w " +
                                 "LEFT JOIN `assign` a ON w.WORKER_Id = a.WORKER_Id " +
                                 "LEFT JOIN `gas_order` o ON a.ORDER_Id = o.ORDER_Id " +
@@ -319,7 +319,7 @@ namespace Gas_Company
                 string orderId = selectedRow.Cells["Order_ID"].Value.ToString();
                 string customerName = selectedRow.Cells["Customer_Name"].Value.ToString();
                 string customerPhone = selectedRow.Cells["Customer_PhoneNo"].Value.ToString();
-                string deliveryTime = selectedRow.Cells["DELIVERY_Time"].Value.ToString();
+                string deliveryTime = selectedRow.Cells["EXPECT_Time"].Value.ToString();
                 string deliveryAddress = selectedRow.Cells["Delivery_Address"].Value.ToString();
                 string orderWeight = selectedRow.Cells["Order_weight"].Value.ToString();
                 string orderType = selectedRow.Cells["Order_type"].Value.ToString();
@@ -390,7 +390,7 @@ namespace Gas_Company
 
                                 // Step 3: Construct and execute the insert statements
                                 string insertOrderQuery = @"INSERT INTO gas_order
-                                                    (CUSTOMER_Id, COMPANY_Id, DELIVERY_Condition, Exchange, DELIVERY_Address, DELIVERY_Phone, Gas_Quantity, Order_Time, DELIVERY_Time, Delivery_Method)
+                                                    (CUSTOMER_Id, COMPANY_Id, DELIVERY_Condition, Exchange, DELIVERY_Address, DELIVERY_Phone, Gas_Quantity, Order_Time, EXPECT_Time, Delivery_Method)
                                                     VALUES
                                                     (@customerId, @companyId, @deliveryCondition, @exchange, @deliveryAddress, @deliveryPhone, @gasQuantity, NOW(), @expTime, @deliveryMethod)";
 
@@ -535,7 +535,7 @@ namespace Gas_Company
                 if (dataView != null)
                 {
                     // Use RIGHT function to extract the last 5 characters of Customer_PhoneNo
-                    string filterExpression = $"(CUSTOMER_Name LIKE '%{searchTerm}%' OR DELIVERY_Address LIKE '%{searchTerm}%' OR RIGHT(Customer_PhoneNo, 5) = '{searchTerm}')";
+                    string filterExpression = $"(DELIVERY_Address LIKE '%{searchTerm}%' OR Customer_PhoneNo LIKE '%{searchTerm}%')";
 
                     // If searchTerm can be converted to an integer, use '=' for ORDER_Id
                     if (int.TryParse(searchTerm, out _))
@@ -758,7 +758,7 @@ namespace Gas_Company
                                             if (updateCommand.ExecuteNonQuery() == 1)
                                             {
                                                 // Update Expect_Time in gas_order
-                                                UpdateExpectTimeInGasOrder(orderId);
+                                                //UpdateExpectTimeInGasOrder(orderId);
 
                                                 MessageBox.Show($"訂單 {orderId} 已成功重新指派！", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                             }
@@ -783,7 +783,7 @@ namespace Gas_Company
                                             if (insertCommand.ExecuteNonQuery() == 1)
                                             {
                                                 // Update Expect_Time in gas_order
-                                                UpdateExpectTimeInGasOrder(orderId);
+                                                //UpdateExpectTimeInGasOrder(orderId);
 
                                                 MessageBox.Show($"訂單 {orderId} 已成功指派！", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                             }
@@ -980,6 +980,19 @@ namespace Gas_Company
                         e.Value = "否";
                     }
                 }
+                // 改成鋼瓶跟複材瓶
+                if (dataGridView1.Columns[e.ColumnIndex].Name == "Order_type")
+                {
+                    // 檢查儲存格的值是否為 1，是則設定顯示為 "是"，否則設定為 "否"
+                    if (e.Value != null && e.Value.ToString() == "tradition")
+                    {
+                        e.Value = "鋼瓶";
+                    }
+                    else if (e.Value != null && e.Value.ToString() == "composite")
+                    {
+                        e.Value = "複材瓶";
+                    }
+                }
             }
         }
         private async void ShowAssignedButton_Click(object sender, EventArgs e)
@@ -1042,14 +1055,14 @@ namespace Gas_Company
                 connection.Open();
 
                 // 在 gas_order_history裡面的電話是 string, 要改成 varchar(50)才能用 
-                string query = @"SELECT o.CUSTOMER_Id, o.DELIVERY_Time, o.DELIVERY_Address, o.DELIVERY_Phone, o.Gas_Quantity, o.Order_Time, go.Order_type, go.Order_weight, o.Exchange, c.CUSTOMER_Name, ca.Gas_Volume
+                string query = @"SELECT o.CUSTOMER_Id, o.EXPECT_Time, o.DELIVERY_Address, o.DELIVERY_Phone, o.Gas_Quantity, o.Order_Time, go.Order_type, go.Order_weight, o.Exchange, c.CUSTOMER_Name, ca.Gas_Volume
                             FROM gas_order o
                             JOIN gas_order_detail go
                             JOIN customer c ON o.CUSTOMER_Id = c.CUSTOMER_Id
                             JOIN customer_accumulation ca ON c.CUSTOMER_Id = ca.CUSTOMER_Id
                             WHERE o.DELIVERY_Phone = @searchTerm 
                             AND DELIVERY_Condition = 1 
-                            ORDER BY o.DELIVERY_Time DESC
+                            ORDER BY o.EXPECT_Time DESC
                             LIMIT 1
                             ";
 

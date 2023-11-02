@@ -44,14 +44,13 @@ namespace Gas_Company
                     dataGridView1.DataSource = table;
                     dataView = table.DefaultView;
 
-                    table.Columns.Remove("GAS_Company_Id");
-                    table.Columns.Remove("GAS_Weight_Empty");
                     // Set the sorting mode for the "GAS_Examine_Day" column to automatic
                     dataGridView1.Columns["GAS_Examine_Day"].SortMode = DataGridViewColumnSortMode.Automatic;
 
                     // Set the initial sorting order for the "GAS_Examine_Day" column to ascending
                     dataGridView1.Sort(dataGridView1.Columns["GAS_Examine_Day"], ListSortDirection.Ascending);
                     // Columns rename
+                    dataGridView1.Columns["TANK_Id"].HeaderText = "容器編號";
                     dataGridView1.Columns["GAS_Id"].HeaderText = "瓦斯桶編號";
                     dataGridView1.Columns["GAS_Weight_Full"].HeaderText = "滿桶重量";
                     dataGridView1.Columns["GAS_Type"].HeaderText = "瓦斯桶種類";
@@ -62,6 +61,11 @@ namespace Gas_Company
                     dataGridView1.Columns["GAS_Supplier"].HeaderText = "供應商";
                     dataGridView1.Columns["Gas_Registration_Time"].HeaderText = "瓦斯桶註冊時間";
                     dataGridView1.Columns["last_worker_id"].HeaderText = "最後經手員工";
+                    dataGridView1.Columns["GAS_Examine_condition"].Visible = false;
+                    dataGridView1.Columns["GAS_Addtime"].Visible = false;
+                    dataGridView1.Columns["GAS_Company_Id"].Visible = false;
+                    dataGridView1.Columns["Gas_Weight_Empty"].Visible = false;
+
                     PopulateComboBox();
                     CountMonthlyExamineGasTank();
                 }
@@ -88,6 +92,7 @@ namespace Gas_Company
                 DataGridViewRow selectedRow = dataGridView1.Rows[e.RowIndex];
 
                 // Access the data in the selected row and autofill other fields in the form
+                string tankId = selectedRow.Cells["TANK_Id"].Value.ToString();
                 string gasId = selectedRow.Cells["GAS_Id"].Value.ToString();
                 string gasWeightFull = selectedRow.Cells["GAS_Weight_Full"].Value.ToString();
                 string gasType = selectedRow.Cells["GAS_Type"].Value.ToString();
@@ -96,6 +101,7 @@ namespace Gas_Company
                 string supplier = selectedRow.Cells["GAS_Supplier"].Value.ToString();
 
                 // Autofill the other fields(Textbox) in the form
+                TankID.Text = tankId;
                 GasId.Text = gasId;
                 GasWeightFull.Text = gasWeightFull;
                 GasType.Text = gasType;
@@ -244,6 +250,7 @@ namespace Gas_Company
             GasTankManage_Load(sender, e);
 
             // Autofill the other fields(Textbox) in the form
+            TankID.Text = "";
             GasId.Text = "";
             GasWeightFull.Text = "";
             GasWeightEmpty.Text = "";
