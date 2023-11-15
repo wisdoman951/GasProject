@@ -18,9 +18,11 @@ namespace Gas_Company
         private readonly string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
         private ResidualChangeWindow f1; // Declare f1 as a class-level variable
 
+
         public ResidualGas()
         {
             InitializeComponent();
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect; // 只點選 cell 就可以選擇整個 row
         }
 
         private void residual_gas_Load(object sender, EventArgs e)
@@ -45,7 +47,7 @@ namespace Gas_Company
                 }
             }
         }
-
+        
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)

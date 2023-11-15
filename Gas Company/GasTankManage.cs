@@ -52,15 +52,16 @@ namespace Gas_Company
                     // Columns rename
                     dataGridView1.Columns["TANK_Id"].HeaderText = "容器編號";
                     dataGridView1.Columns["GAS_Id"].HeaderText = "瓦斯桶編號";
-                    dataGridView1.Columns["GAS_Weight_Full"].HeaderText = "滿桶重量";
+                    dataGridView1.Columns["GAS_Weight_Full"].HeaderText = "容器實重(含閥)";
                     dataGridView1.Columns["GAS_Type"].HeaderText = "瓦斯桶種類";
                     dataGridView1.Columns["GAS_Price"].HeaderText = "瓦斯價格";
-                    dataGridView1.Columns["GAS_Volume"].HeaderText = "瓦斯桶容量";
+                    dataGridView1.Columns["GAS_Volume"].HeaderText = "容量規格";
                     dataGridView1.Columns["GAS_Examine_Day"].HeaderText = "檢驗日期";
                     dataGridView1.Columns["GAS_Produce_Day"].HeaderText = "出廠日期";
                     dataGridView1.Columns["GAS_Supplier"].HeaderText = "供應商";
                     dataGridView1.Columns["Gas_Registration_Time"].HeaderText = "瓦斯桶註冊時間";
                     dataGridView1.Columns["last_worker_id"].HeaderText = "最後經手員工";
+                    dataGridView1.Columns["Gas_Registration_Time"].Visible = false;
                     dataGridView1.Columns["GAS_Examine_condition"].Visible = false;
                     dataGridView1.Columns["GAS_Addtime"].Visible = false;
                     dataGridView1.Columns["GAS_Company_Id"].Visible = false;

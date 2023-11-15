@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using System.Configuration;
+using static Google.Protobuf.Reflection.FieldOptions.Types;
 
 namespace Gas_Company
 {
@@ -20,30 +21,46 @@ namespace Gas_Company
         public Customer()
         {
             InitializeComponent();
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect; // 只點選 cell 就可以選擇整個 row
         }
 
         private void customer_Load(object sender, EventArgs e)
         {
             //string query = $"SELECT * FROM `customer` WHERE Company_Id = {GlobalVariables.CompanyId};";
-            string query = $@"SELECT c.*, ROUND(((sh.SENSOR_Weight / 1000) - i.Gas_Empty_Weight), 1) AS CurrentGasAmount, a.Alert_Volume, sh.SENSOR_Weight, i.Sensor_Id
-                 FROM customer c
-                 LEFT JOIN iot i ON c.CUSTOMER_Id = i.CUSTOMER_Id
-                 LEFT JOIN alert a ON i.Sensor_Id = a.Sensor_Id
-                 LEFT JOIN (
-                     SELECT *,
-                            ROW_NUMBER() OVER (PARTITION BY SENSOR_Id ORDER BY SENSOR_Time DESC) AS rn
-                     FROM sensor_history
-                 ) sh ON i.Sensor_Id = sh.SENSOR_Id AND sh.rn = 1
-                 WHERE c.Company_Id = {GlobalVariables.CompanyId};";
+            string query = $@"SELECT 
+                            c.*,
+                            ROUND(((sh.SENSOR_Weight / 1000) - i.Gas_Empty_Weight), 1) AS CurrentGasAmount,
+                            a.Alert_Volume,
+                            sh.SENSOR_Weight,
+                            i.Sensor_Id,
+                            CASE
+                                WHEN EXISTS (
+                                    SELECT 1 
+                                    FROM `gas_order` go 
+                                    WHERE go.CUSTOMER_Id = c.CUSTOMER_Id 
+                                        AND go.DELIVERY_Condition IN (0, 1)
+                                ) THEN '已訂購'
+                                ELSE '未訂購'
+                            END AS OrderStatus
+                        FROM customer c
+                        LEFT JOIN iot i ON c.CUSTOMER_Id = i.CUSTOMER_Id
+                        LEFT JOIN alert a ON i.Sensor_Id = a.Sensor_Id
+                        LEFT JOIN (
+                            SELECT *,
+                                ROW_NUMBER() OVER (PARTITION BY SENSOR_Id ORDER BY SENSOR_Time DESC) AS rn
+                            FROM sensor_history
+                        ) sh ON i.Sensor_Id = sh.SENSOR_Id AND sh.rn = 1
+                        WHERE c.Company_Id = @CompanyId;
+                        ";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection))
                 {
+                    adapter.SelectCommand.Parameters.AddWithValue("@CompanyId", GlobalVariables.CompanyId);
                     DataTable table = new DataTable();
                     adapter.Fill(table);
                     dataGridView1.DataSource = table;
-
                     //客戶要求不要顯示出這些欄位
                     table.Columns.Remove("CUSTOMER_Password");
                     table.Columns.Remove("COMPANY_Id");
@@ -52,6 +69,7 @@ namespace Gas_Company
                     string[] columnOrder = {
                                             "CUSTOMER_Id",
                                             "CurrentGasAmount",
+                                            "OrderStatus",
                                             "CUSTOMER_Name",
                                             "CUSTOMER_Address",
                                             "Sensor_Id",
@@ -85,10 +103,11 @@ namespace Gas_Company
                             row["CurrentGasAmount"] = 0;
                         }
                     }
-
+                    
                     // Columns rename
                     dataGridView1.Columns["CUSTOMER_Id"].HeaderText = "客戶編號";
                     dataGridView1.Columns["CurrentGasAmount"].HeaderText = "當前瓦斯量";
+                    dataGridView1.Columns["OrderStatus"].HeaderText = "訂購狀態";
                     dataGridView1.Columns["CUSTOMER_Name"].HeaderText = "客戶姓名";
                     dataGridView1.Columns["Sensor_Id"].HeaderText = "感測器編號";
                     dataGridView1.Columns["Alert_Volume"].HeaderText = "通報門檻";
@@ -225,17 +244,6 @@ namespace Gas_Company
             customer_form f1 = new customer_form(customerId);
         }
 
-        private void CAddButton_Click(object sender, EventArgs e)
-        {
-            //開啟基本用戶資料頁面
-            //新增一筆資料
-            customer_form f1 = new customer_form(null);
-            if (f1.ShowDialog() == DialogResult.OK)
-            {
-                // Perform data refresh or any other required actions after the form is closed
-                RefreshData();
-            }
-        }
 
         private void HistoryOrderButton_Click(object sender, EventArgs e)
         {
@@ -277,25 +285,7 @@ namespace Gas_Company
             }
         }
 
-        private void edit_Click(object sender, EventArgs e)
-        {
-            if (dataGridView1.SelectedRows.Count > 0)
-            {
-                string id = dataGridView1.SelectedRows[0].Cells["CUSTOMER_Id"].Value.ToString();
-
-                // Pass the selected ID to the customer_form for editing
-                customer_form f1 = new customer_form(id);
-                if (f1.ShowDialog() == DialogResult.OK)
-                {
-                    // Perform data refresh or any other required actions after the form is closed
-                    RefreshData();
-                }
-            }
-            else
-            {
-                MessageBox.Show("請選擇要編輯的資料行", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
+        
         // 操作完要REFRESH一下
         private void RefreshData()
         {
@@ -453,6 +443,74 @@ namespace Gas_Company
                     dataGridView1.Columns["CUSTOMER_Notes"].HeaderText = "客戶備註";
                     dataGridView1.Columns["CUSTOMER_Registration_Time"].HeaderText = "客戶註冊時間";
 
+                }
+            }
+        }
+        private void CAddButton_Click(object sender, EventArgs e)
+        {
+            //開啟基本用戶資料頁面
+            //新增一筆資料
+            customer_form f1 = new customer_form(null);
+            if (f1.ShowDialog() == DialogResult.OK)
+            {
+                // Perform data refresh or any other required actions after the form is closed
+                RefreshData();
+            }
+        }
+        private void edit_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                string id = dataGridView1.SelectedRows[0].Cells["CUSTOMER_Id"].Value.ToString();
+
+                // Pass the selected ID to the customer_form for editing
+                customer_form f1 = new customer_form(id);
+                if (f1.ShowDialog() == DialogResult.OK)
+                {
+                    // Perform data refresh or any other required actions after the form is closed
+                    RefreshData();
+                }
+            }
+            else
+            {
+                MessageBox.Show("請選擇要編輯的資料行", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+        private void AddOrderButton_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                string customerId = dataGridView1.SelectedRows[0].Cells["CUSTOMER_Id"].Value.ToString();
+
+                // Pass the selected ID to the customer_form for editing
+                CustomerAddOrder f2 = new CustomerAddOrder(customerId);
+                if (f2.ShowDialog() == DialogResult.OK)
+                {
+                    // Perform data refresh or any other required actions after the form is closed
+                    RefreshData();
+                }
+            }
+            else
+            {
+                MessageBox.Show("請選擇要新增訂單的顧客", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                if (dataGridView1.Columns[e.ColumnIndex].Name == "CUSTOMER_Sex")
+                {
+                    // 檢查儲存格的值是否為 1，是則設定顯示為 "是"，否則設定為 "否"
+                    if (e.Value != null && e.Value.ToString() == "1")
+                    {
+                        e.Value = "女";
+                    }
+                    else if (e.Value != null && e.Value.ToString() == "0")
+                    {
+                        e.Value = "男";
+                    }
                 }
             }
         }

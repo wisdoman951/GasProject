@@ -111,7 +111,7 @@ namespace Gas_Company
             this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label9.Location = new System.Drawing.Point(688, 76);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(92, 27);
+            this.label9.Size = new System.Drawing.Size(74, 22);
             this.label9.TabIndex = 59;
             this.label9.Text = "製造年份";
             // 
@@ -120,7 +120,7 @@ namespace Gas_Company
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Location = new System.Drawing.Point(693, 101);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(153, 28);
+            this.comboBox2.Size = new System.Drawing.Size(153, 25);
             this.comboBox2.TabIndex = 58;
             this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
@@ -139,7 +139,7 @@ namespace Gas_Company
             this.GasExamineDay.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.GasExamineDay.Location = new System.Drawing.Point(467, 100);
             this.GasExamineDay.Name = "GasExamineDay";
-            this.GasExamineDay.Size = new System.Drawing.Size(153, 31);
+            this.GasExamineDay.Size = new System.Drawing.Size(153, 27);
             this.GasExamineDay.TabIndex = 54;
             // 
             // GasProduceDay
@@ -148,7 +148,7 @@ namespace Gas_Company
             this.GasProduceDay.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.GasProduceDay.Location = new System.Drawing.Point(467, 40);
             this.GasProduceDay.Name = "GasProduceDay";
-            this.GasProduceDay.Size = new System.Drawing.Size(153, 31);
+            this.GasProduceDay.Size = new System.Drawing.Size(153, 27);
             this.GasProduceDay.TabIndex = 53;
             // 
             // label11
@@ -158,7 +158,7 @@ namespace Gas_Company
             this.label11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label11.Location = new System.Drawing.Point(890, 73);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(52, 27);
+            this.label11.Size = new System.Drawing.Size(42, 22);
             this.label11.TabIndex = 51;
             this.label11.Text = "備註";
             // 
@@ -169,7 +169,7 @@ namespace Gas_Company
             this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label6.Location = new System.Drawing.Point(463, 76);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(132, 27);
+            this.label6.Size = new System.Drawing.Size(106, 22);
             this.label6.TabIndex = 49;
             this.label6.Text = "下次檢驗期限";
             // 
@@ -180,7 +180,7 @@ namespace Gas_Company
             this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label7.Location = new System.Drawing.Point(463, 15);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(172, 27);
+            this.label7.Size = new System.Drawing.Size(138, 22);
             this.label7.TabIndex = 47;
             this.label7.Text = "出廠耐壓試驗日期";
             // 
@@ -191,7 +191,7 @@ namespace Gas_Company
             this.Supplier.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Supplier.Location = new System.Drawing.Point(693, 40);
             this.Supplier.Name = "Supplier";
-            this.Supplier.Size = new System.Drawing.Size(145, 24);
+            this.Supplier.Size = new System.Drawing.Size(145, 20);
             this.Supplier.TabIndex = 46;
             // 
             // label8
@@ -201,7 +201,7 @@ namespace Gas_Company
             this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label8.Location = new System.Drawing.Point(688, 15);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(112, 27);
+            this.label8.Size = new System.Drawing.Size(90, 22);
             this.label8.TabIndex = 45;
             this.label8.Text = "製造廠代號";
             // 
@@ -212,7 +212,7 @@ namespace Gas_Company
             this.GasWeightFull.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GasWeightFull.Location = new System.Drawing.Point(252, 103);
             this.GasWeightFull.Name = "GasWeightFull";
-            this.GasWeightFull.Size = new System.Drawing.Size(145, 24);
+            this.GasWeightFull.Size = new System.Drawing.Size(145, 20);
             this.GasWeightFull.TabIndex = 42;
             // 
             // label4
@@ -222,7 +222,7 @@ namespace Gas_Company
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label4.Location = new System.Drawing.Point(248, 77);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(148, 27);
+            this.label4.Size = new System.Drawing.Size(118, 22);
             this.label4.TabIndex = 41;
             this.label4.Text = "容器實重(含閥)";
             // 
@@ -233,7 +233,7 @@ namespace Gas_Company
             this.GasWeightEmpty.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GasWeightEmpty.Location = new System.Drawing.Point(252, 43);
             this.GasWeightEmpty.Name = "GasWeightEmpty";
-            this.GasWeightEmpty.Size = new System.Drawing.Size(145, 24);
+            this.GasWeightEmpty.Size = new System.Drawing.Size(145, 20);
             this.GasWeightEmpty.TabIndex = 40;
             // 
             // label5
@@ -243,7 +243,7 @@ namespace Gas_Company
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label5.Location = new System.Drawing.Point(248, 15);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(92, 27);
+            this.label5.Size = new System.Drawing.Size(74, 22);
             this.label5.TabIndex = 39;
             this.label5.Text = "容量規格";
             // 
@@ -254,7 +254,7 @@ namespace Gas_Company
             this.GasType.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GasType.Location = new System.Drawing.Point(894, 40);
             this.GasType.Name = "GasType";
-            this.GasType.Size = new System.Drawing.Size(145, 24);
+            this.GasType.Size = new System.Drawing.Size(145, 20);
             this.GasType.TabIndex = 38;
             // 
             // label2
@@ -264,7 +264,7 @@ namespace Gas_Company
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label2.Location = new System.Drawing.Point(890, 16);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(112, 27);
+            this.label2.Size = new System.Drawing.Size(90, 22);
             this.label2.TabIndex = 37;
             this.label2.Text = "瓦斯桶類型";
             // 
@@ -275,7 +275,7 @@ namespace Gas_Company
             this.TankID.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TankID.Location = new System.Drawing.Point(39, 41);
             this.TankID.Name = "TankID";
-            this.TankID.Size = new System.Drawing.Size(145, 24);
+            this.TankID.Size = new System.Drawing.Size(145, 20);
             this.TankID.TabIndex = 36;
             // 
             // label1
@@ -285,7 +285,7 @@ namespace Gas_Company
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label1.Location = new System.Drawing.Point(35, 15);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 27);
+            this.label1.Size = new System.Drawing.Size(74, 22);
             this.label1.TabIndex = 35;
             this.label1.Text = "容器號碼";
             // 
@@ -296,7 +296,7 @@ namespace Gas_Company
             this.GasId.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GasId.Location = new System.Drawing.Point(39, 105);
             this.GasId.Name = "GasId";
-            this.GasId.Size = new System.Drawing.Size(145, 24);
+            this.GasId.Size = new System.Drawing.Size(145, 20);
             this.GasId.TabIndex = 34;
             // 
             // label12
@@ -306,7 +306,7 @@ namespace Gas_Company
             this.label12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label12.Location = new System.Drawing.Point(35, 77);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(112, 27);
+            this.label12.Size = new System.Drawing.Size(90, 22);
             this.label12.TabIndex = 33;
             this.label12.Text = "瓦斯桶編號";
             // 
@@ -315,6 +315,7 @@ namespace Gas_Company
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(37, 199);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.Size = new System.Drawing.Size(1205, 461);
@@ -400,7 +401,7 @@ namespace Gas_Company
             "12"});
             this.MonthlySelection.Location = new System.Drawing.Point(324, 168);
             this.MonthlySelection.Name = "MonthlySelection";
-            this.MonthlySelection.Size = new System.Drawing.Size(121, 28);
+            this.MonthlySelection.Size = new System.Drawing.Size(121, 25);
             this.MonthlySelection.TabIndex = 95;
             this.MonthlySelection.Text = "1";
             this.MonthlySelection.SelectedIndexChanged += new System.EventHandler(this.MonthlySelection_SelectedIndexChanged);
@@ -410,7 +411,7 @@ namespace Gas_Company
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(451, 171);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(129, 20);
+            this.label3.Size = new System.Drawing.Size(104, 17);
             this.label3.TabIndex = 96;
             this.label3.Text = "月需檢驗桶數為：";
             // 
@@ -419,7 +420,7 @@ namespace Gas_Company
             this.GasExamineAmountMonthlyLabel.AutoSize = true;
             this.GasExamineAmountMonthlyLabel.Location = new System.Drawing.Point(571, 171);
             this.GasExamineAmountMonthlyLabel.Name = "GasExamineAmountMonthlyLabel";
-            this.GasExamineAmountMonthlyLabel.Size = new System.Drawing.Size(38, 20);
+            this.GasExamineAmountMonthlyLabel.Size = new System.Drawing.Size(31, 17);
             this.GasExamineAmountMonthlyLabel.TabIndex = 97;
             this.GasExamineAmountMonthlyLabel.Text = "N/A";
             // 
@@ -428,7 +429,7 @@ namespace Gas_Company
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(632, 171);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(144, 20);
+            this.label10.Size = new System.Drawing.Size(116, 17);
             this.label10.TabIndex = 98;
             this.label10.Text = "今年需檢驗桶數為：";
             // 
@@ -437,13 +438,13 @@ namespace Gas_Company
             this.GasExamineAmountYearlyLabel.AutoSize = true;
             this.GasExamineAmountYearlyLabel.Location = new System.Drawing.Point(768, 171);
             this.GasExamineAmountYearlyLabel.Name = "GasExamineAmountYearlyLabel";
-            this.GasExamineAmountYearlyLabel.Size = new System.Drawing.Size(38, 20);
+            this.GasExamineAmountYearlyLabel.Size = new System.Drawing.Size(31, 17);
             this.GasExamineAmountYearlyLabel.TabIndex = 99;
             this.GasExamineAmountYearlyLabel.Text = "N/A";
             // 
             // GasTankManage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
             this.ClientSize = new System.Drawing.Size(1265, 694);
