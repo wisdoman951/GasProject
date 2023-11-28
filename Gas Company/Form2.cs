@@ -20,9 +20,6 @@ namespace Gas_Company
         // 一開始只顯示有被Assigned的訂單
         private bool showAssignedOrders = true; // Default to show assigned orders
 
-
-
-
         public Form2()
         {
             InitializeComponent();
@@ -125,165 +122,134 @@ namespace Gas_Company
             lastClickedLabel = clickedButton; // Store the reference to the current clicked button
         }
 
-        // ！！主要顯示訂單與擷取IoT資料的邏輯
         private async Task LoadData()
         {
-            string query = @"SELECT
-                            o.ORDER_Id,
-                            o.CUSTOMER_Id,
-                            c.CUSTOMER_PhoneNo,
-                            o.DELIVERY_Address,
-                            o.EXPECT_Time,
-                            od.exchange,
-                            c.CUSTOMER_Name,
-                            od.Order_type,
-                            od.Order_weight,
-                            o.Gas_Quantity,
-                            ca.Gas_Volume,
-                            a.WORKER_Id,
-                            w.WORKER_Name,
-                            o.sensor_id,
-                            (
-                                SELECT ROUND(((sh.SENSOR_Weight / 1000) - iot.Gas_Empty_Weight), 1) AS CurrentGasAmount
-                                FROM `sensor_history` sh
-                                JOIN `iot` iot ON sh.SENSOR_Id = iot.SENSOR_Id
-                                WHERE iot.CUSTOMER_Id = o.CUSTOMER_Id
-                                ORDER BY sh.SENSOR_Time DESC
-                                LIMIT 1
-                            ) AS CurrentGasAmount
-                        FROM `gas_order` o
-                        LEFT JOIN `customer` c ON o.CUSTOMER_Id = c.CUSTOMER_Id
-                        LEFT JOIN `gas_order_detail` od ON o.ORDER_Id = od.Order_ID
-                        LEFT JOIN `customer_accumulation` ca ON o.CUSTOMER_Id = ca.Customer_Id
-                        LEFT JOIN `assign` a ON o.ORDER_Id = a.ORDER_Id
-                        LEFT JOIN `worker` w ON a.WORKER_Id = w.WORKER_Id
-                        WHERE o.COMPANY_Id = @CompanyId
-                        AND o.DELIVERY_Condition = 0";
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            DataTable table = await FetchOrderDataAsync();
+            ProcessOrderData(table);
+            UpdateOrderGridView(table);
+            await UpdateDeliveryManWorkloadAsync();
+            TransposeDataForDataGridView3();
+        }
+        // 從資料庫獲取訂單數據的方法
+        private async Task<DataTable> FetchOrderDataAsync()
+        {
+            string query = BuildOrderDataQuery();
+            return await ExecuteQueryAsync(query, new Dictionary<string, object> { { "@CompanyId", GlobalVariables.CompanyId } });
+        }
+        // 處理訂單數據的方法（例如添加列、格式化數據等）
+        private void ProcessOrderData(DataTable table)
+        {
+            // 添加列、格式化數據、檢查條件等代碼...
+            // 這部分代碼從原 LoadData 方法中移過來
+            // Add columns for "送貨日期" and "送貨時間"
+            table.Columns.Add("送貨日期", typeof(string));
+            table.Columns.Add("送貨時間", typeof(string));
+            // Set "未指派" if WORKER_Id is null or DBNull
+            foreach (DataRow row in table.Rows)
             {
-                await connection.OpenAsync();
-
-                using (MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection))
+                if (row["WORKER_Id"] == null || row["WORKER_Id"] == DBNull.Value)
                 {
-                    adapter.SelectCommand.Parameters.AddWithValue("@CompanyId", GlobalVariables.CompanyId);
+                    row["WORKER_Id"] = DBNull.Value; // Set to DBNull
+                }
+                if (DateTime.TryParse(row["EXPECT_Time"].ToString(), out DateTime deliveryDateTime))
+                {
+                    string deliveryDate = deliveryDateTime.ToString("MM-dd");
+                    string deliveryTime = deliveryDateTime.ToString("HH:mm:ss");
 
-                    DataTable table = new DataTable();
-                    await adapter.FillAsync(table);
-
-                    // Add columns for "送貨日期" and "送貨時間"
-                    table.Columns.Add("送貨日期", typeof(string));
-                    table.Columns.Add("送貨時間", typeof(string));
-                    // Set "未指派" if WORKER_Id is null or DBNull
-                    foreach (DataRow row in table.Rows)
-                    {
-                        if (row["WORKER_Id"] == null || row["WORKER_Id"] == DBNull.Value)
-                        {
-                            row["WORKER_Id"] = DBNull.Value; // Set to DBNull
-                        }
-                        if (DateTime.TryParse(row["EXPECT_Time"].ToString(), out DateTime deliveryDateTime))
-                        {
-                            string deliveryDate = deliveryDateTime.ToString("MM-dd");
-                            string deliveryTime = deliveryDateTime.ToString("HH:mm:ss");
-
-                            row["送貨日期"] = deliveryDate;
-                            row["送貨時間"] = deliveryTime;
-                        }
-                        // Check if CurrentGasAmount is less than 0
-                        if (row["CurrentGasAmount"] != DBNull.Value && Convert.ToDecimal(row["CurrentGasAmount"]) < 0)
-                        {
-                            // Set CurrentGasAmount to 0
-                            row["CurrentGasAmount"] = 0;
-                        }
-                    }
-                    // 檢查訂單是否已被Assigned. 先秀出尚未assign的資料。
-                    DataView dataView = new DataView(table);
-                    if (showAssignedOrders)
-                    {
-                        dataView.RowFilter = "WORKER_Id IS NULL";
-                    }
-                    else
-                    {
-                        dataView.RowFilter = "WORKER_Id IS NOT NULL";
-                    }
-
-
-                    dataGridView1.DataSource = dataView;
-                    dataGridView1.Columns["WORKER_Id"].Visible = false;
-                    dataGridView1.Columns["SENSOR_Id"].Visible = false;
-                    dataGridView1.Columns["CUSTOMER_Id"].Visible = false;
-                    dataGridView1.Columns["DELIVERY_Address"].Width = 200;
-                    PopulateDeliveryManComboBox();
-                    InitializeDeliveryTimePicker();
-
-
-                    // Columns rename
-                    dataGridView1.Columns["ORDER_Id"].HeaderText = "訂單編號";
-                    dataGridView1.Columns["CUSTOMER_Id"].HeaderText = "顧客編號";
-                    dataGridView1.Columns["CUSTOMER_PhoneNo"].HeaderText = "顧客電話";
-                    dataGridView1.Columns["DELIVERY_Address"].HeaderText = "送貨地址";
-                    dataGridView1.Columns["EXPECT_Time"].Visible = false;
-                    dataGridView1.Columns["送貨日期"].HeaderText = "送貨日期"; // New column header
-                    dataGridView1.Columns["送貨時間"].HeaderText = "送貨時間"; // New column header
-                    //dataGridView1.Columns["DELIVERY_Time"].Visible = false; // Hide the original DELIVERY_Time column
-                    dataGridView1.Columns["CUSTOMER_Name"].HeaderText = "訂購人";
-                    dataGridView1.Columns["Order_type"].HeaderText = "瓦斯桶種類";
-                    dataGridView1.Columns["Order_weight"].HeaderText = "瓦斯規格";
-                    dataGridView1.Columns["Gas_Quantity"].HeaderText = "數量";
-                    dataGridView1.Columns["Gas_Volume"].HeaderText = "顧客累積殘氣量";
-                    dataGridView1.Columns["WORKER_Name"].HeaderText = "派送人員";
-                    dataGridView1.Columns["sensor_id"].HeaderText = "感測器編號";
-                    dataGridView1.Columns["CurrentGasAmount"].HeaderText = "當前瓦斯量";
-                    dataGridView1.Columns["Exchange"].HeaderText = "是否殘氣兌換";
-
-                    // Columns reorder
-                    dataGridView1.Columns["ORDER_Id"].DisplayIndex = 0;
-                    dataGridView1.Columns["CUSTOMER_PhoneNo"].DisplayIndex = 2;
-                    dataGridView1.Columns["DELIVERY_Address"].DisplayIndex = 3;
-                    dataGridView1.Columns["送貨日期"].DisplayIndex = 4;
-                    dataGridView1.Columns["送貨時間"].DisplayIndex = 5;
-                    dataGridView1.Columns["CUSTOMER_Name"].DisplayIndex = 6;
-                    dataGridView1.Columns["Order_type"].DisplayIndex = 7;
-                    dataGridView1.Columns["Order_weight"].DisplayIndex = 8;
-                    dataGridView1.Columns["Gas_Quantity"].DisplayIndex = 9;
-                    dataGridView1.Columns["Gas_Volume"].DisplayIndex = 10;
-                    dataGridView1.Columns["WORKER_Name"].DisplayIndex = 11;
-                    dataGridView1.Columns["sensor_id"].DisplayIndex = 12;
-                    dataGridView1.Columns["CurrentGasAmount"].DisplayIndex = 1;
+                    row["送貨日期"] = deliveryDate;
+                    row["送貨時間"] = deliveryTime;
+                }
+                // Check if CurrentGasAmount is less than 0
+                if (row["CurrentGasAmount"] != DBNull.Value && Convert.ToDecimal(row["CurrentGasAmount"]) < 0)
+                {
+                    // Set CurrentGasAmount to 0
+                    row["CurrentGasAmount"] = 0;
                 }
             }
+        }
+        // 更新訂單 DataGridView 的方法
+        private void UpdateOrderGridView(DataTable table)
+        {
+            dataGridView1.DataSource = new DataView(table);
+            // 設置 dataGridView1 的列標題、寬度、排序等...
+
+            dataGridView1.Columns["WORKER_Id"].Visible = false;
+            dataGridView1.Columns["SENSOR_Id"].Visible = false;
+            dataGridView1.Columns["CUSTOMER_Id"].Visible = false;
+            dataGridView1.Columns["DELIVERY_Address"].Width = 200;
+            PopulateDeliveryManComboBox();
+            InitializeDeliveryTimePicker();
+
+            // Columns rename
+            dataGridView1.Columns["ORDER_Id"].HeaderText = "訂單編號";
+            dataGridView1.Columns["CUSTOMER_Id"].HeaderText = "顧客編號";
+            dataGridView1.Columns["CUSTOMER_PhoneNo"].HeaderText = "顧客電話";
+            dataGridView1.Columns["DELIVERY_Address"].HeaderText = "送貨地址";
+            dataGridView1.Columns["EXPECT_Time"].Visible = false;
+            dataGridView1.Columns["送貨日期"].HeaderText = "送貨日期"; // New column header
+            dataGridView1.Columns["送貨時間"].HeaderText = "送貨時間"; // New column header
+                                                               //dataGridView1.Columns["DELIVERY_Time"].Visible = false; // Hide the original DELIVERY_Time column
+            dataGridView1.Columns["CUSTOMER_Name"].HeaderText = "訂購人";
+            dataGridView1.Columns["Order_type"].HeaderText = "瓦斯桶種類";
+            dataGridView1.Columns["Order_weight"].HeaderText = "瓦斯規格";
+            dataGridView1.Columns["Gas_Quantity"].HeaderText = "數量";
+            dataGridView1.Columns["Gas_Volume"].HeaderText = "顧客累積殘氣量";
+            dataGridView1.Columns["WORKER_Name"].HeaderText = "派送人員";
+            dataGridView1.Columns["sensor_id"].HeaderText = "感測器編號";
+            dataGridView1.Columns["CurrentGasAmount"].HeaderText = "當前瓦斯量";
+            dataGridView1.Columns["Exchange"].HeaderText = "是否殘氣兌換";
+
+            // Columns reorder
+            dataGridView1.Columns["ORDER_Id"].DisplayIndex = 0;
+            dataGridView1.Columns["CUSTOMER_PhoneNo"].DisplayIndex = 2;
+            dataGridView1.Columns["DELIVERY_Address"].DisplayIndex = 3;
+            dataGridView1.Columns["送貨日期"].DisplayIndex = 4;
+            dataGridView1.Columns["送貨時間"].DisplayIndex = 5;
+            dataGridView1.Columns["CUSTOMER_Name"].DisplayIndex = 6;
+            dataGridView1.Columns["Order_type"].DisplayIndex = 7;
+            dataGridView1.Columns["Order_weight"].DisplayIndex = 8;
+            dataGridView1.Columns["Gas_Quantity"].DisplayIndex = 9;
+            dataGridView1.Columns["Gas_Volume"].DisplayIndex = 10;
+            dataGridView1.Columns["WORKER_Name"].DisplayIndex = 11;
+            dataGridView1.Columns["sensor_id"].DisplayIndex = 12;
+            dataGridView1.Columns["CurrentGasAmount"].DisplayIndex = 1;
+
+
+            // 檢查訂單是否已被Assigned. 先秀出尚未assign的資料。
+            DataView dataView = new DataView(table);
+            if (showAssignedOrders)
+            {
+                dataView.RowFilter = "WORKER_Id IS NOT NULL";
+            }
+            else
+            {
+                dataView.RowFilter = "WORKER_Id IS NULL";
+            }
+            dataGridView1.DataSource = dataView;
+        }
+        // 更新派送人員工作量的方法
+        private async Task UpdateDeliveryManWorkloadAsync()
+        {
+            string queryMan = BuildDeliveryManWorkloadQuery();
+            DataTable table = await ExecuteQueryAsync(queryMan, new Dictionary<string, object>());
+            dataGridView2.DataSource = table;
+            // 其他關於 dataGridView2 的設置...
+            // 自訂列標題和格式化
+            dataGridView2.Columns["WORKER_Name"].HeaderText = "派送人員";
+            dataGridView2.Columns["TodayOrderCount"].HeaderText = "今日訂單數量";
+            dataGridView2.Columns["TomorrowOrderCount"].HeaderText = "明日訂單數量";
+
             // Load deliveryman workload
             // 今天的日期
             DateTime today = DateTime.Today;
 
             // 明天的日期
             DateTime tomorrow = today.AddDays(1);
-
-            string queryMan = "SELECT w.WORKER_Name, " +
-                                "SUM(CASE WHEN DATE(o.EXPECT_Time) = CURDATE() THEN 1 ELSE 0 END) AS TodayOrderCount, " +
-                                "SUM(CASE WHEN DATE(o.EXPECT_Time) = DATE_ADD(CURDATE(), INTERVAL 1 DAY) THEN 1 ELSE 0 END) AS TomorrowOrderCount, " +
-                                "SUM(CASE WHEN DATE_FORMAT(o.EXPECT_Time, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m') THEN 1 ELSE 0 END) AS ThisMonthOrderCount " +
-                                "FROM `worker` w " +
-                                "LEFT JOIN `assign` a ON w.WORKER_Id = a.WORKER_Id " +
-                                "LEFT JOIN `gas_order` o ON a.ORDER_Id = o.ORDER_Id " +
-                                $"WHERE w.WORKER_Company_Id = {GlobalVariables.CompanyId} " +
-                                "GROUP BY w.WORKER_Name";
-
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                using (MySqlDataAdapter adapter = new MySqlDataAdapter(queryMan, connection))
-                {
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-
-                    dataGridView2.DataSource = table;
-                    // 自訂列標題和格式化
-                    dataGridView2.Columns["WORKER_Name"].HeaderText = "派送人員";
-                    dataGridView2.Columns["TodayOrderCount"].HeaderText = "今日訂單數量";
-                    dataGridView2.Columns["TomorrowOrderCount"].HeaderText = "明日訂單數量";
-                }
-            }
+        }
+        // 將 dataGridView2 的數據轉置至 dataGridView3
+        private void TransposeDataForDataGridView3()
+        {
+            // dataGridView2 至 dataGridView3 數據轉置的代碼...
             // Add columns to dataGridView3 based on the number of rows in dataGridView2
             for (int i = 0; i < dataGridView2.Rows.Count; i++)
             {
@@ -306,6 +272,77 @@ namespace Gas_Company
                     dataGridView3.Rows[j].Cells[i].Value = cellValue;
                 }
             }
+        }
+        // 建構獲取訂單數據的 SQL 查詢
+        private string BuildOrderDataQuery()
+        {
+            // 填寫您的 SQL 查詢...
+            return  @"SELECT
+                        o.ORDER_Id,
+                        o.CUSTOMER_Id,
+                        c.CUSTOMER_PhoneNo,
+                        o.DELIVERY_Address,
+                        o.EXPECT_Time,
+                        od.exchange,
+                        c.CUSTOMER_Name,
+                        od.Order_type,
+                        od.Order_weight,
+                        o.Gas_Quantity,
+                        ca.Gas_Volume,
+                        a.WORKER_Id,
+                        w.WORKER_Name,
+                        o.sensor_id,
+                        (
+                            SELECT ROUND(((sh.SENSOR_Weight / 1000) - iot.Gas_Empty_Weight), 1) AS CurrentGasAmount
+                            FROM `sensor_history` sh
+                            JOIN `iot` iot ON sh.SENSOR_Id = iot.SENSOR_Id
+                            WHERE iot.CUSTOMER_Id = o.CUSTOMER_Id
+                            ORDER BY sh.SENSOR_Time DESC
+                            LIMIT 1
+                        ) AS CurrentGasAmount
+                    FROM `gas_order` o
+                    LEFT JOIN `customer` c ON o.CUSTOMER_Id = c.CUSTOMER_Id
+                    LEFT JOIN `gas_order_detail` od ON o.ORDER_Id = od.Order_ID
+                    LEFT JOIN `customer_accumulation` ca ON o.CUSTOMER_Id = ca.Customer_Id
+                    LEFT JOIN `assign` a ON o.ORDER_Id = a.ORDER_Id
+                    LEFT JOIN `worker` w ON a.WORKER_Id = w.WORKER_Id
+                    WHERE o.COMPANY_Id = @CompanyId
+                    AND o.DELIVERY_Condition = 0";
+        }
+
+        // 建構獲取派送人員工作量的 SQL 查詢
+        private string BuildDeliveryManWorkloadQuery()
+        {
+            return "SELECT w.WORKER_Name, " +
+                    "SUM(CASE WHEN DATE(o.EXPECT_Time) = CURDATE() THEN 1 ELSE 0 END) AS TodayOrderCount, " +
+                    "SUM(CASE WHEN DATE(o.EXPECT_Time) = DATE_ADD(CURDATE(), INTERVAL 1 DAY) THEN 1 ELSE 0 END) AS TomorrowOrderCount, " +
+                    "SUM(CASE WHEN DATE_FORMAT(o.EXPECT_Time, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m') THEN 1 ELSE 0 END) AS ThisMonthOrderCount " +
+                    "FROM `worker` w " +
+                    "LEFT JOIN `assign` a ON w.WORKER_Id = a.WORKER_Id " +
+                    "LEFT JOIN `gas_order` o ON a.ORDER_Id = o.ORDER_Id " +
+                    $"WHERE w.WORKER_Company_Id = {GlobalVariables.CompanyId} " +
+                    "GROUP BY w.WORKER_Name";
+        }
+        // 一個共用的執行 SQL 查詢的方法
+        private async Task<DataTable> ExecuteQueryAsync(string query, Dictionary<string, object> parameters)
+        {
+            DataTable table = new DataTable();
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    foreach (var param in parameters)
+                    {
+                        command.Parameters.AddWithValue(param.Key, param.Value);
+                    }
+                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(command))
+                    {
+                        await adapter.FillAsync(table);
+                    }
+                }
+            }
+            return table;
         }
 
         // 點選一個row 自動填入下方 Labels.

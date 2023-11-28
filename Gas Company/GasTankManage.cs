@@ -52,7 +52,7 @@ namespace Gas_Company
                     // Columns rename
                     dataGridView1.Columns["TANK_Id"].HeaderText = "容器編號";
                     dataGridView1.Columns["GAS_Id"].HeaderText = "瓦斯桶編號";
-                    dataGridView1.Columns["GAS_Weight_Full"].HeaderText = "容器實重(含閥)";
+                    dataGridView1.Columns["GAS_Weight_Empty"].HeaderText = "容器實重(含閥)";
                     dataGridView1.Columns["GAS_Type"].HeaderText = "瓦斯桶種類";
                     dataGridView1.Columns["GAS_Price"].HeaderText = "瓦斯價格";
                     dataGridView1.Columns["GAS_Volume"].HeaderText = "容量規格";
@@ -65,7 +65,7 @@ namespace Gas_Company
                     dataGridView1.Columns["GAS_Examine_condition"].Visible = false;
                     dataGridView1.Columns["GAS_Addtime"].Visible = false;
                     dataGridView1.Columns["GAS_Company_Id"].Visible = false;
-                    dataGridView1.Columns["Gas_Weight_Empty"].Visible = false;
+                    //dataGridView1.Columns["Gas_Weight_Empty"].Visible = false;
 
                     PopulateComboBox();
                     CountMonthlyExamineGasTank();
@@ -95,7 +95,7 @@ namespace Gas_Company
                 // Access the data in the selected row and autofill other fields in the form
                 string tankId = selectedRow.Cells["TANK_Id"].Value.ToString();
                 string gasId = selectedRow.Cells["GAS_Id"].Value.ToString();
-                string gasWeightFull = selectedRow.Cells["GAS_Weight_Full"].Value.ToString();
+                string gasWeightFull = selectedRow.Cells["GAS_Weight_Empty"].Value.ToString();
                 string gasType = selectedRow.Cells["GAS_Type"].Value.ToString();
                 string gasProduceDay = selectedRow.Cells["GAS_Produce_Day"].Value.ToString();
                 string gasExamineDay = selectedRow.Cells["GAS_Examine_Day"].Value.ToString();
@@ -180,7 +180,7 @@ namespace Gas_Company
 
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                string value = row.Cells["GAS_Weight_Full"].Value?.ToString();
+                string value = row.Cells["GAS_Weight_Empty"].Value?.ToString();
                 if (!string.IsNullOrEmpty(value))
                 {
                     uniqueValues.Add(value);
