@@ -65,7 +65,7 @@ namespace Gas_Company
                     dataGridView1.Columns["GAS_Examine_condition"].Visible = false;
                     dataGridView1.Columns["GAS_Addtime"].Visible = false;
                     dataGridView1.Columns["GAS_Company_Id"].Visible = false;
-                    //dataGridView1.Columns["Gas_Weight_Empty"].Visible = false;
+                    dataGridView1.Columns["Gas_Weight_Full"].Visible = false;
 
                     PopulateComboBox();
                     CountMonthlyExamineGasTank();
