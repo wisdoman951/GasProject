@@ -171,7 +171,7 @@ namespace Gas_Company
             WorkerNote.Text = "";
         }
 
-        private void button15_Click(object sender, EventArgs e)
+        /*private void button15_Click(object sender, EventArgs e)
         {
             string searchTerm = textBox1.Text;
 
@@ -204,7 +204,7 @@ namespace Gas_Company
                     }
                 }
             }
-        }
+        }*/
 
         private void RefreshButton_Click(object sender, EventArgs e)
         {
@@ -240,6 +240,24 @@ namespace Gas_Company
             else
             {
                 MessageBox.Show("請選擇要編輯的資料行", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                if (dataGridView1.Columns[e.ColumnIndex].Name == "WORKER_Sex")
+                {
+                    if (e.Value != null && e.Value.ToString() == "Male" || e.Value != null && e.Value.ToString() == "1")
+                    {
+                        e.Value = "男";
+                    }
+                    else if (e.Value != null && e.Value.ToString() == "Female" || e.Value != null && e.Value.ToString() == "female")
+                    {
+                        e.Value = "女";
+                    }
+                }
             }
         }
     }

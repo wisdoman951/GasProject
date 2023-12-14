@@ -188,7 +188,7 @@ namespace Gas_Company
             dataGridView1.Columns["EXPECT_Time"].Visible = false;
             dataGridView1.Columns["送貨日期"].HeaderText = "送貨日期"; // New column header
             dataGridView1.Columns["送貨時間"].HeaderText = "送貨時間"; // New column header
-                                                               //dataGridView1.Columns["DELIVERY_Time"].Visible = false; // Hide the original DELIVERY_Time column
+            //dataGridView1.Columns["DELIVERY_Time"].Visible = false; // Hide the original DELIVERY_Time column
             dataGridView1.Columns["CUSTOMER_Name"].HeaderText = "訂購人";
             dataGridView1.Columns["Order_type"].HeaderText = "瓦斯桶種類";
             dataGridView1.Columns["Order_weight"].HeaderText = "瓦斯規格";
@@ -293,7 +293,7 @@ namespace Gas_Company
                         w.WORKER_Name,
                         o.sensor_id,
                         (
-                            SELECT ROUND(((sh.SENSOR_Weight / 1000) - iot.Gas_Empty_Weight), 1) AS CurrentGasAmount
+                            SELECT ROUND(((sh.SENSOR_Weight / 1000) - iot.Gas_Empty_Weight), 1) AS CurrentGasAmount 
                             FROM `sensor_history` sh
                             JOIN `iot` iot ON sh.SENSOR_Id = iot.SENSOR_Id
                             WHERE iot.CUSTOMER_Id = o.CUSTOMER_Id

@@ -33,7 +33,12 @@ namespace Gas_Company
         {
             dataGridView1.CellFormatting += dataGridView1_CellFormatting;
 
-            string query = $"SELECT * FROM `gas` WHERE GAS_Company_Id = {GlobalVariables.CompanyId} ORDER BY GAS_Addtime DESC";
+            string query = $@"SELECT g.*, i.CUSTOMER_ID AS CurrentCustomerID, c.CUSTOMER_Name AS CurrentCustomerName
+                      FROM `gas` g
+                      LEFT JOIN `iot` i ON g.GAS_Id = i.GAS_Id
+                      LEFT JOIN `customer` c ON i.CUSTOMER_ID = c.CUSTOMER_Id
+                      WHERE g.GAS_Company_Id = {GlobalVariables.CompanyId}
+                      ORDER BY g.GAS_Addtime DESC";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -49,6 +54,7 @@ namespace Gas_Company
 
                     // Set the initial sorting order for the "GAS_Examine_Day" column to ascending
                     dataGridView1.Sort(dataGridView1.Columns["GAS_Examine_Day"], ListSortDirection.Ascending);
+           
                     // Columns rename
                     dataGridView1.Columns["TANK_Id"].HeaderText = "容器編號";
                     dataGridView1.Columns["GAS_Id"].HeaderText = "瓦斯桶編號";
@@ -60,12 +66,18 @@ namespace Gas_Company
                     dataGridView1.Columns["GAS_Produce_Day"].HeaderText = "出廠日期";
                     dataGridView1.Columns["GAS_Supplier"].HeaderText = "供應商";
                     dataGridView1.Columns["Gas_Registration_Time"].HeaderText = "瓦斯桶註冊時間";
+                    dataGridView1.Columns["CurrentCustomerID"].HeaderText = "當前客戶編號";
+                    dataGridView1.Columns["CurrentCustomerName"].HeaderText = "當前客戶姓名";
                     dataGridView1.Columns["last_worker_id"].HeaderText = "最後經手員工";
                     dataGridView1.Columns["Gas_Registration_Time"].Visible = false;
                     dataGridView1.Columns["GAS_Examine_condition"].Visible = false;
                     dataGridView1.Columns["GAS_Addtime"].Visible = false;
                     dataGridView1.Columns["GAS_Company_Id"].Visible = false;
                     dataGridView1.Columns["Gas_Weight_Full"].Visible = false;
+                    dataGridView1.Columns["CurrentCustomerID"].Visible = false;
+
+                    // ...
+
 
                     PopulateComboBox();
                     CountMonthlyExamineGasTank();
@@ -83,9 +95,8 @@ namespace Gas_Company
 
             // Set the initial sorting order for the "GAS_Examine_Day" column to ascending
             dataGridView1.Sort(dataGridView1.Columns["GAS_Examine_Day"], ListSortDirection.Ascending);
-
-
         }
+
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -155,7 +166,7 @@ namespace Gas_Company
                             // Gas tank produced more than 30 years, set row background color to gray
                             dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Gray;
                         }
-                    }
+                    }   
                 }
             }
         }
@@ -283,27 +294,16 @@ namespace Gas_Company
                 editForm.ShowDialog();
 
                 // Refresh the DataGridView after editing
-                RefreshDataGridView();
+                RefreshDataGridView(sender, e);
             }
             else
             {
                 MessageBox.Show("Please select a row to edit.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-        private void RefreshDataGridView()
+        private void RefreshDataGridView(object sender, EventArgs e)
         {
-            // Refresh the DataGridView
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT * FROM gas WHERE GAS_Company_Id = @CompanyId ORDER BY GAS_Addtime DESC", conn);
-                cmd.Parameters.AddWithValue("@CompanyId", GlobalVariables.CompanyId);
-                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                dataGridView1.DataSource = dt;
-                conn.Close();
-            }
+            GasTankManage_Load(sender, e);
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)

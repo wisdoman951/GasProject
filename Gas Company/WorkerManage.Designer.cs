@@ -39,7 +39,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.WorkerName = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.WorkerSex = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.WorkerEmail = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -47,6 +46,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.WorkerPermission = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
+            this.WorkerSex = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // WorkerHouseTelpNo
@@ -170,16 +170,6 @@
             this.label3.TabIndex = 73;
             this.label3.Text = "員工名稱";
             // 
-            // WorkerSex
-            // 
-            this.WorkerSex.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(239)))), ((int)(((byte)(243)))));
-            this.WorkerSex.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.WorkerSex.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WorkerSex.Location = new System.Drawing.Point(360, 28);
-            this.WorkerSex.Name = "WorkerSex";
-            this.WorkerSex.Size = new System.Drawing.Size(148, 20);
-            this.WorkerSex.TabIndex = 87;
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -255,19 +245,31 @@
             this.label10.TabIndex = 93;
             this.label10.Text = "員工權限";
             // 
+            // WorkerSex
+            // 
+            this.WorkerSex.FormattingEnabled = true;
+            this.WorkerSex.Items.AddRange(new object[] {
+            "男",
+            "女"});
+            this.WorkerSex.Location = new System.Drawing.Point(360, 29);
+            this.WorkerSex.Name = "WorkerSex";
+            this.WorkerSex.Size = new System.Drawing.Size(121, 20);
+            this.WorkerSex.TabIndex = 95;
+            this.WorkerSex.Text = "男";
+            // 
             // WorkerManage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
             this.ClientSize = new System.Drawing.Size(557, 395);
+            this.Controls.Add(this.WorkerSex);
             this.Controls.Add(this.WorkerPermission);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.WorkerPassword);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.WorkerEmail);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.WorkerSex);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.WorkerHouseTelpNo);
             this.Controls.Add(this.label2);
@@ -301,7 +303,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox WorkerName;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox WorkerSex;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox WorkerEmail;
         private System.Windows.Forms.Label label5;
@@ -309,5 +310,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox WorkerPermission;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.ComboBox WorkerSex;
     }
 }

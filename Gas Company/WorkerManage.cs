@@ -31,6 +31,7 @@ namespace Gas_Company
                 // Adding a new worker
                 Console.WriteLine("WorkerId is null"); // Log a message indicating workerId is null
                 Text = "新增員工";
+                WorkerSex.Text = "男";
             }
         }
 
@@ -95,8 +96,8 @@ namespace Gas_Company
                 {
                     // Adding a new worker
                     string insertQuery = "INSERT INTO worker " +
-                                            "(WORKER_Name, WORKER_PhoneNum, WORKER_HouseTelpNo, WORKER_Email, WORKER_Address, Permission, Registered_at, WORKER_Notes) " +
-                                            "VALUES (@WORKER_Name, @WORKER_PhoneNum, @WORKER_HouseTelpNo, @WORKER_Email, @WORKER_Address, @Permission, NOW(), @Worker_Notes)";
+                                            "(WORKER_Name, WORKER_PhoneNum, WORKER_HouseTelpNo, WORKER_Email, WORKER_Address, Permission, WORKER_Notes, WORKER_Company_Id, WORKER_Sex) " +
+                                            "VALUES (@WORKER_Name, @WORKER_PhoneNum, @WORKER_HouseTelpNo, @WORKER_Email, @WORKER_Address, @Permission, @Worker_Notes, @WORKER_Company_Id, @WORKER_Sex)";
 
                     cmd = new MySqlCommand(insertQuery, conn);
                 }
@@ -108,6 +109,9 @@ namespace Gas_Company
                 cmd.Parameters.AddWithValue("@WORKER_Address", WorkerAddress.Text);
                 cmd.Parameters.AddWithValue("@Permission", WorkerPermission.Text);
                 cmd.Parameters.AddWithValue("@Worker_Notes", WorkerNote.Text);
+                cmd.Parameters.AddWithValue("@WORKER_Company_Id", GlobalVariables.CompanyId);
+                cmd.Parameters.AddWithValue("@WORKER_Sex", WorkerSex.Text);
+
 
                 if (cmd.ExecuteNonQuery() == 1)
                 {

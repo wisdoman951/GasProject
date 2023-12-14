@@ -131,7 +131,6 @@ namespace Gas_Company
             this.SearchButton.TabIndex = 97;
             this.SearchButton.Text = "搜尋";
             this.SearchButton.UseVisualStyleBackColor = false;
-            this.SearchButton.Click += new System.EventHandler(this.button15_Click);
             // 
             // textBox1
             // 
@@ -155,6 +154,7 @@ namespace Gas_Company
             this.dataGridView1.Size = new System.Drawing.Size(1263, 374);
             this.dataGridView1.TabIndex = 95;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
             // 
             // groupBox1
             // 
