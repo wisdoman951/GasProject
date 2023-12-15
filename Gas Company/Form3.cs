@@ -59,28 +59,48 @@ namespace Gas_Company
                 MessageBox.Show("密碼和確認密碼不相符。");
                 return;
             }
+
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 conn.Open();
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = conn;
-                cmd.CommandText = @"INSERT INTO manager_account (MANAGER_Name, MANAGER_PhoneNo, MANAGER_Email, MANAGER_City, MANAGER_District, MANAGER_Address, MANAGER_Password, Register_at)
-                    VALUES (@MANAGER_Name, @MANAGER_PhoneNo, @MANAGER_Email, @MANAGER_City, @MANAGER_District, @MANAGER_Address, @MANAGER_Password, @Register_at);
-                    SELECT LAST_INSERT_ID();";
-                cmd.Parameters.AddWithValue("@MANAGER_Name", employee_Name);
-                cmd.Parameters.AddWithValue("@MANAGER_PhoneNo", phone);
-                cmd.Parameters.AddWithValue("@MANAGER_Email", email);
-                cmd.Parameters.AddWithValue("@MANAGER_City", city);
-                cmd.Parameters.AddWithValue("@MANAGER_District", district);
-                cmd.Parameters.AddWithValue("@MANAGER_Address", address);
-                cmd.Parameters.AddWithValue("@MANAGER_Password", password);
-                cmd.Parameters.AddWithValue("@Register_at", DateTime.Now);
-                cmd.ExecuteNonQuery();
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    cmd.Connection = conn;
+
+                    // Insert into manager_account table
+                    cmd.CommandText = @"INSERT INTO manager_account (MANAGER_Name, MANAGER_PhoneNo, MANAGER_Email, MANAGER_City, MANAGER_District, MANAGER_Address, MANAGER_Password, Register_at)
+                VALUES (@MANAGER_Name, @MANAGER_PhoneNo, @MANAGER_Email, @MANAGER_City, @MANAGER_District, @MANAGER_Address, @MANAGER_Password, @Register_at);
+                SELECT LAST_INSERT_ID();";
+                    cmd.Parameters.AddWithValue("@MANAGER_Name", employee_Name);
+                    cmd.Parameters.AddWithValue("@MANAGER_PhoneNo", phone);
+                    cmd.Parameters.AddWithValue("@MANAGER_Email", email);
+                    cmd.Parameters.AddWithValue("@MANAGER_City", city);
+                    cmd.Parameters.AddWithValue("@MANAGER_District", district);
+                    cmd.Parameters.AddWithValue("@MANAGER_Address", address);
+                    cmd.Parameters.AddWithValue("@MANAGER_Password", password);
+                    cmd.Parameters.AddWithValue("@Register_at", DateTime.Now);
+                    int managerId = Convert.ToInt32(cmd.ExecuteScalar()); // Get the last insert ID
+
+                    // Insert into company table
+                    cmd.Parameters.Clear();
+                    cmd.CommandText = @"INSERT INTO company (COMPANY_Name, COMPANY_Phone_No, COMPANY_City, COMPANY_District, COMPANY_Address, COMPANY_Text_Id, COMPANY_Registration_Time)
+                VALUES (@COMPANY_Name, @COMPANY_Phone_No, @COMPANY_City, @COMPANY_District, @COMPANY_Address, @COMPANY_Text_Id, @COMPANY_Registration_Time)";
+                    cmd.Parameters.AddWithValue("@COMPANY_Name", employee_Name);
+                    cmd.Parameters.AddWithValue("@COMPANY_Phone_No", phone);
+                    cmd.Parameters.AddWithValue("@COMPANY_City", city);
+                    cmd.Parameters.AddWithValue("@COMPANY_District", district);
+                    cmd.Parameters.AddWithValue("@COMPANY_Address", address);
+                    cmd.Parameters.AddWithValue("@COMPANY_Text_Id", managerId); // Use manager ID as COMPANY_Text_Id
+                    cmd.Parameters.AddWithValue("@COMPANY_Registration_Time", DateTime.Now);
+                    cmd.ExecuteNonQuery();
+                }
             }
+
             MessageBox.Show("註冊成功！");
             this.Close();
             Form1 f1 = new Form1();
             f1.Show();
         }
+
     }
 }

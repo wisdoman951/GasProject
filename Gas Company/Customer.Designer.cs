@@ -78,7 +78,6 @@ namespace Gas_Company
             this.label5.Size = new System.Drawing.Size(74, 22);
             this.label5.TabIndex = 96;
             this.label5.Text = "客戶編號";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // CustomerNote
             // 
