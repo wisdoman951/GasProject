@@ -124,6 +124,7 @@ namespace Gas_Company
                         dataGridView1.Columns["Sensor_Id"].HeaderText = "感測器編號";
                         dataGridView1.Columns["Alert_Volume"].HeaderText = "通報門檻";
                         dataGridView1.Columns["SENSOR_Weight"].Visible = false;
+                        dataGridView1.Columns["LastOrderTime"].Visible = false;
                         dataGridView1.Columns["CUSTOMER_Sex"].HeaderText = "客戶性別";
                         dataGridView1.Columns["CUSTOMER_PhoneNo"].HeaderText = "客戶電話";
                         dataGridView1.Columns["CUSTOMER_Postal_Code"].HeaderText = "客戶郵遞區號";
@@ -133,8 +134,9 @@ namespace Gas_Company
                         dataGridView1.Columns["CUSTOMER_FamilyMemberId"].HeaderText = "客戶關係家人";
                         dataGridView1.Columns["CUSTOMER_Notes"].HeaderText = "客戶備註";
                         dataGridView1.Columns["CUSTOMER_Registration_Time"].HeaderText = "客戶註冊時間";
+                        dataGridView1.Columns["DaysSinceLastOrder"].HeaderText = "已訂購天數";
 
-                        }
+                }
                     }
             }
 

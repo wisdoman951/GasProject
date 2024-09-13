@@ -61,6 +61,7 @@ namespace Gas_Company
             this.GasExamineAmountMonthlyLabel = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.GasExamineAmountYearlyLabel = new System.Windows.Forms.Label();
+            this.YearlySelection = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -418,7 +419,7 @@ namespace Gas_Company
             // GasExamineAmountMonthlyLabel
             // 
             this.GasExamineAmountMonthlyLabel.AutoSize = true;
-            this.GasExamineAmountMonthlyLabel.Location = new System.Drawing.Point(571, 171);
+            this.GasExamineAmountMonthlyLabel.Location = new System.Drawing.Point(561, 171);
             this.GasExamineAmountMonthlyLabel.Name = "GasExamineAmountMonthlyLabel";
             this.GasExamineAmountMonthlyLabel.Size = new System.Drawing.Size(31, 17);
             this.GasExamineAmountMonthlyLabel.TabIndex = 97;
@@ -427,20 +428,30 @@ namespace Gas_Company
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(632, 171);
+            this.label10.Location = new System.Drawing.Point(760, 171);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(116, 17);
+            this.label10.Size = new System.Drawing.Size(104, 17);
             this.label10.TabIndex = 98;
-            this.label10.Text = "今年需檢驗桶數為：";
+            this.label10.Text = "年需檢驗桶數為：";
             // 
             // GasExamineAmountYearlyLabel
             // 
             this.GasExamineAmountYearlyLabel.AutoSize = true;
-            this.GasExamineAmountYearlyLabel.Location = new System.Drawing.Point(768, 171);
+            this.GasExamineAmountYearlyLabel.Location = new System.Drawing.Point(870, 171);
             this.GasExamineAmountYearlyLabel.Name = "GasExamineAmountYearlyLabel";
             this.GasExamineAmountYearlyLabel.Size = new System.Drawing.Size(31, 17);
             this.GasExamineAmountYearlyLabel.TabIndex = 99;
             this.GasExamineAmountYearlyLabel.Text = "N/A";
+            // 
+            // YearlySelection
+            // 
+            this.YearlySelection.FormattingEnabled = true;
+            this.YearlySelection.Location = new System.Drawing.Point(633, 167);
+            this.YearlySelection.Name = "YearlySelection";
+            this.YearlySelection.Size = new System.Drawing.Size(121, 25);
+            this.YearlySelection.TabIndex = 100;
+            this.YearlySelection.Text = "N/A";
+            this.YearlySelection.SelectedIndexChanged += new System.EventHandler(this.YearlySelection_SelectedIndexChanged);
             // 
             // GasTankManage
             // 
@@ -448,6 +459,7 @@ namespace Gas_Company
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
             this.ClientSize = new System.Drawing.Size(1265, 694);
+            this.Controls.Add(this.YearlySelection);
             this.Controls.Add(this.GasExamineAmountYearlyLabel);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.GasExamineAmountMonthlyLabel);
@@ -508,5 +520,6 @@ namespace Gas_Company
         private System.Windows.Forms.Label GasExamineAmountMonthlyLabel;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label GasExamineAmountYearlyLabel;
+        private System.Windows.Forms.ComboBox YearlySelection;
     }
 }

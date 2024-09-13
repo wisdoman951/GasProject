@@ -18,7 +18,7 @@ namespace Gas_Company
         private readonly string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
         private Button lastClickedLabel;
         // 一開始只顯示有被Assigned的訂單
-        private bool showAssignedOrders = true; // Default to show assigned orders
+        private bool showAssignedOrders = false; // Default to show assigned orders
 
         public Form2()
         {
@@ -276,6 +276,7 @@ namespace Gas_Company
         // 建構獲取訂單數據的 SQL 查詢
         private string BuildOrderDataQuery()
         {
+            // 1. 當初的table沒有關聯好(外來鍵)
             // 填寫您的 SQL 查詢...
             return  @"SELECT
                         o.ORDER_Id,
@@ -293,7 +294,7 @@ namespace Gas_Company
                         w.WORKER_Name,
                         o.sensor_id,
                         (
-                            SELECT ROUND(((sh.SENSOR_Weight / 1000) - iot.Gas_Empty_Weight), 1) AS CurrentGasAmount 
+                            SELECT ROUND(((sh.SENSOR_Weight / 1000) - iot.Gas_Empty_Weight), 1) AS CurrentGasAmount
                             FROM `sensor_history` sh
                             JOIN `iot` iot ON sh.SENSOR_Id = iot.SENSOR_Id
                             WHERE iot.CUSTOMER_Id = o.CUSTOMER_Id
@@ -1034,7 +1035,7 @@ namespace Gas_Company
         }
         private async void ShowAssignedButton_Click(object sender, EventArgs e)
         {
-            showAssignedOrders = true;
+            showAssignedOrders = false;
             await LoadData();
             //換顏色 籃底配白字 / 橘底配黑字
             ShowAssignedButton.ForeColor = Color.Black;
@@ -1046,7 +1047,7 @@ namespace Gas_Company
 
         private async void ShowUnassignedButton_Click(object sender, EventArgs e)
         {
-            showAssignedOrders = false;
+            showAssignedOrders = true;
             await LoadData();
             //換顏色 籃底配白字 / 橘底配黑字
             ShowAssignedButton.ForeColor = Color.White;

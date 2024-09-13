@@ -12,6 +12,7 @@ using MySql.Data.MySqlClient;
 using System.ComponentModel.Design;
 using Org.BouncyCastle.Asn1.X509;
 using System.Security.Cryptography;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Gas_Company
 {
@@ -25,6 +26,9 @@ namespace Gas_Company
         {
             InitializeComponent();
             comboBox2.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
+            YearlySelection.Items.Add(DateTime.Now.Year); // 將今年的年份添加到 ComboBox 的項目中
+            YearlySelection.SelectedIndex = 0; // 選中今年的年份作為預設值
+
         }
         // 篩出所有桶重
         //private DataView dataView; // Declare a class-level variable to store the DataView
@@ -33,9 +37,14 @@ namespace Gas_Company
         {
             dataGridView1.CellFormatting += dataGridView1_CellFormatting;
 
-            string query = $@"SELECT g.*, i.CUSTOMER_ID AS CurrentCustomerID, c.CUSTOMER_Name AS CurrentCustomerName
+            //left join 從 gas --> iot
+            //2. left join 從 iot --> coustomer
+            string query = $@"SELECT g.*, 
+                      i.CUSTOMER_ID AS CurrentCustomerID, 
+                      c.CUSTOMER_Name AS CurrentCustomerName,
+                      c.CUSTOMER_Address AS CurrentCustomerAddress
                       FROM `gas` g
-                      LEFT JOIN `iot` i ON g.GAS_Id = i.GAS_Id
+                      LEFT JOIN `iot` i ON g.GAS_Id = i.GAS_Id 
                       LEFT JOIN `customer` c ON i.CUSTOMER_ID = c.CUSTOMER_Id
                       WHERE g.GAS_Company_Id = {GlobalVariables.CompanyId}
                       ORDER BY g.GAS_Addtime DESC";
@@ -68,7 +77,9 @@ namespace Gas_Company
                     dataGridView1.Columns["Gas_Registration_Time"].HeaderText = "瓦斯桶註冊時間";
                     dataGridView1.Columns["CurrentCustomerID"].HeaderText = "當前客戶編號";
                     dataGridView1.Columns["CurrentCustomerName"].HeaderText = "當前客戶姓名";
+                    dataGridView1.Columns["CurrentCustomerAddress"].HeaderText = "當前客戶地址";
                     dataGridView1.Columns["last_worker_id"].HeaderText = "最後經手員工";
+                    dataGridView1.Columns["CurrentCustomerAddress"].Width = 250;
                     dataGridView1.Columns["Gas_Registration_Time"].Visible = false;
                     dataGridView1.Columns["GAS_Examine_condition"].Visible = false;
                     dataGridView1.Columns["GAS_Addtime"].Visible = false;
@@ -77,10 +88,9 @@ namespace Gas_Company
                     dataGridView1.Columns["CurrentCustomerID"].Visible = false;
 
                     // ...
-
-
                     PopulateComboBox();
                     CountMonthlyExamineGasTank();
+                    CountYearlyExamineGasTank();
                 }
             }
 
@@ -386,6 +396,35 @@ namespace Gas_Company
                             Console.WriteLine(monthlyExamineCount);
                             // 这里你可以使用 monthlyExamineCount 和 yearlyExamineCount 来更新你的标签或其他控件
                             GasExamineAmountMonthlyLabel.Text = monthlyExamineCount.ToString();
+                            GasExamineAmountYearlyLabel.Text = yearlyExamineCount.ToString();
+                        }
+                    }
+                }
+            }
+        }
+        private void YearlySelection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CountYearlyExamineGasTank(); // 根據需要更新年度檢查桶數
+        }
+        private void CountYearlyExamineGasTank()
+        {
+            string queryExamine = "SELECT " +
+                                    "COUNT(CASE WHEN YEAR(GAS_Examine_Day) = YEAR(CURDATE()) THEN 1 END) AS YearlyExamineCount " +
+                                    "FROM `gas` " +
+                                    $"WHERE GAS_Company_Id = {GlobalVariables.CompanyId}";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(queryExamine, connection))
+                {
+                    connection.Open();
+
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            int yearlyExamineCount = reader.GetInt32("YearlyExamineCount");
+                            // 這裡你可以使用 yearlyExamineCount 來更新你的標籤或其他控制項
                             GasExamineAmountYearlyLabel.Text = yearlyExamineCount.ToString();
                         }
                     }
